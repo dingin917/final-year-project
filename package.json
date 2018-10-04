@@ -1,0 +1,21 @@
+{
+  "name": "fyp",
+  "version": "1.0.0",
+  "description": "final year project",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "body-parser": "*",
+    "ejs": "^2.6.1",
+    "express": "*",
+    "express-validator": "^5.3.0",
+    "mocha": "^5.2.0",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.2.17"
+  },
+  "author": "Jin Ding",
+  "license": "ISC",
+  "devDependencies": {}
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Timetable Planner</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link href="style.css" rel="stylesheet">
+    
+  </head>
+
+
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+   
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"><img src="./img/logo.jpg"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+        data-target="#navbarResponsive">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Connect</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <!--- Image Slider -->
+    <div id="slides" class="carousel slide" data-ride="carousel">
+      <ul class="carousel-indicators">
+        <li data-target="#slides" data-slide-to="0" class="active"></li>
+        <li data-target="#slides" data-slide-to="1"></li>
+        <li data-target="#slides" data-slide-to="2"></li>
+      </ul>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="./img/ntu.png">
+          <div class="carousel-caption">
+            <h1 class="display-2">Welcome To Timeslots Planner for School of EEE</h1>
+            <h3>Help to Customize your Timetable in a second</h3>
+            <button type="button" class="btn btn-outline-light btn-lg">View Demo</button>
+            <button type="button" class="btn btn-primary btn-lg">Get Started</button>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./img/hive.jpg">
+        </div>
+        <div class="carousel-item">
+            <img src="./img/hive-inside.jpg">
+        </div>
+      </div>
+    </div>
+
+
+    <!--- Jumbotron -->
+    <div class="container-fluid">
+      <div class="row jumbotron">
+        <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+          <p class="lead">A Final Year Project from School of Electrical and Electronic Engineering. 
+              Timeslots Planner has been proudly providing automated class timetable planning for all teaching staff in EEE. 
+              To learn more, simply browse through our site.
+          </p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+          <a href="#">
+            <button type="button" class="btn btn-outline-secondary btn-lg">
+              Learn More
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <!--- Create React Component -->
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+    <!--- Add a teaching staff profile -->
+    <script src="./src/view_profile_u.js" type="text/babel"></script>
+    <div class="container-fluid padding" id='viewprofile'></div>
+
+    <!--- Add a teaching staff profile -->
+    <script src="./src/add_profile.js" type="text/babel"></script>
+    <div class="container-fluid padding" id='addprofile'></div>
+
+    <hr class="my-4">
+
+    <!--- Fetch Timeslots for a Course -->
+    <script src="./src/find_timeslots.js" type="text/babel"></script>
+    <div class="container-fluid padding" id='courses'></div>
+
+    <!--- Update Assignment for a Tutorial/Lab -->
+    <script src="./src/update_assignment.js" type="text/babel"></script>
+    <div class="container-fluid padding" id='tutassignments'></div>
+
+
+
+    <!--- Two Column Section -->
+    <div class="container-fluid padding">
+      <hr class="my-4">
+      <div class="row padding">
+        <div class="col-lg-6">
+          
+        </div>
+        <div class="col-lg-6">
+          
+        </div>
+      </div>
+    </div>
+
+
+    <!--- Connect -->
+    <div class="container-fluid padding">
+      <div class="row text-center padding">
+        <div class="col-12">
+          <h2>Connect</h2>
+        </div>
+        <div class="col-12 social padding">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-google-plus-g"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+
+    <!--- Footer -->
+    <footer>
+      <div class="container-fluid padding">
+        <div class="row text-center">
+          <div class="col-12">
+            <hr class="light">
+            <h5>&copy; 2018 by Timeslots Planner. Proudly created with NTU School of EEE.</h5>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+  </body>
+</html>
