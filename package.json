@@ -1,21 +1,33 @@
 {
-  "name": "fyp",
-  "version": "1.0.0",
-  "description": "final year project",
-  "main": "app.js",
-  "scripts": {
-    "test": "mocha"
-  },
+  "name": "interface",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
     "body-parser": "*",
-    "ejs": "^2.6.1",
     "express": "*",
     "express-validator": "^5.3.0",
     "mocha": "^5.2.0",
     "mongodb": "^3.1.6",
-    "mongoose": "^5.2.17"
+    "mongoose": "^5.2.17",
+    "react": "^16.5.2",
+    "react-bootstrap-table": "^4.3.1",
+    "react-dom": "^16.5.2",
+    "react-scripts": "2.0.4"
   },
-  "author": "Jin Ding",
-  "license": "ISC",
-  "devDependencies": {}
+  "scripts": {
+    "start": "nodemon app.js | react-scripts start",
+    "build": "react-scripts build",
+    "test": "mocha --exit",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "proxy": "http://localhost:3001",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
