@@ -1,24 +1,28 @@
 const express = require('express');
+// import React from 'react';
+// import { renderToString } from 'react-dom/server';
 const bodyParser = require('body-parser');
 var path = require('path');
 var expressValidator = require('express-validator');
 
 const app = express();
 
-// View Engine 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 
-// Middleware -> app.use() functioning between request and response 
-app.use(express.static(path.join(__dirname, 'public'))); 
+app.use(express.static(path.join(__dirname, 'interface', 'public')));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
-app.use('/api',require('./routes/api'));
-app.use(function(err, req, res, next){
-    res.status(422).send({error: err.message});
+app.get('/', (req, res) => {
+    // const body = ReactDOMServer.renderToString(App);
+    res.send(
+        "HTML(body)"
+    );
+});
+app.use('/api', require('./routes/api'));
+app.use(function (err, req, res, next) {
+    res.status(422).send({ error: err.message });
 });
 
-app.listen(3000, function(){
-    console.log('Sever Started on Port 3000, now listening for requests...');
+app.listen(3001, function () {
+    console.log('Sever Started on Port 3001, now listening for requests...');
 });
