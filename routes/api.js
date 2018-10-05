@@ -49,56 +49,77 @@ router.post('/courses', function(req, res, next){
 
 // update a course assignee in the db
 router.put('/courses/assign', function(req, res, next){
-    Course.findOneAndUpdate({'code': req.body.code, 'type': req.body.type}, 
-        { $set: {"schedule.$[elem].assignee": req.body.name, "schedule.$[elem].status": true} }, 
-        { arrayFilters:[{"elem.group": req.body.group}] }).then(function(){
-
-            Course.findOne({'code': req.body.code, 'type': req.body.type}).then(function(course){
-                res.json(course);
-                console.log("PUT Request for updating a course assignee");
-                console.log("Request Body: " + req.body);
-                console.log("Response: " + course);
-            });
-
-            Course.aggregate([
-                {   
-                    $match: { code: req.body.code, type: req.body.type }
-                },
+    Course.findOneAndUpdate({'code': req.body.code, 'type': req.body.type},
+        {
+            $push: {
+                "schedule.$[i].slots.$[j].scheduledweek":
                 {
-                    $project: {
-                        schedule: {
-                            $filter: {
-                                input: "$schedule",
-                                as: "slot",
-                                cond: { $eq:["$$slot.group", req.body.group]}
-                            }
+                    'week': req.body.week,
+                    'assignee': req.body.name
+                }
+            }
+      },
+      {
+          arrayFilters:[{'i.group': req.body.group}, {'j.day': req.body.day}]
+      }
+    ).then(function(data){
+
+        Course.aggregate([
+            {
+                $match: {'code': req.body.code, 'type': req.body.type}
+            },
+            {
+                $project: {
+                    schedule: {
+                        $filter:{
+                            input: {
+                                $map: {
+                                    input: "$schedule",
+                                    as: "schedule",
+                                    in: {
+                                        group: "$$schedule.group",
+                                        slots: {
+                                            $filter: {
+                                                input: "$$schedule.slots",
+                                                as: "slot",
+                                                cond: { $eq: ["$$slot.day", req.body.day] }
+                                            }  
+                                        }
+                                    }
+                                 }
+                            },        
+                            as: "schedule",
+                            cond: { $eq: ["$$schedule.group", req.body.group ]}
                         }
                     }
                 }
-            ]).then(function(result){
-                console.log("filter result: "+ JSON.stringify(result) );
+            }
+        ]).then(function(result){
 
-                result[0].schedule.map(function(schedule){
-                    var assignedCourse = {};
-                    assignedCourse.title = result[0].title;
-                    assignedCourse.code = req.body.code;
-                    assignedCourse.type = req.body.type;
-                    assignedCourse.index = schedule.index;
-                    assignedCourse.group = schedule.group;
-                    assignedCourse.teachingweek = schedule.teachingweek;
-                    assignedCourse.day = schedule.day;
-                    assignedCourse.time = schedule.time;
-                    assignedCourse.venue = schedule.venue;
+            console.log("return project: "+JSON.stringify(result));
+            var schedule = result[0].schedule[0];
+            var course = {};
+            course.code = req.body.code;
+            course.type = req.body.type;
+            course.group = req.body.group;
+            course.teachingweek = schedule.slots[0].scheduledweek[0].week;
+            course.day = schedule.slots[0].day;
+            course.time = schedule.slots[0].time;
+            course.venue = schedule.slots[0].venue;
 
-                    Prof.findOneAndUpdate({name: req.body.name},{
-                        $push: {courses: assignedCourse}
-                    }).then(function(prof){
-                        console.log("updated prof: " + JSON.stringify(prof));
-                    });
-                });
+            console.log("course: "+JSON.stringify(course));
+ 
+            Prof.findOneAndUpdate({name: req.body.name}, {
+                $push: {courses: course}
+            }).then(function(prof){
+                console.log("updated prof: " + JSON.stringify(prof));
             });
-            
-        }).catch(next); 
+        });
+        res.json(data);
+        console.log('PUT Request for teaching assignment');
+        console.log("Request Body: " + req.body);
+        console.log("Response: " + res);
+    }).catch(next);
 });
 
 // delete a course from the db 

@@ -5,53 +5,54 @@ class AddProfile extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-            course: { schedule: [] }
+            profile: { courses: [], }
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(event) {
         event.preventDefault();
-        var code = this.refs.code.value;
-        var type = this.refs.type.value;
 
-        fetch('/api/courses?code=' + code + '&type=' + type).then(function (data) {
+        var requestBody = {};
+        requestBody.name = this.refs.name.value;
+        requestBody.fullname = this.refs.fullname.value;
+        requestBody.email = this.refs.email.value;
+
+        fetch('/api/teachers', {
+            method: 'POST',
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: JSON.stringify(requestBody)
+        }).then(function (data) {
             return data.json();
         }).then(json => {
             this.setState({
-                course: json
+                profile: json
             });
         });
     }
 
     render() {
-        var course = this.state.course;
-        var schedule = course.schedule;
+        var profile = this.state.profile;
 
         return (
-            <div id="course-container">
-                <h1> AddProfile</h1>
-                <form id="search" className="form-group" onSubmit={this.handleSubmit}>
-                    <label>Enter a course code </label>
-                    <input className="form-control" type="text" ref="code" placeholder="e.g.EE4483" required />
-                    <label>Enter a class type </label>
-                    <input className="form-control" type="text" ref="type" placeholder="e.g.LEC" required />
-                    <input className="form-control" type="submit" value="Find Timeslots" />
+            <div id="profile-container">
+                <h1> Add a Teaching Staff Profile </h1>
+                <form className="form-group" id="addProfile" onSubmit={this.handleSubmit}>
+                    <label>Enter a teaching staff alias name </label>
+                    <input className="form-control" type="text" ref="name" placeholder="e.g.SP" required />
+                    <label>Enter a teaching staff fullname </label>
+                    <input className="form-control" type="text" ref="fullname" placeholder="e.g.Shum Ping" required />
+                    <label>Enter his / her email </label>
+                    <input className="form-control" type="text" ref="email" placeholder="e.g.epshum@ntu.edu.sg" required />
+                    <input className="form-control" type="submit" value="Add a teaching staff" />
                 </form>
-                <div>
-                    {course.title}
-                </div>
-                <ul>
-                    {
-                        schedule.map(schedule =>
-                            <li key={schedule._id}>
-                                <span className="group">Group: {schedule.group} </span>
-                                <span className="day">Time: {schedule.day} </span>
-                                <span className="time">{schedule.time} </span>
-                                <span className="venue">Venue: {schedule.venue} </span>
-                                <span className="assignee">Assignee: {schedule.assignee == null ? "To be assigned" : schedule.assignee} </span>
-                            </li>)
-                    }
-                </ul>
+                <span>{profile.fullname===undefined ? "" : "Hello, "+profile.fullname}</span>
             </div>
         );
     }

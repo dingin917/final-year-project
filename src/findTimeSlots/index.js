@@ -5,52 +5,66 @@ class FindTimeSlots extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-            profile: { courses: [] }
+            course: { schedule: [] }
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(event) {
         event.preventDefault();
+        var code = this.refs.code.value;
+        var type = this.refs.type.value;
 
-        var requestBody = {};
-        requestBody.name = this.refs.name.value;
-        requestBody.email = this.refs.email.value;
-
-        fetch('/api/teachers', {
-            method: 'POST',
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(requestBody)
-        }).then(function (data) {
+        fetch('/api/courses?code=' + code + '&type=' + type).then(function (data) {
             return data.json();
         }).then(json => {
             this.setState({
-                profile: json
+                course: json
             });
         });
     }
 
     render() {
-        var profile = this.state.profile;
+        var course = this.state.course;
+        var schedule = course.schedule;
 
         return (
-            <div id="profile-container">
-                <h1> FindTimeSlots </h1>
-                <form className="form-group" id="addProfile" onSubmit={this.handleSubmit}>
-                    <label>Enter a teaching staff name </label>
-                    <input className="form-control" type="text" ref="name" placeholder="e.g.SP" required />
-                    <label>Enter his / her email </label>
-                    <input className="form-control" type="text" ref="email" placeholder="e.g.epshum@ntu.edu.sg" required />
-                    <input className="form-control" type="submit" value="Add a teaching staff" />
+            <div id="course-container">
+                <h1> Find Timeslots</h1>
+                <form id="search" className="form-group" onSubmit={this.handleSubmit}>
+                    <label>Enter a course code </label>
+                    <input className="form-control" type="text" ref="code" placeholder="e.g.EE4483" required />
+                    <label>Enter a class type </label>
+                    <input className="form-control" type="text" ref="type" placeholder="e.g.LEC" required />
+                    <input className="form-control" type="submit" value="Find Timeslots" />
                 </form>
-                <span>{profile.name} </span>
-                <span>{profile.email} </span>
+                <div>
+                    {course.title}
+                </div>
+                <ul>
+                {
+                    schedule.map(schedule =>
+                    <li key={schedule._id}>
+                    <span className="group">Group: {schedule.group} </span>
+                    <span className="teachingweek">Week: {schedule.teachingweek.map(function(week){
+                      return <span>{week} </span>})} </span>
+                    <ul>
+                        {
+                            schedule.slots.map(slot => 
+                                <li key={slot._id}>
+                                    <span className="time"><b>Time: {slot.day} {slot.time} </b></span>
+                                    <span className="venue"><b>Venue: {slot.venue} </b></span>
+                                    <span>{slot.scheduledweek != null ? slot.scheduledweek.map(scheduling => 
+                                        <li key={scheduling._id}>
+                                            <span>Scheduled Week: {scheduling.week.map(function(week){return <span>{week} </span>})}</span>
+                                            <span>Assignee: {scheduling.assignee}</span>
+                                        </li>) : "Currently not assigned to anyone"}</span>
+                                </li>
+                            )
+                        }
+                    </ul>
+                    </li>)
+                }
+                </ul>
             </div>
         );
     }

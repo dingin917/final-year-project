@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 
 // Set up default mongoose connection
 mongoose.connect(
-    "mongodb://dingin:GDragon0818@ds111913.mlab.com:11913/fypdb",
+    //"mongodb://dingin:GDragon0818@ds111913.mlab.com:11913/fypdb",
+    "mongodb://dingin:GDragon0818@ds119503.mlab.com:19503/test-db",
     { useNewUrlParser: true }
 );
 
@@ -21,19 +22,20 @@ var courseSchema = new Schema({
         index: Number,          // e.g. 33054
         group: String,          // e.g. FC36 for TUT & LAB, part 1/2 for LEC
         teachingweek: [Number],
-        day: String,            // e.g. Mon, Tue
-        time: String,           // e.g. 1330-1430
-        venue: String,          // e.g. LT25
-        status: {
-            type: Boolean,
-            default: false
-        },          
-        assignee: {
-            type: String,
-            default: null
-        },
+        slots:[{
+            module: String,         // e.g. Lab: A,B,C
+            day: String,            // e.g. Mon, Tue
+            time: String,           // e.g. 1330-1430
+            venue: String,          // e.g. LT25
+            scheduledweek: [{
+                week: [Number],
+                assignee: String,
+            }],
+        }],
+        unscheduledweeks:[Number],
     }],
 });
+
 
 var courseScheduleSchema = new Schema({
     title: String,
@@ -41,6 +43,7 @@ var courseScheduleSchema = new Schema({
     type: String,
     index: Number,
     group: String,
+    module: String,
     teachingweek: [Number],
     day: String,
     time: String,
@@ -49,6 +52,7 @@ var courseScheduleSchema = new Schema({
 
 var profSchema = new Schema({
     name: String,
+    fullname: String,
     email: String,
     courses: [courseScheduleSchema]
 });
