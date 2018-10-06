@@ -15,7 +15,17 @@ class ViewProfile extends Component {
         event.preventDefault();
         var name = this.refs.name.value;
 
-        fetch('/api/teachers?name=' + name).then(function (data) {
+        fetch('/api/teachers?name=' + name, {
+            method: 'POST',
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            redirect: "follow",
+            referrer: "no-referrer"
+        }).then(function (data) {
             return data.json();
         }).then(json => {
             this.setState({

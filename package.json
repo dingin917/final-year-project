@@ -15,7 +15,7 @@
     "react-scripts": "2.0.4"
   },
   "scripts": {
-    "start": "nodemon app.js | react-scripts start",
+    "start": "react-scripts start | nodemon app.js",
     "build": "react-scripts build",
     "test": "mocha --exit",
     "eject": "react-scripts eject"
