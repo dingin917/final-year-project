@@ -51,8 +51,10 @@ var courseScheduleSchema = new Schema({
 });
 
 var profSchema = new Schema({
-    name: String,
+    initial: String,
     fullname: String,
+    title: String,
+    teachingarea: String,
     email: String,
     courses: [courseScheduleSchema]
 });
