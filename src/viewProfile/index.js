@@ -13,10 +13,10 @@ class ViewProfile extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        var name = this.refs.name.value;
+        var initial = this.refs.initial.value;
 
-        fetch('/api/teachers?name=' + name, {
-            method: 'POST',
+        fetch('/api/teachers?initial=' + initial, {
+            method: 'GET',
             mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
@@ -41,7 +41,7 @@ class ViewProfile extends Component {
                 <h1> View Profile </h1>
                 <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff name </label>
-                    <input className="form-control" type="text" ref="name" placeholder="e.g.SP" required />
+                    <input className="form-control" type="text" ref="initial" placeholder="e.g.SP" required />
                     <input className="form-control" type="submit" value="Find Schedule" />
                 </form>
                 <div>
@@ -53,13 +53,12 @@ class ViewProfile extends Component {
                             <li key={course._id}>
                                 <span className="code">Code: {course.code} </span>
                                 <span className="type">Type: {course.type} </span>
-                                <span className="index">{course.index != null ? "Index: " + course.index : ""} </span>
                                 <span className="group">Group: {course.group} </span>
-                                <span className="teachingweek">Week: {course.teachingweek.map(function (week) {
+                                <span className="teaching_weeks">Week: {course.teaching_weeks.map(function (week) {
                                     return <span>{week} </span>
                                 })} </span>
                                 <span className="day">Time: {course.day} </span>
-                                <span className="time">{course.time} </span>
+                                <span className="time">{course.start_time+"-"+course.end_time} </span>
                                 <span className="venue">Venue: {course.venue} </span>
                             </li>)
                     }

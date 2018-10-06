@@ -38,11 +38,11 @@ class App extends Component {
                     </div>
                     <div className="controller">
                         <AddProfile className="container padding" ></AddProfile>
-                        <FindTimeSlots className="container padding" ></FindTimeSlots>
-                        <UpdateAssignment className="container padding" ></UpdateAssignment>
+                        <ViewProfile className="container padding" ></ViewProfile>
                     </div>
                     <div className="controller">
-                        <ViewProfile className="container padding" ></ViewProfile>
+                        <FindTimeSlots className="container padding" ></FindTimeSlots>
+                        <UpdateAssignment className="container padding" ></UpdateAssignment>
                     </div>
                 </div>
                 <div style={{ display: this.state.show ? "auto" : "none" }}>

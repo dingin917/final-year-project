@@ -13,7 +13,7 @@ class AddProfile extends Component {
         event.preventDefault();
 
         var requestBody = {};
-        requestBody.initial = this.refs.name.value;
+        requestBody.initial = this.refs.initial.value;
         requestBody.fullname = this.refs.fullname.value;
         requestBody.title = this.refs.title.value;
         requestBody.teachingarea = this.refs.teachingarea.value;
@@ -47,7 +47,7 @@ class AddProfile extends Component {
                 <h1> Add a Teaching Staff Profile </h1>
                 <form className="form-group" id="addProfile" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff initial </label>
-                    <input className="form-control" type="text" ref="name" placeholder="e.g.SP" required />
+                    <input className="form-control" type="text" ref="initial" placeholder="e.g.SP" required />
                     <label>Enter a teaching staff fullname </label>
                     <input className="form-control" type="text" ref="fullname" placeholder="e.g.Shum Ping" required />
                     <label>Enter his / her title </label>

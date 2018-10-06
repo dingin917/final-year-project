@@ -1,110 +1,24 @@
 {
-    "title": "ARTIFICIAL INTELLIGENCE AND DATA MINING",
-    "code": "EE4483",
-    "type":"LEC", 
-    "schedule": [
-	{         
-        		"group": "LE1",          
-        		"teachingweek": [2,3,4,5,6,7],
-        		"day": "TUE",            
-        		"time": "1030-1130",
-				"venue": "LT28"
-   	 },
-	{       
-        		"group": "LE1",          
-        		"teachingweek": [2,3,4,5,6,7],
-        		"day": "FRI",            
-        		"time": "1030-1130",
-				"venue": "LT29"
-   	 },
-	{         
-        		"group": "LE2",          
-        		"teachingweek": [8,9,10,11,12,13],
-        		"day": "TUE",            
-        		"time": "1030-1130",
-				"venue": "LT28"
-   	 },
-	{       
-        		"group": "LE2",          
-        		"teachingweek": [8,9,10,11,12,13],
-        		"day": "FRI",            
-        		"time": "1030-1130",
-				"venue": "LT29"
-   	 }
-	]
-}
-
-
-
-{
-    "title": "ARTIFICIAL INTELLIGENCE AND DATA MINING",
-    "code": "EE4483",
-    "type":"TUT", 
-    "schedule": [
-	    {            
-            "index": 34086,
-            "group": "FC1",          
-            "teachingweek": [2,3,4,5,6,7,8,9,10,11,12,13],
-            "day": "MON",            
-            "time": "1330-1430",
-		    "venue": "TR+94"
-   	    },
-	    {       
-            "index": 34087,
-            "group": "FC2",          
-            "teachingweek": [2,3,4,5,6,7,8,9,10,11,12,13],
-            "day": "TUE",            
-            "time": "1530-1630",
-            "venue": "TR+88"
-        },
-		{       
-            "index": 34088,
-            "group": "FC3",          
-            "teachingweek": [2,3,4,5,6,7,8,9,10,11,12,13],
-            "day": "WED",            
-            "time": "1430-1530",
-            "venue": "TR+95"
-        },
-		{       
-            "index": 34089,
-            "group": "FC4",          
-            "teachingweek": [2,3,4,5,6,7,8,9,10,11,12,13],
-            "day": "THU",            
-            "time": "1430-1530",
-            "venue": "TR+96"
-        },
-		{       
-            "index": 34090,
-            "group": "FC5",          
-            "teachingweek": [2,3,4,5,6,7,8,9,10,11,12,13],
-            "day": "FRI",            
-            "time": "1430-1530",
-            "venue": "TR+94"
-        }
-    ]
-}
-
-
-
-
-
-{
-    "title": "ARTIFICIAL INTELLIGENCE AND DATA MINING",
+    "acad_yr": 2018,
+    "sem": 1,
     "code": "EE4483",
     "type":"LEC", 
     "schedule": [
 	    {         
-        		"group": "LE",          
-        		"teachingweek": [1,2,3,4,5,6,7,8,9,10,11,12,13],
+        		"group": "LE",
                 "slots": [
                     {
-                        "day": "TUE",            
-        		        "time": "1030-1130",
+                        "teaching_weeks": [1,2,3,4,5,6,7,8,9,10,11,12,13],
+                        "day": "T",            
+        		        "start_time": "1030",
+                        "end_time": "1130",
 				        "venue": "LT28"
                     },
                     {
-                        "day": "FRI",            
-        		        "time": "1030-1130",
+                        "teaching_weeks": [1,2,3,4,5,6,7,8,9,10,11,12,13],
+                        "day": "F",            
+        		        "start_time": "1030",
+                        "end_time": "1130",
 				        "venue": "LT29"
                     }
                 ]

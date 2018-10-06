@@ -5,11 +5,9 @@ const router = express.Router();
 const Mongo = require('../mongo');
 const Course = Mongo.Course;
 const Prof = Mongo.Prof;
-const Tutor = Mongo.Tutor;
 
 // import from server folder
 const LoadProfile = require("../server/load_profile");
-const Assign = require("../server/assign");
 
 // retrieve a course detail from the db
 router.get('/courses', function(req, res, next){
@@ -23,7 +21,7 @@ router.get('/courses', function(req, res, next){
 
 // retrieve a teaching staff detail from the db 
 router.get('/teachers', function(req, res, next){
-    Prof.findOne( {'initial': req.query.name} ).then(function(prof){
+    Prof.findOne( {'initial': req.query.initial} ).then(function(prof){
         res.json(prof);
         console.log("GET Request for viewing a teaching staff detail");
         console.log("URL Request Params: " + req.query);
@@ -52,9 +50,49 @@ router.post('/courses', function(req, res, next){
 });
 
 // update a course assignee in the db
-router.put('/courses/assign', Assign.assign(req, res, next));
+router.put('/courses/assign', function(req, res, next){
+    Course.findOneAndUpdate({'code': req.body.code, 'type': req.body.type},
+        {
+            $push: {
+                "schedule.$[i].slots.$[j].scheduled_weeks":
+                {
+                    'week': req.body.week,
+                    'assignee': req.body.name
+                }
+            }
+      }, 
+      {
+          arrayFilters:[{'i.group': req.body.group}, {'j.day': req.body.day, 
+                            'j.start_time': req.body.start_time,'j.end_time': req.body.end_time,
+                            'j.venue': req.body.venue}]
+      }
+    ).then(function(){
+        var course = {};
+        course.code = req.body.code;
+        course.type = req.body.type;
+        course.group = req.body.group;
+        course.teaching_weeks = req.body.week;
+        course.day = req.body.day;
+        course.start_time = req.body.start_time;
+        course.end_time = req.body.end_time;
+        course.venue = req.body.venue;
+ 
+        Prof.findOneAndUpdate({initial: req.body.name}, {
+            $push: {courses: course}
+        }).then(function(prof){
+            console.log("updated prof: " + JSON.stringify(prof));
+        });
+       
+        Course.findOne({'code': req.body.code, 'type': req.body.type}).then(function(result){
+            res.json(result);
+            console.log('PUT Request for teaching assignment');
+            console.log("Request Body: " + JSON.stringify(req.body));
+            console.log("Response: " +  JSON.stringify(result));
+        });
+    }).catch(next);
+});
 
-// delete a course from the db 
+// delete a course from the db, currently not implemented 
 router.delete('/courses/:id', function(req, res, next){
     Course.findByIdAndDelete({_id: req.params.id}).then(function(course){
         res.json({type: 'DELETE'});
