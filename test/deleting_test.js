@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 const Mongo = require('./connection');
-const User = Mongo.User;
+const User = Mongo.Prof;
 
 // Describe test
 describe('Deleting records', function(){
@@ -10,8 +10,9 @@ describe('Deleting records', function(){
     
     beforeEach(function(done){
             user = new User({
-            name: "Ding Jin",
-            email: "jding003@e.ntu.edu.sg"
+            initial: "Iron Man",
+            fullname: "Tony Stark",
+            email: "tong.stark@marvel.universe"
         });
 
         user.save().then(function(){
@@ -22,8 +23,8 @@ describe('Deleting records', function(){
     // Create tests
     it('Deletes one record from the database', function(done){
 
-        User.findOneAndDelete({name: "Ding Jin"}).then(function(){
-            User.findOne({name: "Ding Jin"}).then(function(result){
+        User.findOneAndDelete({initial: "Iron Man"}).then(function(){
+            User.findOne({initial: "Iron Man"}).then(function(result){
                 assert(result === null);
                 done();
             });

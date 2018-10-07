@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 const Mongo = require('./connection');
-const User = Mongo.User;
+const User = Mongo.Prof;
 
 // Describe test
 describe('Finding records', function(){
