@@ -5,10 +5,10 @@ const Mongo = require('./connection');
 const Prof = Mongo.Prof;
 
 // Describe test
-describe('POST request testing', function(){
+describe('POST request testing', function () {
 
     // Create tests
-    it('Saves to a prof record to the database', function(done){
+    it('Saves to a prof record to the database', function (done) {
 
         var prof = new Prof({
             "initial": "Iron Man",
@@ -18,7 +18,7 @@ describe('POST request testing', function(){
             "email": "tony.stark@marvel.universe"
         });
 
-        fetch('http://localhost:3000/api/teachers', {
+        fetch('http://localhost:3001/api/teachers', {
             method: 'POST',
             mode: "cors",
             cache: "no-cache",
@@ -29,9 +29,9 @@ describe('POST request testing', function(){
             redirect: "follow",
             referrer: "no-referrer",
             body: JSON.stringify(prof)
-        }).then(function(){
-            Prof.findOne({initial: "Iron Man"}).then(function(data){
-                assert(data.fullname==="Tony Stark");
+        }).then(function () {
+            Prof.findOne({ initial: "Iron Man" }).then(function (data) {
+                assert(data.fullname === "Tony Stark");
                 done();
             });
         });

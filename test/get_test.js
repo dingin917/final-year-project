@@ -5,10 +5,10 @@ const Mongo = require('./connection');
 const Prof = Mongo.Prof;
 
 // Describe test
-describe('GET request testing', function(){
-    
-    beforeEach(function(done){
-        
+describe('GET request testing', function () {
+
+    beforeEach(function (done) {
+
         var prof = new Prof({
             "initial": "Iron Man",
             "fullname": "Tony Stark",
@@ -17,15 +17,15 @@ describe('GET request testing', function(){
             "email": "tony.stark@marvel.universe"
         });
 
-        prof.save().then(function(){
+        prof.save().then(function () {
             done();
         });
     });
 
     // Create tests
-    it('Find a prof record from database', function(done){
+    it('Find a prof record from database', function (done) {
 
-        fetch('http://localhost:3000/api/teachers?initial=' + "Iron Man", {
+        fetch('http://localhost:3001/api/teachers?initial=' + "Iron Man", {
             method: 'GET',
             mode: "cors",
             cache: "no-cache",
