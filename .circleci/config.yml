@@ -32,10 +32,10 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-          
+
       - run:
           name: starting node server
-          command: mkdir logs && yarn start 2>&1 | tee logs/node_server.log
+          command: mkdir logs && node app.js 2>&1 | tee logs/node_server.log
           background: true
       
       - run:
