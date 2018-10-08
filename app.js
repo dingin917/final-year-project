@@ -2,8 +2,8 @@ const express = require('express');
 // import React from 'react';
 // import { renderToString } from 'react-dom/server';
 const bodyParser = require('body-parser');
-var path = require('path');
-var expressValidator = require('express-validator');
+const path = require('path');
+const expressValidator = require('express-validator');
 
 const app = express();
 

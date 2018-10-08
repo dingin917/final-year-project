@@ -17,9 +17,13 @@ class UpdateAssignments extends Component {
         requestBody.code = this.refs.code.value;
         requestBody.type = this.refs.type.value;
         requestBody.group = this.refs.group.value;
+        requestBody.day = this.refs.day.value;
+        requestBody.start_time = this.refs.start_time.value;
+        requestBody.end_time = this.refs.end_time.value;
+        requestBody.venue = this.refs.venue.value;
         requestBody.name = this.refs.name.value;
         requestBody.week = this.refs.week.value.split(',').map(Number);
-        requestBody.day = this.refs.day.value;
+        
 
         fetch('/api/courses/assign', {
             method: 'PUT',
@@ -56,29 +60,35 @@ class UpdateAssignments extends Component {
                     <label>Enter a course group </label>
                     <input className="form-control" type="text" ref="group" placeholder="e.g.FC1" required />
                     <label>Enter a course weekday </label>
-                    <input className="form-control" type="text" ref="day" placeholder="e.g.FRI" required />
-                    <label>Enter the teaching weeks </label>
+                    <input className="form-control" type="text" ref="day" placeholder="e.g.F" required />
+                    <label>Enter a course start time </label>
+                    <input className="form-control" type="text" ref="start_time" placeholder="e.g.1030" required />
+                    <label>Enter a course end time </label>
+                    <input className="form-control" type="text" ref="end_time" placeholder="e.g.1130" required />
+                    <label>Enter a course venue </label>
+                    <input className="form-control" type="text" ref="venue" placeholder="e.g.LT29" required />
+                    <label>Assign the teaching weeks </label>
                     <input className="form-control" type="text" ref="week" placeholder="e.g.1,2,3" required />
-                    <label>Enter a teaching staff name </label>
+                    <label>Assign a teaching staff name </label>
                     <input className="form-control" type="text" ref="name" placeholder="e.g.CLH" required />
                     <input className="form-control" type="submit" value="Assign a teaching staff" />
                 </form>
                 <div>
-                    {course.title}
+                    {course.code}
                 </div>
                 <ul>{
                         schedule.map(schedule =>
                             <li key={schedule._id}>
                                 <span className="group">Group: {schedule.group} </span>
-                                <span className="teachingweek">Week: {schedule.teachingweek.map(function(week){
-                                    return <span>{week} </span>})} </span>
                             <ul>
                                 {
                                     schedule.slots.map(slot => 
                                         <li key={slot._id}>
-                                            <span className="time"><b>Time: {slot.day} {slot.time} </b></span>
+                                            <span className="teaching_weeks">Week: {slot.teaching_weeks.map(function(week){
+                                                return <span>{week} </span>})} </span>
+                                            <span className="time"><b>Time: {slot.day+" "+slot.start_time+"-"+slot.end_time} </b></span>
                                             <span className="venue"><b>Venue: {slot.venue} </b></span>
-                                            <span>{slot.scheduledweek != null ? slot.scheduledweek.map(scheduling => 
+                                            <span>{slot.scheduled_weeks != null ? slot.scheduled_weeks.map(scheduling => 
                                                 <li key={scheduling._id}>
                                                     <span>Scheduled Week: {scheduling.week.map(function(week){return <span>{week} </span>})}</span>
                                                     <span>Assignee: {scheduling.assignee}</span>

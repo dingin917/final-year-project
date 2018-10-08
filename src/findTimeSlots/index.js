@@ -38,24 +38,24 @@ class FindTimeSlots extends Component {
                     <input className="form-control" type="submit" value="Find Timeslots" />
                 </form>
                 <div>
-                    {course.title}
+                    {course.code}
                 </div>
                 <ul>
                 {
                     schedule.map(schedule =>
                     <li key={schedule._id}>
                     <span className="group">Group: {schedule.group} </span>
-                    <span className="teachingweek">Week: {schedule.teachingweek.map(function(week){
-                      return <span>{week} </span>})} </span>
                     <ul>
                         {
                             schedule.slots.map(slot => 
                                 <li key={slot._id}>
-                                    <span className="time"><b>Time: {slot.day} {slot.time} </b></span>
+                                    <span className="teaching_weeks">Week: {slot.teaching_weeks.map(function(week){
+                                        return <span>{week} </span>})} </span>
+                                    <span className="time"><b>Time: {slot.day+" "+slot.start_time+"-"+slot.end_time} </b></span>
                                     <span className="venue"><b>Venue: {slot.venue} </b></span>
-                                    <span>{slot.scheduledweek != null ? slot.scheduledweek.map(scheduling => 
+                                    <span>{slot.scheduled_weeks != null ? slot.scheduled_weeks.map(scheduling => 
                                         <li key={scheduling._id}>
-                                            <span>Scheduled Week: {scheduling.week.map(function(week){return <span>{week} </span>})}</span>
+                                            <span>Scheduled Weeks: {scheduling.week.map(function(week){return <span>{week} </span>})}</span>
                                             <span>Assignee: {scheduling.assignee}</span>
                                         </li>) : "Currently not assigned to anyone"}</span>
                                 </li>
