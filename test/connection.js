@@ -22,8 +22,10 @@ before(function(done){
 
 beforeEach(function(done){
     // Drop the collection
-    mongoose.connection.collections.users.drop(function(){
-        done();
+    mongoose.connection.collections.profs.drop(function(){
+        mongoose.connection.collections.courses.drop(function(){
+            done();
+        })
     });
 });
 

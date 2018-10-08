@@ -26,6 +26,14 @@
 	]
 }
 
+{
+    "initial": "SP",
+    "fullname": "Shum Ping",
+    "title": "Prof",
+    "teachingarea": "Info-Communications",
+    "email": "epshum@ntu.edu.sg"
+}
+
 
 {
     "title": "ARTIFICIAL INTELLIGENCE AND DATA MINING",
