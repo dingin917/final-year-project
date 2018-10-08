@@ -22,52 +22,60 @@ before(function(done){
 
 beforeEach(function(done){
     // Drop the collection
-    mongoose.connection.collections.users.drop(function(){
-        done();
+    mongoose.connection.collections.profs.drop(function(){
+        mongoose.connection.collections.courses.drop(function(){
+            done();
+        })
     });
 });
 
-
 // Define Schema 
-
 var courseSchema = new Schema({
-    title: String,              // e.g. Web Application Design
+    acad_yr: Number,            // e.g. 2018
+    sem: Number,                // e.g. 1 
     code: String,               // e.g. EE4717
     type: String,               // e.g. LEC, TUT, LAB
     schedule: [{
-        index: Number,          // e.g. 33054
-        group: String,          // e.g. FC36
-        teachingweek: [Number],
-        day: String,            // e.g. Mon, Tue
-        time: String,           // e.g. 1330-1430
-        status: Boolean,            
-        assignee: String
+        group: String,          // e.g. FC36 for TUT & LAB, part 1/2 for LEC
+        slots:[{
+            teaching_weeks: [Number],
+            day: String,            // e.g. Mon, Tue
+            start_time: String,     // e.g. 1330
+            end_time: String,       // e.g. 1430
+            venue: String,          // e.g. LT25
+            scheduled_weeks: [{
+                week: [Number],
+                assignee: String,
+            }],
+        }],
+        unscheduled_weeks:[Number],
     }],
 });
 
+
+var courseScheduleSchema = new Schema({
+    code: String,
+    type: String,
+    group: String,
+    teaching_weeks: [Number],
+    day: String,
+    start_time: String,
+    end_time: String,
+    venue: String,
+});
+
 var profSchema = new Schema({
-    name: String,
+    initial: String,
+    fullname: String,
+    title: String,
+    teachingarea: String,
     email: String,
-    courses: [courseSchema]
+    courses: [courseScheduleSchema]
 });
 
-var tutorSchema = new Schema({
-    name: String,
-    email: String,
-    courses: [courseSchema]
-});
-
-// Schema below is only used for mocha testing
-var userSchema = new Schema({ 
-    name: String,
-    email: String,
-    height: Number
-});
 
 // Export Model
 module.exports = {  
                     Course: mongoose.model('courses', courseSchema), 
                     Prof: mongoose.model('profs', profSchema),
-                    Tutor: mongoose.model('tutors', tutorSchema),
-                    User: mongoose.model('users', userSchema),
                 };

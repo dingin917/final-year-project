@@ -15,57 +15,51 @@ db.once('open', () => console.log('db connected'));
 
 // Define Schema 
 var courseSchema = new Schema({
-    title: String,              // e.g. Web Application Design
+    acad_yr: Number,            // e.g. 2018
+    sem: Number,                // e.g. 1 
     code: String,               // e.g. EE4717
     type: String,               // e.g. LEC, TUT, LAB
     schedule: [{
-        index: Number,          // e.g. 33054
         group: String,          // e.g. FC36 for TUT & LAB, part 1/2 for LEC
-        teachingweek: [Number],
         slots:[{
-            module: String,         // e.g. Lab: A,B,C
+            teaching_weeks: [Number],
             day: String,            // e.g. Mon, Tue
-            time: String,           // e.g. 1330-1430
+            start_time: String,     // e.g. 1330
+            end_time: String,       // e.g. 1430
             venue: String,          // e.g. LT25
-            scheduledweek: [{
+            scheduled_weeks: [{
                 week: [Number],
                 assignee: String,
             }],
         }],
-        unscheduledweeks:[Number],
+        unscheduled_weeks:[Number],
     }],
 });
 
 
 var courseScheduleSchema = new Schema({
-    title: String,
     code: String,
     type: String,
-    index: Number,
     group: String,
-    module: String,
-    teachingweek: [Number],
+    teaching_weeks: [Number],
     day: String,
-    time: String,
+    start_time: String,
+    end_time: String,
     venue: String,
 });
 
 var profSchema = new Schema({
-    name: String,
+    initial: String,
     fullname: String,
+    title: String,
+    teachingarea: String,
     email: String,
     courses: [courseScheduleSchema]
 });
 
-var tutorSchema = new Schema({
-    name: String,
-    email: String,
-    courses: [courseScheduleSchema]
-});
 
 // Export Model
 module.exports = {  
                     Course: mongoose.model('courses', courseSchema), 
                     Prof: mongoose.model('profs', profSchema),
-                    Tutor: mongoose.model('tutors', tutorSchema),
                 };
