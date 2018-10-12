@@ -63,33 +63,19 @@ class ViewTable extends Component {
         return (
             <BootstrapTable data={input} options={options} selectRow={selectRow} cellEdit={cellEdit}
                 insertRow deleteRow exportCSV>
-                <TableHeaderColumn row='0' isKey dataField='id' rowSpan='4' csvHeader='Teaching Week'>Teaching Week</TableHeaderColumn>
+                <TableHeaderColumn row='0' isKey dataField='id' rowSpan='2' csvHeader='Teaching Week'>Teaching Week</TableHeaderColumn>
                 <TableHeaderColumn row='0' csvHeader='MON'>MON</TableHeaderColumn>
-                <TableHeaderColumn row='1'csvHeader='1030-1230'>1030-1230</TableHeaderColumn>
-                <TableHeaderColumn row='2' csvHeader='TC01'>TC01</TableHeaderColumn>
-                <TableHeaderColumn row='3' dataField='tc01'>TR+67</TableHeaderColumn>
-                <TableHeaderColumn row='0' colSpan='3'>TUE</TableHeaderColumn>
-                <TableHeaderColumn row='1'>0930-1130</TableHeaderColumn>
-                <TableHeaderColumn row='2'>TC02</TableHeaderColumn>
-                <TableHeaderColumn row='3' dataField='tc02'>TR+67</TableHeaderColumn>
-                <TableHeaderColumn row='1'>1330-1530</TableHeaderColumn>
-                <TableHeaderColumn row='2'>TC03</TableHeaderColumn>
-                <TableHeaderColumn row='3' dataField='tc03'>TR+67</TableHeaderColumn>
-                <TableHeaderColumn row='1'>1530-1730</TableHeaderColumn>
-                <TableHeaderColumn row='2'>TC04</TableHeaderColumn>
-                <TableHeaderColumn row='3' dataField='tc04'>TR+67</TableHeaderColumn>
-                <TableHeaderColumn row='0'>WED</TableHeaderColumn>
-                <TableHeaderColumn row='1'>1030-1230</TableHeaderColumn>
-                <TableHeaderColumn row='2'>TC05</TableHeaderColumn>
-                <TableHeaderColumn row='3' dataField='tc05'>TR+67</TableHeaderColumn>
-                <TableHeaderColumn row='0'>THUR</TableHeaderColumn>
-                <TableHeaderColumn row='1'>1030-1230</TableHeaderColumn>
-                <TableHeaderColumn row='2'>TC06</TableHeaderColumn>
-                <TableHeaderColumn row='3' dataField='tc06'>TR+67</TableHeaderColumn>
-                <TableHeaderColumn row='0'>FRI</TableHeaderColumn>
-                <TableHeaderColumn row='1'>1030-1230</TableHeaderColumn>
-                <TableHeaderColumn row='2'>TC07</TableHeaderColumn>
-                <TableHeaderColumn row='3' dataField='tc07'>TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='TC01' dataField='tc01'>1030-1230<br />TC01<br />TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='0' csvHeader='TUE' colSpan='3'>TUE</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='TC02' dataField='tc02'>0930-1130<br />TC02<br />TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='TC03' dataField='tc03'>1330-1530<br />TC03<br />TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='TC04' dataField='tc04'>1530-1730<br />TC04<br />TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='0' csvHeader='WED'>WED</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='TC05' dataField='tc05'>1030-1230<br />TC05<br />TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='0' csvHeader='THUR'>THUR</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='TC06' dataField='tc06'>1030-1230<br />TC06<br />TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='0' csvHeader='FRI'>FRI</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='TC07' dataField='tc07'>1030-1230<br />TC07<br />TR+67</TableHeaderColumn>
             </BootstrapTable>
         );
     }
