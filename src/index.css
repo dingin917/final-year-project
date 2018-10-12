@@ -14,16 +14,14 @@ code {
 }
 
 .board {
-  margin: 5rem 2rem;
+    display: flex;
+    flex-flow: column;
+    padding-top: 115px;
+}
+.data {
     display: flex;
     flex-flow: row;
-    justify-content:space-evenly;
-}
-.view {
-  width:50vw;
-}
-.controller {
-  width: 20vw;
+    justify-content: space-evenly !important;
 }
 h1 {
   font-size: 1.5rem;

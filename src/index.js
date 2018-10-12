@@ -32,17 +32,15 @@ class App extends Component {
                         Hide original Page
                     </label>
                 </div>
-                <div className="board">
+                <div className="board" id="service">
                     <div className="view">
                         <ViewTable />
                     </div>
-                    <div className="controller">
-                        <AddProfile className="container padding" ></AddProfile>
-                        <ViewProfile className="container padding" ></ViewProfile>
-                    </div>
-                    <div className="controller">
-                        <FindTimeSlots className="container padding" ></FindTimeSlots>
-                        <UpdateAssignment className="container padding" ></UpdateAssignment>
+                    <div className="data">
+                            <AddProfile className="container padding" ></AddProfile>
+                            <ViewProfile className="container padding" ></ViewProfile>
+                            <FindTimeSlots className="container padding" ></FindTimeSlots>
+                            <UpdateAssignment className="container padding" ></UpdateAssignment>
                     </div>
                 </div>
                 <div style={{ display: this.state.show ? "auto" : "none" }}>

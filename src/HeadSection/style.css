@@ -1,0 +1,7 @@
+#header {
+    position: fixed;
+    width:100vw;
+}
+.slide,.info {
+    margin-top: 115px;
+}

@@ -6,7 +6,7 @@ class HeadSection extends Component {
     render() {
         return (
             <div className="prod">
-                <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top">
+                <nav className="navbar navbar-expand-md navbar-light bg-light sticky-top" id="header">
                     <div className="container-fluid">
                         <a className="navbar-brand" href="/"><img alt="img" src="./img/logo.jpg" /></a>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -21,7 +21,7 @@ class HeadSection extends Component {
                                     <a className="nav-link" href="/">About</a>
                                 </li>
                                 <li className="nav-item active">
-                                    <a className="nav-link" href="/">Services</a>
+                                    <a className="nav-link" id="serviceButton" href="#service">Services</a>
                                 </li>
                                 <li className="nav-item active">
                                     <a className="nav-link" href="/">Connect</a>
@@ -58,7 +58,7 @@ class HeadSection extends Component {
                 </div>
 
 
-                <div className="container-fluid">
+                <div className="container-fluid intro">
                     <div className="row jumbotron">
                         <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
                             <p className="lead">A Final Year Project from School of Electrical and Electronic Engineering.

@@ -65,7 +65,7 @@ class ViewTable extends Component {
                 insertRow deleteRow exportCSV>
                 <TableHeaderColumn row='0' isKey dataField='id' rowSpan='2' csvHeader='Teaching Week'>Teaching Week</TableHeaderColumn>
                 <TableHeaderColumn row='0' csvHeader='MON'>MON</TableHeaderColumn>
-                <TableHeaderColumn row='1' csvHeader='TC01' dataField='tc01'>1030-1230<br />TC01<br />TR+67</TableHeaderColumn>
+                <TableHeaderColumn row='1' csvHeader='1030-1230 TC01 TR+67' dataField='tc01'>1030-1230<br />TC01<br />TR+67</TableHeaderColumn>
                 <TableHeaderColumn row='0' csvHeader='TUE' colSpan='3'>TUE</TableHeaderColumn>
                 <TableHeaderColumn row='1' csvHeader='TC02' dataField='tc02'>0930-1130<br />TC02<br />TR+67</TableHeaderColumn>
                 <TableHeaderColumn row='1' csvHeader='TC03' dataField='tc03'>1330-1530<br />TC03<br />TR+67</TableHeaderColumn>
