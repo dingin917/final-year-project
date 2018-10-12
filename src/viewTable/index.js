@@ -61,9 +61,9 @@ var input =[
 class ViewTable extends Component {
     render() {
         return (
-            <BootstrapTable data={input} options={options} selectRow={selectRow} cellEdit={cellEdit}
+            <BootstrapTable ref='table1' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit}
                 insertRow deleteRow exportCSV>
-                <TableHeaderColumn row='0' isKey dataField='id' rowSpan='2' csvHeader='Teaching Week'>Teaching Week</TableHeaderColumn>
+                <TableHeaderColumn row='0' isKey dataField='id' rowSpan='2' csvHeader='Teaching Week'>Teaching<br />Week</TableHeaderColumn>
                 <TableHeaderColumn row='0' csvHeader='MON'>MON</TableHeaderColumn>
                 <TableHeaderColumn row='1' csvHeader='1030-1230 TC01 TR+67' dataField='tc01'>1030-1230<br />TC01<br />TR+67</TableHeaderColumn>
                 <TableHeaderColumn row='0' csvHeader='TUE' colSpan='3'>TUE</TableHeaderColumn>

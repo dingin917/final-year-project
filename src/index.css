@@ -17,8 +17,11 @@ code {
     display: flex;
     flex-flow: column;
     padding-top: 115px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 .data {
+    padding-top: 60px;
     display: flex;
     flex-flow: row;
     justify-content: space-evenly !important;
