@@ -94,3 +94,130 @@
         }
     ]
 }
+
+
+
+
+let sample_lec ={
+    id: 1,
+    acad_yr: 2018,
+    sem: 1,
+    code: "EE4483",
+    type:"LEC", 
+    schedule: [
+        {         
+            group: "LE",
+            slots: [
+                {
+                    _id: 1,
+                    teaching_weeks: [1,2,3,4,5,6,7,8,9,10,11,12,13],
+                    day: "T",            
+                    start_time: "1030",
+                    end_time: "1130",
+                    venue: "LT28",
+                    scheduled_weeks: [{
+                        _id: 11,
+                        week: [1,2,3,4,5,6,7],
+                        assginee: 'CLH',
+                    },
+                    {
+                        _id: 12,
+                        week: [8,9,10,11,12,13],
+                        assginee: 'TYP',
+                    }]
+                },
+                {
+                    _id: 2,
+                    teaching_weeks: [1,2,3,4,5,6,7,8,9,10,11,12,13],
+                    day: "F",            
+                    start_time: "1030",
+                    end_time: "1130",
+                    venue: "LT29",
+                    scheduled_weeks: [{
+                        _id: 21,
+                        week: [1,2,3,4,5,6,7],
+                        assginee: 'CLH',
+                    },
+                    {
+                        _id: 22,
+                        week: [8,9,10,11,12,13],
+                        assginee: 'TYP',
+                    }]
+                }
+            ]
+        }
+    ]
+}
+
+let sample_tut = {
+    acad_yr: 2018,
+    sem: 1,
+    code: "EE4483",
+    type:"TUT", 
+    schedule: [
+	    {   
+            group: "FC1",   
+            slots: [{
+                _id: 1,
+                teaching_weeks: [2,3,4,5,6,7,8,9,10,11,12,13],
+                day: "M",
+                start_time: "1330",
+                end_time: "1430",            
+		        venue: "TR+94"
+            }]       
+            
+   	    },
+	    {
+            group: "FC2",   
+            slots: [{
+                _id: 2,
+                teaching_weeks: [2,3,4,5,6,7,8,9,10,11,12,13],
+                day: "T",
+                start_time: "1530",
+                end_time: "1630",            
+		        venue: "TR+88"
+            }]  
+        },
+		{      
+            group: "FC3",   
+            slots: [{
+                _id: 3, 
+                teaching_weeks: [2,3,4,5,6,7,8,9,10,11,12,13],
+                day: "W",
+                start_time: "1430",
+                end_time: "1530",            
+		        venue: "TR+95"
+            }]   
+        },
+		{      
+            group: "FC4",   
+            slots: [{
+                _id: 4,
+                teaching_weeks: [2,3,4,5,6,7,8,9,10,11,12,13],
+                day: "TH",
+                start_time: "1430",
+                end_time: "1530",            
+		        venue: "TR+96"
+            }]   
+        },
+		{       
+            group: "FC5",   
+            slots: [{
+                _id: 5,
+                teaching_weeks: [2,3,4,5,6,7,8,9,10,11,12,13],
+                day: "F",
+                start_time: "1430",
+                end_time: "1530",            
+		        venue: "TR+94"
+            },
+            {
+                _id: 6,
+                teaching_weeks: [2,3,4,5,6,7,8,9,10,11,12,13],
+                day: "F",
+                start_time: "1630",
+                end_time: "1730",            
+		        venue: "TR+96"
+            }]   
+        }
+    ]
+}
