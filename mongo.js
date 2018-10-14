@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 
 // Set up default mongoose connection
 mongoose.connect(
-    //"mongodb://dingin:GDragon0818@ds111913.mlab.com:11913/fypdb",
-    "mongodb://dingin:GDragon0818@ds119503.mlab.com:19503/test-db",
+    "mongodb://dingin:GDragon0818@ds111913.mlab.com:11913/fypdb",
+    //"mongodb://dingin:GDragon0818@ds119503.mlab.com:19503/test-db",
     { useNewUrlParser: true }
 );
 

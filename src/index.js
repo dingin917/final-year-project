@@ -35,13 +35,14 @@ class App extends Component {
                 <div className="board" id="service">
                     <div className="view">
                         <ViewTable />
+                        <FindTimeSlots className="container padding" ></FindTimeSlots>
+                        <UpdateAssignment className="container padding" ></UpdateAssignment>
                     </div>
                     <div className="data">
-                            <AddProfile className="container padding" ></AddProfile>
-                            <ViewProfile className="container padding" ></ViewProfile>
-                            <FindTimeSlots className="container padding" ></FindTimeSlots>
-                            <UpdateAssignment className="container padding" ></UpdateAssignment>
+                        <AddProfile className="container padding" ></AddProfile>
+                        <ViewProfile className="container padding" ></ViewProfile>
                     </div>
+
                 </div>
                 <div style={{ display: this.state.show ? "auto" : "none" }}>
                     <Footer className={this.state.show} />

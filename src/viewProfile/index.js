@@ -37,7 +37,7 @@ class ViewProfile extends Component {
     render() {
         var prof = this.state.prof;
         return (
-            <div id="course-container">
+            <div id="prof-course-container">
                 <h1> View Profile </h1>
                 <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff name </label>

@@ -159,7 +159,7 @@ class ViewTable extends Component {
             FRI:[]
         };
         
-        sample_tut.schedule.map(schedule => {
+        sample_lec.schedule.map(schedule => {
             var grp_name = schedule.group;
             schedule.slots.map(slot => {
                 switch (slot.day) {
@@ -186,7 +186,7 @@ class ViewTable extends Component {
                     input_tut[w-1][grp_name]='NOT AVAILABLE';
                 });
                 
-                if (typeof(scheduled_weeks)!=='undefined'){
+                if (typeof(slot.scheduled_weeks)!=='undefined'){
                     slot.scheduled_weeks.map(schedule => {
                         var assginee = schedule.assginee;
                         schedule.week.map( w => {
@@ -222,6 +222,7 @@ class ViewTable extends Component {
 
         return (
             <div>
+            <h3>{sample_tut.acad_yr +' '+ sample_tut.code +' '+ sample_tut.type}</h3>
             <BootstrapTable ref='tab' data={input_tut} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id'
                 insertRow deleteRow exportCSV>
                 {thc}
