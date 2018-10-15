@@ -65,7 +65,7 @@ class UpdateAssignments extends Component {
     }
 
     render() {
-        var course = this.state.course;
+        var mycourse = this.state.course;
 
         let input = [];
         for (var i=1; i<14; i++) { 
@@ -80,9 +80,9 @@ class UpdateAssignments extends Component {
             FRI:[]
         };
         
-        course.schedule.map(schedule => {
-            var grp_name = schedule.group;
-            schedule.slots.map(slot => {
+        mycourse.schedule.forEach(sche => {
+            var grp_name = sche.group;
+            sche.slots.forEach(slot => {
                 switch (slot.day) {
                     case 'M': 
                         weekday.MON.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
@@ -103,14 +103,14 @@ class UpdateAssignments extends Component {
 
                 var not_available = [1,2,3,4,5,6,7,8,9,10,11,12,13].filter(e => !slot.teaching_weeks.includes(e));
 
-                not_available.map (w => {
+                not_available.forEach (w => {
                     input[w-1][grp_name]='NOT AVAILABLE';
                 });
                 
-                slot.scheduled_weeks.map(scheduling => {
-                    var assginee = scheduling["assignee"];
+                slot.scheduled_weeks.forEach(scheduling => {
+                    var assigneed_prof = scheduling.assignee;
                     scheduling.week.map( w => {
-                        input[w-1][grp_name]=assginee;
+                        input[w-1][grp_name]=assigneed_prof;
                     });
                 });
             });
@@ -121,12 +121,12 @@ class UpdateAssignments extends Component {
             <TableHeaderColumn row='0' dataField='id' rowSpan='2' csvHeader='Teaching Week' headerAlign='center' dataAlign='center'>Teaching<br />Week</TableHeaderColumn>
         );
 
-        Object.keys(weekday).map(day => {
+        Object.keys(weekday).forEach(day => {
             if (weekday[day].length>0){
                 thc.push(
                     <TableHeaderColumn row='0' csvHeader={day} colSpan={weekday[day].length} headerAlign='center' dataAlign='center'>{day}</TableHeaderColumn>
                 )
-                weekday[day].map(slot => {
+                weekday[day].forEach(slot => {
                     var time = slot.time;
                     var grp = slot.group;
                     var venue = slot.venue;
@@ -165,7 +165,7 @@ class UpdateAssignments extends Component {
                     </form>
                 </div>
                 <div className="col-md-9">
-                    <h1>{course.acad_yr} {course.code} {course.type}</h1>
+                    <h1>{mycourse.acad_yr} {mycourse.code} {mycourse.type}</h1>
                     <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id'
                         insertRow deleteRow exportCSV>
                     {thc}
