@@ -32,7 +32,6 @@ var courseSchema = new Schema({
                 assignee: String,
             }],
         }],
-        unscheduled_weeks:[Number],
     }],
 });
 

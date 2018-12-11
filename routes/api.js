@@ -10,11 +10,17 @@ const Prof = Mongo.Prof;
 
 // import from server folder
 const LoadProfile = require('../server/load_profile');
+const UploadCourse = require('../server/upload_course');
 
 // upload teaching profiles to db in csv format
-router.post('/teachers/upload', upload.single('file'), function (req, res) {
-    LoadProfile.readCSV(req, res);
-  });
+router.post('/teachers/upload', upload.single('file'), function (req, res, next) {
+    LoadProfile.readCSV(req, res, next);
+});
+
+// upload courses to db in csv format
+router.post('/courses/upload', upload.single('file'), function (req, res, next) {
+    UploadCourse.readCSV(req, res, next);
+});
 
 // retrieve a course detail from the db
 router.get('/courses', function(req, res, next){
