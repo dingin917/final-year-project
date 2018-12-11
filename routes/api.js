@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer({ dest: 'tmp/csv/' });
 
 // import from mongo.js 
 const Mongo = require('../mongo');
@@ -7,7 +9,12 @@ const Course = Mongo.Course;
 const Prof = Mongo.Prof;
 
 // import from server folder
-const LoadProfile = require("../server/load_profile");
+const LoadProfile = require('../server/load_profile');
+
+// upload teaching profiles to db in csv format
+router.post('/teachers/upload', upload.single('file'), function (req, res) {
+    LoadProfile.readCSV(req, res);
+  });
 
 // retrieve a course detail from the db
 router.get('/courses', function(req, res, next){

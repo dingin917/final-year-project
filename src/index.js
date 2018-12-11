@@ -41,6 +41,10 @@ class App extends Component {
                     <div className="data">
                         <AddProfile className="container padding" ></AddProfile>
                         <ViewProfile className="container padding" ></ViewProfile>
+                        <form action="/api/teachers/upload" method="POST" encType="multipart/form-data">
+                            <input type="file" name="file" accept="*.csv" /><br/><br/>
+                            <input type="submit" value="Upload Faculty Profiles" />
+                        </form>
                     </div>
 
                 </div>
