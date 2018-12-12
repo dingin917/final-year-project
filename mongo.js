@@ -56,9 +56,16 @@ var profSchema = new Schema({
     courses: [courseScheduleSchema]
 });
 
+var dateSchema = new Schema({
+    acad_yr: Number,
+    sem: Number,
+    weektodate: [{week: Number, start_date: Date, end_date: Date}]
+});
+
 
 // Export Model
 module.exports = {  
                     Course: mongoose.model('courses', courseSchema), 
                     Prof: mongoose.model('profs', profSchema),
+                    WeekToDate: mongoose.model('weektodate', dateSchema),
                 };

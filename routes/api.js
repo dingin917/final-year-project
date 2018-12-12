@@ -11,6 +11,7 @@ const Prof = Mongo.Prof;
 // import from server folder
 const LoadProfile = require('../server/load_profile');
 const UploadCourse = require('../server/upload_course');
+const ConvertWeekToDates = require('../server/convert_weektodate');
 
 // upload teaching profiles to db in csv format
 router.post('/teachers/upload', upload.single('file'), function (req, res, next) {
@@ -20,6 +21,12 @@ router.post('/teachers/upload', upload.single('file'), function (req, res, next)
 // upload courses to db in csv format
 router.post('/courses/upload', upload.single('file'), function (req, res, next) {
     UploadCourse.readCSV(req, res, next);
+});
+
+// update academic calendar to db
+router.post('/dates', function(req, res, next){
+    console.log("URL Request Params: " + JSON.stringify(req.body));
+    ConvertWeekToDates.updateDB(req, res, next);
 });
 
 // retrieve a course detail from the db

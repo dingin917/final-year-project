@@ -53,6 +53,17 @@ class App extends Component {
                                 <input type="submit" value="Upload Courses" />
                             </form>
                         </div>
+                        <div>
+                            <form action="/api/dates" method="post">
+                                <label>Academic Year: </label>
+                                <input type="text" name="acad_yr" placeholder="e.g. 2018" />
+                                <label>Semester: </label>
+                                <input type="text" name="sem" placeholder="e.g. 1" />
+                                <label>Start Date: </label>
+                                <input type="date" name="start_date" /><br/><br/>
+                                <input type="submit" value="Update Academic Calendar" />
+                            </form>
+                        </div>
                     </div>
 
                 </div>
