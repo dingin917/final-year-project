@@ -4,3 +4,7 @@
     flex-flow: row;
     justify-content: space-evenly !important;
 }
+
+#table {
+    font-size: 0.1em;
+}

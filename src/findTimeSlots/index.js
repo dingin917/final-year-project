@@ -44,27 +44,32 @@ class FindTimeSlots extends Component {
             return data.json();
         })
         .then(json => {
-            this.setState({
-                course: json,
-                update: true
-            });
-            fetch('/api/dates?acad_yr=' + acad_yr +'&sem=' + sem)
-            .then(function(result){
-                return result.json();
-            })
-            .then(json => {
+            if (json!=null){
                 this.setState({
-                    dates: json.weektodate
+                    course: json,
+                    update: true
+                });
+                fetch('/api/dates?acad_yr=' + acad_yr +'&sem=' + sem)
+                .then(function(result){
+                    return result.json();
                 })
-            });
+                .then(json => {
+                    this.setState({
+                        dates: json.weektodate
+                    })
+                });
+            } else {
+                alert('No record found in database, please try again.');
+                return false;
+            }
         });
     }
     handleUpdate(event){
         event.preventDefault();
 
         var requestBody = {};
-        requestBody.code = this.refs.code.value;
-        requestBody.type = this.refs.type.value;
+        requestBody.code = this.state.course.code;
+        requestBody.type = this.state.course.type;
         requestBody.group = this.refs.group.value;
         requestBody.day = this.refs.day.value;
         requestBody.start_time = this.refs.start_time.value;
@@ -104,7 +109,6 @@ class FindTimeSlots extends Component {
             input.push({id:i, date:""});
         }
 
-        var date_arr = [];
         mydate.forEach(ele => {
             console.log(JSON.stringify(ele));
             input[ele.week-1].date = ele.start_date.slice(5,10) + ' to ' + ele.end_date.slice(5,10);
@@ -145,19 +149,20 @@ class FindTimeSlots extends Component {
                         break;
                     case 'F':
                         weekday.FRI.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
+                        console.log('id - ' + slot._id);
                         break;
                 }
 
                 var not_available = [1,2,3,4,5,6,7,8,9,10,11,12,13].filter(e => !slot.teaching_weeks.includes(e));
 
                 not_available.forEach (w => {
-                    input[w-1][grp_name]='NOT AVAILABLE';
+                    input[w-1][slot._id]='NOT AVAILABLE';
                 });
 
                 slot.scheduled_weeks.forEach(scheduling => {
                     var assigneed_prof = scheduling.assignee;
-                    scheduling.week.forEach( w => {
-                        input[w-1][grp_name]=assigneed_prof;
+                    scheduling.week.forEach(w => {
+                        input[w-1][slot._id] = assigneed_prof;
                     }); 
                 });
             });
@@ -169,12 +174,13 @@ class FindTimeSlots extends Component {
                     <TableHeaderColumn row='0' csvHeader={day} colSpan={weekday[day].length} headerAlign='center' dataAlign='center'>{day}</TableHeaderColumn>
                 )
                 weekday[day].forEach(slot => {
+                    var id = slot.id;
                     var time = slot.time;
                     var grp = slot.group;
                     var venue = slot.venue;
                     var header = time + ' ' + grp + ' ' + venue;
                     thc.push (
-                        <TableHeaderColumn row='1' csvHeader={header} dataField={grp} headerAlign='center' dataAlign='center'>{time}<br />{grp}<br />{venue}</TableHeaderColumn>
+                        <TableHeaderColumn row='1' csvHeader={header} dataField={id} headerAlign='center' dataAlign='center'>{time}<br />{grp}<br />{venue}</TableHeaderColumn>
                     );
                 });
             }
@@ -200,10 +206,6 @@ class FindTimeSlots extends Component {
                     <div className="col-md-3">
                         <h1>Update Teaching Assignment</h1>
                         <form className="form-group" id="assign" onSubmit={this.handleUpdate}>
-                            <label>Enter a course code </label>
-                            <input className="form-control" type="text" ref="code" placeholder="e.g.EE4483" required />
-                            <label>Enter a class type </label>
-                            <input className="form-control" type="text" ref="type" placeholder="e.g.TUT" required />
                             <label>Enter a course group </label>
                             <input className="form-control" type="text" ref="group" placeholder="e.g.FC1" required />
                             <label>Enter a course weekday </label>
@@ -221,8 +223,10 @@ class FindTimeSlots extends Component {
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
-                    <div className="col-md-9">
-                        <h1>{mycourse.acad_yr} {mycourse.code} {mycourse.type}</h1>
+                    <div className="col-md-9" id="table">
+                        <h1>{mycourse.code}</h1>
+                        <h1>Academic Year {mycourse.acad_yr} &nbsp; &nbsp; Semester {mycourse.sem}</h1>
+                        <h1>Teaching Assignment Form - {mycourse.type}</h1>
                         <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id'
                             insertRow deleteRow exportCSV>
                         {thc}
