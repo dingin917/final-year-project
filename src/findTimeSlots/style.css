@@ -8,3 +8,7 @@
 #table {
     font-size: 0.1em;
 }
+
+label {
+    display: block;
+}

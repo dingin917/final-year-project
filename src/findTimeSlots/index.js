@@ -72,8 +72,9 @@ class FindTimeSlots extends Component {
         requestBody.type = this.state.course.type;
         requestBody.group = this.refs.group.value;
         requestBody.day = this.refs.day.value;
-        requestBody.start_time = this.refs.start_time.value;
-        requestBody.end_time = this.refs.end_time.value;
+        var time = this.refs.time.value;
+        requestBody.start_time = time.slice(0,5);
+        requestBody.end_time = time.slice(6,11);
         requestBody.venue = this.refs.venue.value;
         requestBody.name = this.refs.name.value;
         requestBody.week = this.refs.week.value.split(',').map(Number);
@@ -104,6 +105,12 @@ class FindTimeSlots extends Component {
         var myupdate = this.state.update;
         var mydate = this.state.dates;
 
+        // record the course info and ease user input 
+        var grp_list = [];
+        var day_list = [];
+        var time_list = [];
+        var venue_list = [];
+
         let input = [];
         for (var i=1; i<14; i++) { 
             input.push({id:i, date:""});
@@ -133,6 +140,12 @@ class FindTimeSlots extends Component {
         
         mycourse.schedule.forEach(sche => {
             var grp_name = sche.group;
+
+            // record the course info and ease user input 
+            if(grp_list.indexOf(grp_name) === -1) {
+                grp_list.push(grp_name);
+            }
+        
             sche.slots.forEach(slot => {
                 switch (slot.day) {
                     case 'M': 
@@ -165,8 +178,26 @@ class FindTimeSlots extends Component {
                         input[w-1][slot._id] = assigneed_prof;
                     }); 
                 });
+
+                // record the course info and ease user input 
+                if(day_list.indexOf(slot.day) === -1) {
+                    day_list.push(slot.day);
+                }
+
+                if(time_list.indexOf(slot.start_time+'-'+slot.end_time) === -1){
+                    time_list.push(slot.start_time+'-'+slot.end_time);
+                }
+
+                if(venue_list.indexOf(slot.venue) === -1) {
+                    venue_list.push(slot.venue);
+                }
+
             });
         });
+
+        grp_list.sort();
+        time_list.sort();
+        venue_list.sort();
 
         Object.keys(weekday).forEach(day => {
             if (weekday[day].length>0){
@@ -207,15 +238,21 @@ class FindTimeSlots extends Component {
                         <h1>Update Teaching Assignment</h1>
                         <form className="form-group" id="assign" onSubmit={this.handleUpdate}>
                             <label>Enter a course group </label>
-                            <input className="form-control" type="text" ref="group" placeholder="e.g.FC1" required />
+                            <select ref="group" required>
+                                {grp_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
+                            </select>
                             <label>Enter a course weekday </label>
-                            <input className="form-control" type="text" ref="day" placeholder="e.g.F" required />
-                            <label>Enter a course start time </label>
-                            <input className="form-control" type="text" ref="start_time" placeholder="e.g.10:30" required />
-                            <label>Enter a course end time </label>
-                            <input className="form-control" type="text" ref="end_time" placeholder="e.g.11:30" required />
+                            <select ref="day" required>
+                                {day_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
+                            </select> 
+                            <label>Enter a course duration time </label>
+                            <select ref="time" required>
+                                {time_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
+                            </select> 
                             <label>Enter a course venue </label>
-                            <input className="form-control" type="text" ref="venue" placeholder="e.g.LT29" required />
+                            <select ref="venue" required>
+                                {venue_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
+                            </select> 
                             <label>Assign the teaching weeks </label>
                             <input className="form-control" type="text" ref="week" placeholder="e.g.1,2,3" required />
                             <label>Assign a teaching staff name </label>
