@@ -93,9 +93,14 @@ class FindTimeSlots extends Component {
         }).then(function (data) {
             return data.json();
         }).then(json => {
-            this.setState({
-                course: json
-            });
+            if(json!=null){
+                this.setState({
+                    course: json
+                });
+            } else {
+                alert('No record found in database, please try again.');
+                return false;
+            }
         });
 
     }
