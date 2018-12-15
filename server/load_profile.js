@@ -54,7 +54,7 @@ var readCSV = function CSVToArray(req, res, next){
         var aRow = fileRows[i];
         if(aRow[0].trim()!=''){
           Prof.findOneAndUpdate({initial: aRow[initial]}, {initial: aRow[initial], fullname: aRow[name], 
-            title: aRow[title], teachingarea: aRow[area], email: aRow[email]}, 
+            title: aRow[title], teachingarea: aRow[area], email: aRow[email], courses: []}, 
             {new: true, upsert: true}).then(function (prof){
               console.log(prof);
           }).catch(next);

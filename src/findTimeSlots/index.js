@@ -68,6 +68,8 @@ class FindTimeSlots extends Component {
         event.preventDefault();
 
         var requestBody = {};
+        requestBody.acad_yr = this.state.course.acad_yr;
+        requestBody.sem = this.state.course.sem;
         requestBody.code = this.state.course.code;
         requestBody.type = this.state.course.type;
         requestBody.group = this.refs.group.value;
