@@ -12,3 +12,7 @@
 label {
     display: block;
 }
+
+button {
+    font-size: 15px;
+}

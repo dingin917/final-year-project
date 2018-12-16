@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "body-parser": "*",
-    "deep-equal": "^1.0.1",
     "express": "*",
     "express-validator": "^5.3.0",
     "fast-csv": "^2.4.1",
+    "ics": "git://github.com/ZaynJarvis/ics.git",
     "jquery": "^3.3.1",
     "mocha": "^5.2.0",
     "mongodb": "^3.1.6",

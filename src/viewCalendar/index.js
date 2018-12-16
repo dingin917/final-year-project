@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './style.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
+const ics = require('ics');
+
 const options = {
     exportCSVText: 'export to csv',
     insertText: 'insert',
@@ -74,6 +76,80 @@ class ViewCalendar extends Component {
         });
     }
 
+    download(content, fileName, contentType) {
+        let a = document.createElement("a");
+        let file = new Blob([content], { type: contentType });
+        a.href = URL.createObjectURL(file);
+        a.download = fileName;
+        a.click();
+    }
+
+    downloadCalendar = () => {
+        var icsContent = this.generateICS();
+        console.log("ics Content: " + icsContent);
+        this.download(icsContent, "ClassSchedule.ics", "text/plain");
+    };
+
+    generateICS = () => {
+        var courses = this.state.prof.courses;
+
+        let serialEvent = [];
+
+        courses.forEach( course => {
+            var day = course.day;
+            var start_time = course.start_time;
+            var end_time = course.end_time;
+            var code = course.code;
+            var type = course.type;
+            var group = course.group;
+            var venue = course.venue;
+            course.teaching_weeks.forEach( week => {
+                var date = this.getCourseDate(week, day);
+                var event = {};
+                event['start'] = [date.getFullYear(), date.getMonth()+1, date.getDate(), parseInt(start_time.slice(0,2)), parseInt(start_time.slice(3,5))];
+                event['end'] = [date.getFullYear(), date.getMonth()+1, date.getDate(), parseInt(end_time.slice(0,2)), parseInt(end_time.slice(3,5))];
+                event['title'] = code + " (" +type+ ")";
+                event['description'] = "course: "+code+", type: "+type+", group: "+group;
+                event['categories'] = ["NTU course"];
+                event['location'] = venue;
+                event['geo'] = { lat: 1.29027, lon: 103.851959 };
+                event['status'] = "CONFIRMED";
+                serialEvent.push(event);
+            });
+        });
+        
+        const { error, value } = ics.createEvents(serialEvent);
+        if (!error) return value;
+        return null;
+    }
+
+    getCourseDate(week, day) {
+        var dates = this.state.dates;
+        var start_date = dates[week-1].start_date;
+        var course_date = new Date(start_date);
+        switch (day) {
+            case 'M': 
+                break;
+            case 'T':
+                course_date.setDate(course_date.getDate()+1);
+                break;
+            case 'W':
+                course_date.setDate(course_date.getDate()+2);
+                break;  
+            case 'TH':
+                course_date.setDate(course_date.getDate()+1);
+                break;
+            case 'F':
+                course_date.setDate(course_date.getDate()+1);
+                break;
+            default:
+                console.log('courses.day is not in range of Monday to Friday..');
+                break;
+        }
+        console.log("calculated course_date: " + course_date);
+        return course_date;
+    }
+
     render() {
         var myprof = this.state.prof;
         var mycourse = this.state.prof.courses;
@@ -90,7 +166,7 @@ class ViewCalendar extends Component {
         mydate.forEach(ele => {
             console.log(JSON.stringify(ele));
             input[ele.week-1].date = ele.start_date.slice(5,10) + ' to ' + ele.end_date.slice(5,10);
-        })
+        });
 
         var thc =[];
         thc.push(
@@ -136,7 +212,7 @@ class ViewCalendar extends Component {
             slot.teaching_weeks.forEach(week => {
                 //input[week-1][slot._id] = {code: slot.code, type:slot.type, group: slot.group, venue:slot.venue};
                 input[week-1][slot._id] = slot.code + '(' + slot.type + ')';
-            })
+            });
         });
 
         // sort array based on course time 
@@ -151,7 +227,7 @@ class ViewCalendar extends Component {
             if (weekday[day].length>0){
                 thc.push(
                     <TableHeaderColumn row='0' csvHeader={day} colSpan={weekday[day].length} headerAlign='center' dataAlign='center'>{day}</TableHeaderColumn>
-                )
+                );
                 weekday[day].forEach(slot => {
                     var id = slot.id;
                     var time = slot.time;
@@ -182,6 +258,9 @@ class ViewCalendar extends Component {
                 <div id="course-container" style={myupdate ? null : { display: 'none' }}>
                     <div className="col-md-9" id="table">
                         <h1>{myprof.teachingarea} - {myacad_yr} Semester {mysem} Teaching Assignment - {myprof.initial}</h1>
+                        <button onClick={this.downloadCalendar}>
+                            Download as .ics file 
+                        </button>
                         <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id'
                             insertRow deleteRow exportCSV>
                         {thc}
