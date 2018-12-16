@@ -54,6 +54,8 @@ describe('PUT request testing', function () {
     // Create tests
     it('Update a course and prof record from database', function (done) {
         var requestBody = {
+            acad_yr: 2018,
+            sem: 1,
             code: "EE4483",
             type: "LEC",
             week: [1, 2, 3, 4, 5, 6, 7],
