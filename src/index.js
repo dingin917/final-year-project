@@ -6,6 +6,7 @@ import AddProfile from './addProfile'
 import FindTimeSlots from './findTimeSlots'
 import ViewProfile from './viewProfile'
 import './index.css';
+import ViewCalendar from './viewCalendar';
 
 class App extends Component {
     constructor(prop) {
@@ -37,6 +38,9 @@ class App extends Component {
                     <div className="data">
                         <AddProfile className="container padding" ></AddProfile>
                         <ViewProfile className="container padding" ></ViewProfile>
+                    </div>
+                    <div className="view">
+                        <ViewCalendar className="container padding"></ViewCalendar>
                     </div>
                     <div className="data">
                         <div>

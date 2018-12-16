@@ -1,0 +1,14 @@
+#course-container {
+    padding-top: 60px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly !important;
+}
+
+#table {
+    font-size: 0.1em;
+}
+
+label {
+    display: block;
+}
