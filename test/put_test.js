@@ -20,13 +20,6 @@ describe('PUT request testing', function () {
                     "slots": [
                         {
                             "teaching_weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                            "day": "T",
-                            "start_time": "1030",
-                            "end_time": "1130",
-                            "venue": "LT28"
-                        },
-                        {
-                            "teaching_weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
                             "day": "F",
                             "start_time": "1030",
                             "end_time": "1130",
@@ -42,7 +35,8 @@ describe('PUT request testing', function () {
                 "fullname": "Tony Stark",
                 "title": "Boss",
                 "teachingarea": "Electronic Engineering",
-                "email": "tony.stark@marvel.universe"
+                "email": "tony.stark@marvel.universe",
+                "courses": []
             });
 
             prof.save().then(function () {
@@ -78,13 +72,13 @@ describe('PUT request testing', function () {
             redirect: "follow",
             referrer: "no-referrer",
             body: JSON.stringify(requestBody)
-        }).then(function () {
-            Prof.findOne({ initial: "Iron Man" }).then(function (data) {
-                assert(data.courses[0].code === "EE4483");
-                done();
-            });
+        }).then(function (data) {
+            return data.json();
+        }).then(json => {
+            console.log("Update Course: "+JSON.stringify(json));
+            assert(json.schedule[0].slots[0].scheduled_weeks[0].assignee === 'Iron Man');
+            done();
         });
-
     });
 
 });
