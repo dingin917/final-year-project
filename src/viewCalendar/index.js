@@ -140,6 +140,7 @@ class ViewCalendar extends Component {
         });
 
         // sort array based on course time 
+        // reference -> https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value?page=1&tab=votes#tab-top
         weekday.MON.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
         weekday.TUE.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
         weekday.WED.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
