@@ -22,7 +22,7 @@ var readCSV = function CSVToArray(req, res, next){
         process "fileRows" and respond
       */
 
-      res.json(fileRows);
+      // res.json(fileRows);
 
       // var used to upload courses to database
       const acad_yr = fileRows[1][0];
@@ -112,6 +112,13 @@ var readCSV = function CSVToArray(req, res, next){
         }).catch(next);
 
       }
+
+    
+      var html = '';
+      html += '<p> The course csv file has been successfully uploaded </p>';
+      html += '<a href="/"> Back to homepage .. </a><br>';
+      html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </a> </p>';
+      res.send(html);
 
     });
 }

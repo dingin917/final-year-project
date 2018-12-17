@@ -43,7 +43,7 @@ var updateDB = function convertToDate(req, res, next){
         }
     }
 
-    res.json(weektodate);
+    //res.json(weektodate);
     console.log(JSON.stringify(weektodate));
 
     WeekToDate.findOneAndUpdate({acad_yr: acad_yr, sem: sem}, 
@@ -52,6 +52,12 @@ var updateDB = function convertToDate(req, res, next){
             console.log(result);
         })
         .catch(next);
+    
+    var html = '';
+    html += '<p> Academic Calendar has been successfully updated </p>';
+    html += '<a href="/"> Back to homepage .. </a><br>';
+    html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </p>';
+    res.send(html);
 }
 
 module.exports = {  

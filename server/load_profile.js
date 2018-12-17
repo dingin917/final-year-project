@@ -21,7 +21,7 @@ var readCSV = function CSVToArray(req, res, next){
         process "fileRows" and respond
       */
 
-      res.json(fileRows);
+      //res.json(fileRows);
 
       // get the index for columns
       var header = fileRows[0];
@@ -60,6 +60,12 @@ var readCSV = function CSVToArray(req, res, next){
           }).catch(next);
         }
       }
+
+      var html = '';
+      html += '<p> The teaching profile csv file has been successfully uploaded </p>';
+      html += '<a href="/"> Back to homepage .. </a><br>';
+      html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </p>';
+      res.send(html);
 
     });
   }
