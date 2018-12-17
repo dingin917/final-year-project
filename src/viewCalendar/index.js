@@ -26,11 +26,12 @@ class ViewCalendar extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-            prof : { courses:[] },
+            prof : { schedule:[{acad_yr:Number, sem:Number, courses:[]}] },
             update: false,
             dates: [],
             acad_yr: Number,
-            sem: Number
+            sem: Number, 
+            courses: []
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -40,7 +41,7 @@ class ViewCalendar extends Component {
         var acad_yr = this.refs.acad_yr.value;
         var sem = this.refs.sem.value;
 
-        fetch('/api/teachers?initial=' + initial, {
+        fetch('/api/teachers?initial=' + initial + '&acad_yr=' + acad_yr +'&sem=' + sem, {
             method: 'GET',
             mode: "cors",
             cache: "no-cache",
@@ -60,6 +61,9 @@ class ViewCalendar extends Component {
                     sem: sem,
                     update: true
                 });
+                var schedule = json.schedule.find(ele => ele.acad_yr == this.state.acad_yr && ele.sem == this.state.sem);
+                var courses = schedule.courses;
+                this.setState({courses: courses});
                 fetch('/api/dates?acad_yr=' + acad_yr +'&sem=' + sem)
                 .then(function(result){
                     return result.json();
@@ -91,8 +95,7 @@ class ViewCalendar extends Component {
     };
 
     generateICS = () => {
-        var courses = this.state.prof.courses;
-
+        var courses = this.state.courses;
         let serialEvent = [];
 
         courses.forEach( course => {
@@ -152,11 +155,12 @@ class ViewCalendar extends Component {
 
     render() {
         var myprof = this.state.prof;
-        var mycourse = this.state.prof.courses;
+        var mycourse = this.state.courses;
         var myupdate = this.state.update;
         var mydate = this.state.dates;
         var myacad_yr = this.state.acad_yr;
         var mysem = this.state.sem;
+        
 
         let input = [];
         for (var i=1; i<14; i++) { 

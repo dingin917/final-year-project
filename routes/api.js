@@ -59,8 +59,20 @@ router.get('/courses', function(req, res, next){
     .catch(next);
 });
 
-// retrieve a teaching staff detail from db 
+// retrieve a teaching staff assignment detail from db 
 router.get('/teachers', function(req, res, next){
+    Prof.findOne( {'initial': req.query.initial, 'schedule': {$elemMatch: {acad_yr: req.query.acad_yr, sem: req.query.sem}}} )
+    .then(function(prof){
+        res.json(prof);
+        console.log("GET Request for viewing a teaching staff detail");
+        console.log("URL Request Params: " + req.query);
+        console.log("Response: " + prof);
+    })
+    .catch(next);
+});
+
+// retrieve a teaching profile from db
+router.get('/teachers/profile', function(req, res, next){
     Prof.findOne( {'initial': req.query.initial} )
     .then(function(prof){
         res.json(prof);

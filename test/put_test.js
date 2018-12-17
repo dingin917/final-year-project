@@ -35,8 +35,7 @@ describe('PUT request testing', function () {
                 "fullname": "Tony Stark",
                 "title": "Boss",
                 "teachingarea": "Electronic Engineering",
-                "email": "tony.stark@marvel.universe",
-                "courses": []
+                "email": "tony.stark@marvel.universe"
             });
 
             prof.save().then(function () {

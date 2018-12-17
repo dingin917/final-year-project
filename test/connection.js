@@ -69,7 +69,11 @@ var profSchema = new Schema({
     title: String,
     teachingarea: String,
     email: String,
-    courses: [courseScheduleSchema]
+    schedule: [{
+        acad_yr: Number,
+        sem: Number,
+        courses: [courseScheduleSchema]
+    }]
 });
 
 var dateSchema = new Schema({

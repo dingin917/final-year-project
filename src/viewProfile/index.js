@@ -6,7 +6,7 @@ class ViewProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            prof: { courses: [] }
+            prof: { schedule: [{courses: []}] }
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -15,7 +15,7 @@ class ViewProfile extends Component {
         event.preventDefault();
         var initial = this.refs.initial.value;
 
-        fetch('/api/teachers?initial=' + initial, {
+        fetch('/api/teachers/profile?initial=' + initial, {
             method: 'GET',
             mode: "cors",
             cache: "no-cache",
@@ -49,7 +49,7 @@ class ViewProfile extends Component {
                 </div>
                 <ul>
                     {
-                        prof.courses.map(course =>
+                        prof.schedule.map(sche => sche.courses.map(course => 
                             <li key={course._id}>
                                 <span className="code">Code: {course.code} </span>
                                 <span className="type">Type: {course.type} </span>
@@ -60,7 +60,8 @@ class ViewProfile extends Component {
                                 <span className="day">Time: {course.day} </span>
                                 <span className="time">{course.start_time+"-"+course.end_time} </span>
                                 <span className="venue">Venue: {course.venue} </span>
-                            </li>)
+                            </li>
+                        ))
                     }
                 </ul>
             </div>

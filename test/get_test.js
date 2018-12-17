@@ -25,7 +25,7 @@ describe('GET request testing', function () {
     // Create tests
     it('Find a prof record from database', function (done) {
 
-        fetch('http://localhost:3001/api/teachers?initial=' + "Iron Man", {
+        fetch('http://localhost:3001/api/teachers/profile?initial=' + "Iron Man", {
             method: 'GET',
             mode: "cors",
             cache: "no-cache",
