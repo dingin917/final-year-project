@@ -33,21 +33,21 @@ beforeEach(function(done){
 var courseSchema = new Schema({
     acad_yr: Number,            // e.g. 2018
     sem: Number,                // e.g. 1 
+    category: String,           // e.g. fulltime or parttime 
     code: String,               // e.g. EE4717
     type: String,               // e.g. LEC, TUT, LAB
     schedule: [{
-        group: String,          // e.g. FC36 for TUT & LAB, part 1/2 for LEC
-        slots:[{
-            teaching_weeks: [Number],
-            day: String,            // e.g. Mon, Tue
-            start_time: String,     // e.g. 1330
-            end_time: String,       // e.g. 1430
-            venue: String,          // e.g. LT25
-            scheduled_weeks: [{
-                week: [Number],
-                assignee: String,
-            }],
+        group: String,          // e.g. FC36 for TUT & LAB, LE for LEC
+        teaching_weeks: [Number],
+        day: String,            // e.g. M, T, W, TH, F
+        start_time: String,     // e.g. 13:30
+        end_time: String,       // e.g. 14:30
+        venue: String,          // e.g. LT25
+        scheduled_weeks: [{
+            week: [Number],
+            assignee: String,
         }],
+        unscheduled_weeks: [Number]
     }],
 });
 
@@ -81,7 +81,6 @@ var dateSchema = new Schema({
     sem: Number,
     weektodate: [{week: Number, start_date: Date, end_date: Date}]
 });
-
 
 // Export Model
 module.exports = {  

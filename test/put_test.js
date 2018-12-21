@@ -49,14 +49,16 @@ describe('PUT request testing', function () {
         var requestBody = {
             acad_yr: 2018,
             sem: 1,
+            category: 'fulltime',
             code: "EE4483",
             type: "LEC",
-            week: [1, 2, 3, 4, 5, 6, 7],
+            start_week: 1,
+            end_week: 7,
             name: "Iron Man",
             group: "LE",
             day: "F",
-            start_time: "1030",
-            end_time: "1130",
+            start_time: "10:30",
+            end_time: "11:30",
             venue: "LT29"
         };
 
@@ -75,7 +77,7 @@ describe('PUT request testing', function () {
             return data.json();
         }).then(json => {
             console.log("Update Course: "+JSON.stringify(json));
-            assert(json.schedule[0].slots[0].scheduled_weeks[0].assignee === 'Iron Man');
+            assert(json.schedule[0].scheduled_weeks[0].assignee === 'Iron Man');
             done();
         });
     });

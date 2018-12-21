@@ -66,20 +66,15 @@ class FindTimeSlots extends Component {
     }
     handleUpdate(event){
         event.preventDefault();
-
         var requestBody = {};
         requestBody.acad_yr = this.state.course.acad_yr;
         requestBody.sem = this.state.course.sem;
         requestBody.code = this.state.course.code;
         requestBody.type = this.state.course.type;
         requestBody.group = this.refs.group.value;
-        requestBody.day = this.refs.day.value;
-        var time = this.refs.time.value;
-        requestBody.start_time = time.slice(0,5);
-        requestBody.end_time = time.slice(6,11);
-        requestBody.venue = this.refs.venue.value;
+        requestBody.start_week = this.refs.start_week.value;
+        requestBody.end_week = this.refs.end_week.value;
         requestBody.name = this.refs.name.value;
-        requestBody.week = this.refs.week.value.split(',').map(Number);
         
         fetch('/api/courses/assign', {
             method: 'PUT',
@@ -114,9 +109,6 @@ class FindTimeSlots extends Component {
 
         // record the course info and ease user input 
         var grp_list = [];
-        var day_list = [];
-        var time_list = [];
-        var venue_list = [];
 
         let input = [];
         for (var i=1; i<14; i++) { 
@@ -145,66 +137,54 @@ class FindTimeSlots extends Component {
             FRI:[]
         };
         
-        mycourse.schedule.forEach(sche => {
-            var grp_name = sche.group;
+        mycourse.schedule.forEach(slot => {
+            var grp_name = slot.group;
 
             // record the course info and ease user input 
             if(grp_list.indexOf(grp_name) === -1) {
                 grp_list.push(grp_name);
             }
         
-            sche.slots.forEach(slot => {
-                switch (slot.day) {
-                    case 'M': 
-                        weekday.MON.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
-                        break;
-                    case 'T':
-                        weekday.TUE.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
-                        break;
-                    case 'W':
-                        weekday.WED.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
-                        break;  
-                    case 'TH':
-                        weekday.THU.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
-                        break;
-                    case 'F':
-                        weekday.FRI.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
-                        console.log('id - ' + slot._id);
-                        break;
-                }
+            switch (slot.day) {
+                case 'M': 
+                    weekday.MON.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
+                    break;
+                case 'T':
+                    weekday.TUE.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
+                    break;
+                case 'W':
+                    weekday.WED.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
+                    break;  
+                case 'TH':
+                    weekday.THU.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
+                    break;
+                case 'F':
+                    weekday.FRI.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
+                    console.log('id - ' + slot._id);
+                    break;
+            }
 
-                var not_available = [1,2,3,4,5,6,7,8,9,10,11,12,13].filter(e => !slot.teaching_weeks.includes(e));
+            var not_available = [1,2,3,4,5,6,7,8,9,10,11,12,13].filter(e => !slot.teaching_weeks.includes(e));
 
-                not_available.forEach (w => {
-                    input[w-1][slot._id]='NOT AVAILABLE';
-                });
+            not_available.forEach (w => {
+                input[w-1][slot._id]='----';
+            });
 
-                slot.scheduled_weeks.forEach(scheduling => {
-                    var assigneed_prof = scheduling.assignee;
-                    scheduling.week.forEach(w => {
-                        input[w-1][slot._id] = assigneed_prof;
-                    }); 
-                });
-
-                // record the course info and ease user input 
-                if(day_list.indexOf(slot.day) === -1) {
-                    day_list.push(slot.day);
-                }
-
-                if(time_list.indexOf(slot.start_time+'-'+slot.end_time) === -1){
-                    time_list.push(slot.start_time+'-'+slot.end_time);
-                }
-
-                if(venue_list.indexOf(slot.venue) === -1) {
-                    venue_list.push(slot.venue);
-                }
-
+            slot.scheduled_weeks.forEach(scheduling => {
+                var assigneed_prof = scheduling.assignee;
+                scheduling.week.forEach(w => {
+                    input[w-1][slot._id] = assigneed_prof;
+                }); 
             });
         });
 
         grp_list.sort();
-        time_list.sort();
-        venue_list.sort();
+
+        weekday.MON.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
+        weekday.TUE.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
+        weekday.WED.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
+        weekday.THU.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
+        weekday.FRI.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
 
         Object.keys(weekday).forEach(day => {
             if (weekday[day].length>0){
@@ -248,20 +228,10 @@ class FindTimeSlots extends Component {
                             <select ref="group" required>
                                 {grp_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
                             </select>
-                            <label>Enter a course weekday </label>
-                            <select ref="day" required>
-                                {day_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
-                            </select> 
-                            <label>Enter a course duration time </label>
-                            <select ref="time" required>
-                                {time_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
-                            </select> 
-                            <label>Enter a course venue </label>
-                            <select ref="venue" required>
-                                {venue_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
-                            </select> 
-                            <label>Assign the teaching weeks </label>
-                            <input className="form-control" type="text" ref="week" placeholder="e.g.1,2,3" required />
+                            <label>Assign the teaching weeks From </label>
+                            <input className="form-control" type="text" ref="start_week" placeholder="e.g.1" required />
+                            <label>To</label>
+                            <input className="form-control" type="text" ref="end_week" placeholder="e.g.7" required />
                             <label>Assign a teaching staff name </label>
                             <input className="form-control" type="text" ref="name" placeholder="e.g.CLH" required />
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
