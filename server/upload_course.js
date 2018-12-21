@@ -27,7 +27,8 @@ var readCSV = function CSVToArray(req, res, next){
       // var used to upload courses to database
       const acad_yr = fileRows[1][0];
       const sem = fileRows[1][1];
-      const category = 'fulltime'; // TODO: read from input..
+      const category = req.body.category; // TODO: read from input..
+      console.log("cate:" + category);
 
       var last_row = fileRows[1];
       var index = 0;
@@ -40,9 +41,9 @@ var readCSV = function CSVToArray(req, res, next){
             if (index == 0){
               // no previous record for the same course code, type & group name combination
               last_row[4] =  last_row[4] + '-' + String.fromCharCode(65);
-              index++;
             }
             updateCourseToDB(last_row);
+            index++;
             last_row = aRow;
             last_row[4] = aRow[4] + '-' + String.fromCharCode(65 + index);
           } else {

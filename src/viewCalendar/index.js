@@ -91,7 +91,8 @@ class ViewCalendar extends Component {
     downloadCalendar = () => {
         var icsContent = this.generateICS();
         console.log("ics Content: " + icsContent);
-        this.download(icsContent, "ClassSchedule.ics", "text/plain");
+        var name = this.state.prof.initial;
+        this.download(icsContent, name+".ics", "text/plain");
     };
 
     generateICS = () => {

@@ -12,6 +12,7 @@ describe('PUT request testing', function () {
         var course = new Course({
             "acad_yr": 2018,
             "sem": 1,
+            "category": "fulltime",
             "code": "EE4483",
             "type": "LEC",
             "schedule": [

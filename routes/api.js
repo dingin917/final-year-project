@@ -49,7 +49,7 @@ router.get('/dates', function(req, res, next){
 
 // retrieve a course detail from db
 router.get('/courses', function(req, res, next){
-    Course.findOne({'acad_yr': req.query.acad_yr, 'sem': req.query.sem, 'code': req.query.code, 'type': req.query.type})
+    Course.findOne({'acad_yr': req.query.acad_yr, 'sem': req.query.sem, 'category': req.query.category, 'code': req.query.code, 'type': req.query.type})
     .then(function(course){
         res.json(course);
         console.log("GET Request for viewing a course detail");

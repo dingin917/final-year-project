@@ -14,7 +14,7 @@ var updateAssignee = function(req, res, next){
     }
     console.log("teaching_weeks: " + week);
 
-    Course.findOneAndUpdate({'acad_yr': req.body.acad_yr, 'sem': req.body.sem, 'code': req.body.code, 'type': req.body.type},
+    Course.findOneAndUpdate({'acad_yr': req.body.acad_yr, 'sem': req.body.sem, 'category': req.body.category, 'code': req.body.code, 'type': req.body.type},
         {
             $push: {
                 "schedule.$[i].scheduled_weeks":
@@ -37,7 +37,8 @@ var updateAssignee = function(req, res, next){
     ).then(function(result){
         res.json(result);
         console.log("Response: " +  JSON.stringify(result));
-        var schedule = result['schedule'].find(ele => ele.group = req.body.group);
+        var category = result['category'];
+        var schedule = result['schedule'].find(ele => ele.group == req.body.group);
         Prof.findOneAndUpdate({'initial': req.body.name, 'schedule': {$elemMatch: {acad_yr: req.body.acad_yr, sem: req.body.sem, courses: {$elemMatch: {code: req.body.code, type: req.body.type, group: req.body.group}}}}},
         { 
             $push: {
@@ -59,6 +60,7 @@ var updateAssignee = function(req, res, next){
                         'schedule.$[j].courses': {
                             'code': req.body.code,
                             'type': req.body.type,
+                            'category': category,
                             'group': req.body.group,
                             'teaching_weeks': week,
                             'day': schedule.day,
@@ -84,6 +86,7 @@ var updateAssignee = function(req, res, next){
                                     'courses': [{
                                         'code': req.body.code,
                                         'type': req.body.type,
+                                        'category': category,
                                         'group': req.body.group,
                                         'teaching_weeks': week,
                                         'day': schedule.day,

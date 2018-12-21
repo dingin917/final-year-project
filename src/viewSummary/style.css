@@ -1,0 +1,16 @@
+.sem1 {
+    float: left;
+}
+
+.sem2 {
+    margin-left: 400px;
+}
+
+table { 
+    border: solid 5px gainsboro;
+    text-align: center;
+}
+
+.sum { 
+    float: right;
+}

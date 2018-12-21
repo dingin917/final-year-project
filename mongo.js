@@ -39,6 +39,7 @@ var courseSchema = new Schema({
 var courseScheduleSchema = new Schema({
     code: String,
     type: String,
+    category: String, 
     group: String,
     teaching_weeks: [Number],
     day: String,

@@ -36,10 +36,11 @@ class FindTimeSlots extends Component {
         event.preventDefault();
         var acad_yr = this.refs.myacad_yr.value;
         var sem = this.refs.mysem.value;
+        var category = this.refs.category.value;
         var code = this.refs.mycode.value;
         var type = this.refs.mytype.value;
 
-        fetch('/api/courses?code=' + code + '&type=' + type + '&acad_yr=' + acad_yr + '&sem=' + sem)
+        fetch('/api/courses?code=' + code + '&type=' + type + '&acad_yr=' + acad_yr + '&sem=' + sem + '&category=' + category)
         .then(function(data){
             return data.json();
         })
@@ -69,6 +70,7 @@ class FindTimeSlots extends Component {
         var requestBody = {};
         requestBody.acad_yr = this.state.course.acad_yr;
         requestBody.sem = this.state.course.sem;
+        requestBody.category = this.refs.category.value;
         requestBody.code = this.state.course.code;
         requestBody.type = this.state.course.type;
         requestBody.group = this.refs.group.value;
@@ -217,11 +219,17 @@ class FindTimeSlots extends Component {
                         <input className="form-control" type="text" ref="mycode" placeholder="e.g.EE4483" required />
                         <label>Enter a class type </label>
                         <input className="form-control" type="text" ref="mytype" placeholder="e.g.LEC" required />
+                        <label>Enter the category: </label>
+                        <select ref="category">
+                            <option value="fulltime">Full Time</option>
+                            <option value="parttime">Part Time</option>
+                        </select>
                         <input className="form-control" type="submit" value="Find Timeslots" />
                     </form>
                 </div>
-                <div id="course-container" style={myupdate ? null : { display: 'none' }}>
-                    <div className="col-md-3">
+                <div style={myupdate ? null : { display: 'none' }}>
+                    {/* <div className="col-md-3"> */}
+                    <div>
                         <h1>Update Teaching Assignment</h1>
                         <form className="form-group" id="assign" onSubmit={this.handleUpdate}>
                             <label>Enter a course group </label>
@@ -237,7 +245,8 @@ class FindTimeSlots extends Component {
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
-                    <div className="col-md-9" id="table">
+                    {/* <div className="col-md-9" id="table"> */}
+                    <div id="table">
                         <h1>{mycourse.code}</h1>
                         <h1>Academic Year {mycourse.acad_yr} &nbsp; &nbsp; Semester {mycourse.sem}</h1>
                         <h1>Teaching Assignment Form - {mycourse.type}</h1>
