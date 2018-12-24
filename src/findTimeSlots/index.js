@@ -3,9 +3,7 @@ import './style.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 const options = {
-    exportCSVText: 'export to csv',
-    insertText: 'insert',
-    deleteText: 'delete',
+    exportCSVText: 'Export to csv',
     saveText: 'save',
     closeText: 'close'
 };
@@ -13,12 +11,31 @@ const options = {
 const selectRow = {
     mode: 'checkbox',
     bgColor: 'rgb(238, 193, 213)'
-  };
+};
 
-const cellEdit = {
+const cellEditProp = {
     mode: 'click',
-    blurToSave: true
-  };
+    blurToSave: true,
+    beforeSaveCell: onBeforeSaveCell, // a hook for before saving cell
+    afterSaveCell: onAfterSaveCell  // a hook for after saving cell
+};
+
+function onAfterSaveCell(row, cellName, cellValue) {
+    alert(`Save cell ${cellName} with value ${cellValue}`);
+
+    let rowStr = '';
+    for (const prop in row) {
+        rowStr += prop + ': ' + row[prop] + '\n';
+    }
+
+    alert('Thw whole row :\n' + rowStr);
+}
+
+function onBeforeSaveCell(row, cellName, cellValue) {
+    // You can do any validation on here for editing value,
+    // return false for reject the editing
+    return true;
+}
 
 
 class FindTimeSlots extends Component {
@@ -67,41 +84,59 @@ class FindTimeSlots extends Component {
     }
     handleUpdate(event){
         event.preventDefault();
-        var requestBody = {};
-        requestBody.acad_yr = this.state.course.acad_yr;
-        requestBody.sem = this.state.course.sem;
-        requestBody.category = this.refs.category.value;
-        requestBody.code = this.state.course.code;
-        requestBody.type = this.state.course.type;
-        requestBody.group = this.refs.group.value;
-        requestBody.start_week = this.refs.start_week.value;
-        requestBody.end_week = this.refs.end_week.value;
-        requestBody.name = this.refs.name.value;
         
-        fetch('/api/courses/assign', {
-            method: 'PUT',
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(requestBody)
-        }).then(function (data) {
-            return data.json();
-        }).then(json => {
-            if(json!=null){
-                this.setState({
-                    course: json
-                });
-            } else {
-                alert('No record found in database, please try again.');
-                return false;
-            }
-        });
+        // validate before request for update
+        var updating_week = [];
+        for (var i=parseInt(this.refs.start_week.value); i<=parseInt(this.refs.end_week.value); i++){
+            updating_week.push(i);
+        }
 
+        var schedule = this.state.course.schedule.find(ele => ele.group == this.refs.group.value);
+
+        if (schedule.unscheduled_weeks != null && updating_week.every(ele => schedule.unscheduled_weeks.indexOf(ele) > -1)) {
+            var week = schedule.unscheduled_weeks.filter(ele => updating_week.indexOf(ele)<0);
+            var requestBody = {};
+            requestBody.acad_yr = this.state.course.acad_yr;
+            requestBody.sem = this.state.course.sem;
+            requestBody.category = this.refs.category.value;
+            requestBody.code = this.state.course.code;
+            requestBody.type = this.state.course.type;
+            requestBody.group = this.refs.group.value;
+            requestBody.start_week = this.refs.start_week.value;
+            requestBody.end_week = this.refs.end_week.value;
+            requestBody.name = this.refs.name.value;
+
+            // reference -> https://stackoverflow.com/questions/31087237/mongodb-pull-unset-with-multiple-conditions
+            requestBody.weeks = week;
+            
+            fetch('/api/courses/assign', {
+                method: 'PUT',
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                redirect: "follow",
+                referrer: "no-referrer",
+                body: JSON.stringify(requestBody)
+            }).then(function (data) {
+                return data.json();
+            }).then(json => {
+                if(json!=null){
+                    this.setState({
+                        course: json
+                    });
+                } else {
+                    alert('No record found in database, please try again.');
+                    return false;
+                }
+            });
+        } 
+        else {
+            alert('The weeks you seleted are not all available to update, please try again.');
+            return false;
+        }
     }
 
     render() {
@@ -250,8 +285,7 @@ class FindTimeSlots extends Component {
                         <h1>{mycourse.code}</h1>
                         <h1>Academic Year {mycourse.acad_yr} &nbsp; &nbsp; Semester {mycourse.sem}</h1>
                         <h1>Teaching Assignment Form - {mycourse.type}</h1>
-                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id'
-                            insertRow deleteRow exportCSV>
+                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEditProp} keyField='id' exportCSV>
                         {thc}
                         </BootstrapTable>
                     </div>

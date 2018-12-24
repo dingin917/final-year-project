@@ -6,8 +6,6 @@ const ics = require('ics');
 
 const options = {
     exportCSVText: 'export to csv',
-    insertText: 'insert',
-    deleteText: 'delete',
     saveText: 'save',
     closeText: 'close'
 };
@@ -266,8 +264,7 @@ class ViewCalendar extends Component {
                         <button onClick={this.downloadCalendar}>
                             Download as .ics file 
                         </button>
-                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id'
-                            insertRow deleteRow exportCSV>
+                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id' exportCSV>
                         {thc}
                         </BootstrapTable>
                     </div>

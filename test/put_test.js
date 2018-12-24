@@ -17,16 +17,13 @@ describe('PUT request testing', function () {
             "type": "LEC",
             "schedule": [
                 {
-                    "group": "LE",
-                    "slots": [
-                        {
-                            "teaching_weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                            "day": "F",
-                            "start_time": "1030",
-                            "end_time": "1130",
-                            "venue": "LT29"
-                        }
-                    ]
+                    "group": "LE",                      
+                    "teaching_weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                    "day": "F",
+                    "start_time": "1030",
+                    "end_time": "1130",
+                    "venue": "LT29",
+                    "unscheduled_weeks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
                 }]
         });
 
@@ -60,7 +57,8 @@ describe('PUT request testing', function () {
             day: "F",
             start_time: "10:30",
             end_time: "11:30",
-            venue: "LT29"
+            venue: "LT29",
+            weeks: [1,2,3,4,5,6,7]
         };
 
         fetch('http://localhost:3001/api/courses/assign', {

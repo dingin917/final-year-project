@@ -13,8 +13,21 @@ var updateAssignee = function(req, res, next){
         week.push(i);
     }
     console.log("teaching_weeks: " + week);
-
+    
+    // remove the updating weeks from unscheduled_weeks
     Course.findOneAndUpdate({'acad_yr': req.body.acad_yr, 'sem': req.body.sem, 'category': req.body.category, 'code': req.body.code, 'type': req.body.type},
+        {
+            $set: {
+                "schedule.$[i].unscheduled_weeks": req.body.weeks
+            }
+        }, 
+        {
+            arrayFilters:[{'i.group': req.body.group}],
+            new: true
+        }
+    ).then(function(delete_result){
+        console.log("Course after remove updating weeks => \n" + JSON.stringify(delete_result));
+        Course.findOneAndUpdate({'acad_yr': req.body.acad_yr, 'sem': req.body.sem, 'category': req.body.category, 'code': req.body.code, 'type': req.body.type},
         {
             $push: {
                 "schedule.$[i].scheduled_weeks":
@@ -22,93 +35,86 @@ var updateAssignee = function(req, res, next){
                     'week': week,
                     'assignee': req.body.name
                 }
-            },
-            // $pull: {
-            //     "schedule.$[i].unscheduled_weeks": 
-            //     {
-            //         $and: [{$gte: req.body.start_week}, {$lte: req.body.end_week}]
-            //     }
-            // }
+            }
         }, 
         {
             arrayFilters:[{'i.group': req.body.group}],
             new: true
         }
-    ).then(function(result){
-        res.json(result);
-        console.log("Response: " +  JSON.stringify(result));
-        var category = result['category'];
-        var schedule = result['schedule'].find(ele => ele.group == req.body.group);
-        Prof.findOneAndUpdate({'initial': req.body.name, 'schedule': {$elemMatch: {acad_yr: req.body.acad_yr, sem: req.body.sem, courses: {$elemMatch: {code: req.body.code, type: req.body.type, group: req.body.group}}}}},
-        { 
-            $push: {
-                'schedule.$[j].courses.$[i].teaching_weeks': {$each: week}
-            }
-        }, 
-        {
-            arrayFilters:[{'j.acad_yr': req.body.acad_yr, 'j.sem': req.body.sem},
-                            {'i.code': req.body.code, 'i.type': req.body.type,
-                            'i.group': req.body.group}],
-            new: true
-        })
-        .then(function(prof){
-            console.log("updated prof profile: " + JSON.stringify(prof));
-            if(prof == null) {
-                Prof.findOneAndUpdate({'initial': req.body.name, 'schedule': {$elemMatch: {acad_yr: req.body.acad_yr, sem: req.body.sem}}}, 
-                {
-                    $push: {
-                        'schedule.$[j].courses': {
-                            'code': req.body.code,
-                            'type': req.body.type,
-                            'category': category,
-                            'group': req.body.group,
-                            'teaching_weeks': week,
-                            'day': schedule.day,
-                            'start_time': schedule.start_time,
-                            'end_time': schedule.end_time,
-                            'venue': schedule.venue
-                        }
-                    }
-                }, 
-                {   
-                    arrayFilters:[{'j.acad_yr': req.body.acad_yr, 'j.sem': req.body.sem}],
-                    new: true   
-                })
-                .then(function(profile){
-                    console.log("updated prof profile with a new course: " + JSON.stringify(profile));
-                    if(profile == null) {
-                        Prof.findOneAndUpdate({'initial': req.body.name},
-                        {
-                            $push: {
-                                'schedule': {
-                                    'acad_yr': req.body.acad_yr,
-                                    'sem': req.body.sem,
-                                    'courses': [{
-                                        'code': req.body.code,
-                                        'type': req.body.type,
-                                        'category': category,
-                                        'group': req.body.group,
-                                        'teaching_weeks': week,
-                                        'day': schedule.day,
-                                        'start_time': schedule.start_time,
-                                        'end_time': schedule.end_time,
-                                        'venue': schedule.venue
-                                    }]
-                                }
+        ).then(function(result){
+            res.json(result);
+            console.log("Course Updated Response: \n" +  JSON.stringify(result));
+            var schedule = result['schedule'].find(ele => ele.group == req.body.group);
+            Prof.findOneAndUpdate({'initial': req.body.name, 'schedule': {$elemMatch: {acad_yr: req.body.acad_yr, sem: req.body.sem, courses: {$elemMatch: {code: req.body.code, type: req.body.type, category: req.body.category, group: req.body.group}}}}},
+            { 
+                $push: {
+                    'schedule.$[j].courses.$[i].teaching_weeks': {$each: week}
+                }
+            }, 
+            {
+                arrayFilters:[{'j.acad_yr': req.body.acad_yr, 'j.sem': req.body.sem},
+                                {'i.code': req.body.code, 'i.type': req.body.type,
+                                'i.category': req.body.category, 'i.group': req.body.group}],
+                new: true
+            })
+            .then(function(prof){
+                console.log("updated prof profile: \n" + JSON.stringify(prof));
+                if(prof == null) {
+                    Prof.findOneAndUpdate({'initial': req.body.name, 'schedule': {$elemMatch: {acad_yr: req.body.acad_yr, sem: req.body.sem}}}, 
+                    {
+                        $push: {
+                            'schedule.$[j].courses': {
+                                'code': req.body.code,
+                                'type': req.body.type,
+                                'category': req.body.category,
+                                'group': req.body.group,
+                                'teaching_weeks': week,
+                                'day': schedule.day,
+                                'start_time': schedule.start_time,
+                                'end_time': schedule.end_time,
+                                'venue': schedule.venue
                             }
-                        },
-                        {   new: true })
-                        .then(function(newschedule){
-                            console.log("updated prof profile with a new schedule: " + JSON.stringify(newschedule));
-                        })
-                    }
-                }).catch(next);
-            }
+                        }
+                    }, 
+                    {   
+                        arrayFilters:[{'j.acad_yr': req.body.acad_yr, 'j.sem': req.body.sem}],
+                        new: true   
+                    })
+                    .then(function(profile){
+                        console.log("updated prof profile with a new course: \n" + JSON.stringify(profile));
+                        if(profile == null) {
+                            Prof.findOneAndUpdate({'initial': req.body.name},
+                            {
+                                $push: {
+                                    'schedule': {
+                                        'acad_yr': req.body.acad_yr,
+                                        'sem': req.body.sem,
+                                        'courses': [{
+                                            'code': req.body.code,
+                                            'type': req.body.type,
+                                            'category': req.body.category,
+                                            'group': req.body.group,
+                                            'teaching_weeks': week,
+                                            'day': schedule.day,
+                                            'start_time': schedule.start_time,
+                                            'end_time': schedule.end_time,
+                                            'venue': schedule.venue
+                                        }]
+                                    }
+                                }
+                            },
+                            {   new: true })
+                            .then(function(newschedule){
+                                console.log("updated prof profile with a new schedule for the semester: \n" + JSON.stringify(newschedule));
+                            }).catch(next);
+                        }
+                    }).catch(next);
+                }
+            }).catch(next);
         }).catch(next);
     }).catch(next);
-
 }
 
 module.exports = {  
     updateAssignee: updateAssignee
-  };
+};
