@@ -50,15 +50,14 @@ describe('PUT request testing', function () {
             category: 'fulltime',
             code: "EE4483",
             type: "LEC",
-            start_week: 1,
-            end_week: 7,
+            week:[1,2,3,4,5,6,7],
             name: "Iron Man",
             group: "LE",
             day: "F",
             start_time: "10:30",
             end_time: "11:30",
             venue: "LT29",
-            weeks: [1,2,3,4,5,6,7]
+            weeks: [8,9,10,11,12,13]
         };
 
         fetch('http://localhost:3001/api/courses/assign', {

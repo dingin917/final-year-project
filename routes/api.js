@@ -14,6 +14,7 @@ const LoadProfile = require('../server/load_profile');
 const UploadCourse = require('../server/upload_course');
 const ConvertWeekToDates = require('../server/convert_weektodate');
 const UpdateAssignee = require('../server/update_assignee');
+const Handover = require('../server/handover');
 
 // upload teaching profiles to db in csv format
 router.post('/teachers/upload', upload.single('file'), function (req, res, next) {
@@ -33,6 +34,11 @@ router.post('/dates', function(req, res, next){
 // update a course assignee in the db
 router.put('/courses/assign', function(req, res, next){
     UpdateAssignee.updateAssignee(req, res, next);
+});
+
+// handover a course to another prof 
+router.put('/courses/handover', function(req, res, next){
+    Handover.Handover(req, res, next);
 });
 
 // retrieve academic calendar from db

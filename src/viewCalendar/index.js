@@ -60,7 +60,7 @@ class ViewCalendar extends Component {
                     update: true
                 });
                 var schedule = json.schedule.find(ele => ele.acad_yr == this.state.acad_yr && ele.sem == this.state.sem);
-                var courses = schedule.courses;
+                var courses = schedule.courses.filter(ele => ele.teaching_weeks.length>0);
                 this.setState({courses: courses});
                 fetch('/api/dates?acad_yr=' + acad_yr +'&sem=' + sem)
                 .then(function(result){
@@ -139,10 +139,10 @@ class ViewCalendar extends Component {
                 course_date.setDate(course_date.getDate()+2);
                 break;  
             case 'TH':
-                course_date.setDate(course_date.getDate()+1);
+                course_date.setDate(course_date.getDate()+3);
                 break;
             case 'F':
-                course_date.setDate(course_date.getDate()+1);
+                course_date.setDate(course_date.getDate()+4);
                 break;
             default:
                 console.log('courses.day is not in range of Monday to Friday..');

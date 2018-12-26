@@ -48,6 +48,7 @@ class FindTimeSlots extends Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.handleHandover = this.handleHandover.bind(this);
     }
     handleSubmit(event) {
         event.preventDefault();
@@ -95,6 +96,10 @@ class FindTimeSlots extends Component {
 
         if (schedule.unscheduled_weeks != null && updating_week.every(ele => schedule.unscheduled_weeks.indexOf(ele) > -1)) {
             var week = schedule.unscheduled_weeks.filter(ele => updating_week.indexOf(ele)<0);
+            var scheduled_weeks = schedule.scheduled_weeks.find(e => e.assignee == this.refs.name.value);
+            if (scheduled_weeks != null) {
+                updating_week = updating_week.concat(scheduled_weeks.week);
+            }
             var requestBody = {};
             requestBody.acad_yr = this.state.course.acad_yr;
             requestBody.sem = this.state.course.sem;
@@ -102,8 +107,7 @@ class FindTimeSlots extends Component {
             requestBody.code = this.state.course.code;
             requestBody.type = this.state.course.type;
             requestBody.group = this.refs.group.value;
-            requestBody.start_week = this.refs.start_week.value;
-            requestBody.end_week = this.refs.end_week.value;
+            requestBody.week = updating_week;
             requestBody.name = this.refs.name.value;
 
             // reference -> https://stackoverflow.com/questions/31087237/mongodb-pull-unset-with-multiple-conditions
@@ -127,6 +131,7 @@ class FindTimeSlots extends Component {
                     this.setState({
                         course: json
                     });
+                    console.log("Updated Course: \n" + this.state.course);
                 } else {
                     alert('No record found in database, please try again.');
                     return false;
@@ -135,6 +140,126 @@ class FindTimeSlots extends Component {
         } 
         else {
             alert('The weeks you seleted are not all available to update, please try again.');
+            return false;
+        }
+    }
+    handleHandover(event){
+        event.preventDefault();
+        // validate before request for update
+        var updating_week = [];
+        for (var i=parseInt(this.refs.newstart_week.value); i<=parseInt(this.refs.newend_week.value); i++){
+            updating_week.push(i);
+        }
+
+        var schedule = this.state.course.schedule.find(ele => ele.group === this.refs.newgroup.value);
+
+        if (schedule.unscheduled_weeks == null || updating_week.every(ele => schedule.unscheduled_weeks.indexOf(ele)<0)) {
+            var affected_assign = schedule.scheduled_weeks.filter(ele => ele.week.some(e => updating_week.indexOf(e)>-1));            
+            affected_assign.forEach(assign => {
+                var w = assign.week;
+                for (var i=0; i<w.length; i++){
+                    if(updating_week.indexOf(w[i])>-1){
+                        // set to 0 temporarily and delete later
+                        w[i] = 0;
+                    }
+                }
+
+                // delete elements with value = 0 from week array 
+                for(var i=w.length-1; i>=0; i--) {
+                    if(w[i] === 0) {
+                       w.splice(i, 1);
+                    }
+                }
+                console.log("updated weeks \n" + JSON.stringify(w));
+            });
+            console.log("affected_assign \n" + JSON.stringify(affected_assign));
+
+            // update the [course] and [prof] db schema with affected profile  
+            var affected_prof = Array.from(new Set(affected_assign.map(e => e.assignee)));
+            affected_prof.forEach(prof => {
+                var requestBody = {};
+                var scheduled_weeks = affected_assign.find(e => e.assignee === prof);
+                console.log(scheduled_weeks);
+                if (!scheduled_weeks.hasOwnProperty('week')){
+                    scheduled_weeks.week = [];
+                }
+            
+                requestBody.name = prof;
+                requestBody.acad_yr = this.state.course.acad_yr;
+                requestBody.sem = this.state.course.sem;
+                requestBody.code = this.state.course.code;
+                requestBody.type = this.state.course.type;
+                requestBody.category = this.refs.category.value;
+                requestBody.group = this.refs.newgroup.value;
+                requestBody.week = scheduled_weeks.week; // updated 
+                fetch('/api/courses/handover', {
+                    method: 'PUT',
+                    mode: "cors",
+                    cache: "no-cache",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    },
+                    redirect: "follow",
+                    referrer: "no-referrer",
+                    body: JSON.stringify(requestBody)
+                }).then(function (data) {
+                    return data.json();
+                }).then(json => {
+                    if(json!=null){
+                        console.log("Updated Course \n" + JSON.stringify(json));
+                    } else {
+                        alert('Error occurred when updating database, please try again.');
+                        return false;
+                    }
+                });
+            });
+
+            // update the [course] and [prof] db schema with handover profile 
+            var find_schedule = schedule.scheduled_weeks.find(e => e.assignee === this.refs.newname.value);
+            var updated_week = [];
+            if(find_schedule!=undefined){
+                var existing_week = find_schedule.week;
+                updated_week = updating_week.concat(existing_week);
+            } else {
+                updated_week = updating_week;
+            }
+            var requestBody = {};
+            requestBody.name = this.refs.newname.value;
+            requestBody.acad_yr = this.state.course.acad_yr;
+            requestBody.sem = this.state.course.sem;
+            requestBody.code = this.state.course.code;
+            requestBody.type = this.state.course.type;
+            requestBody.category = this.refs.category.value;
+            requestBody.group = this.refs.newgroup.value;
+            requestBody.week = updated_week;
+
+            fetch('/api/courses/handover', {
+                method: 'PUT',
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                redirect: "follow",
+                referrer: "no-referrer",
+                body: JSON.stringify(requestBody)
+            }).then(function (data) {
+                return data.json();
+            }).then(json => {
+                if(json!=null){
+                    this.setState({
+                        course: json
+                    });
+                    console.log("Updated Course - Final \n" + JSON.stringify(json));
+                } else {
+                    alert('Error occurred when updating database, please try again.');
+                    return false;
+                }
+            });
+        } else {
+            alert('The weeks you seleted are not all available to handover, please try again.');
             return false;
         }
     }
@@ -277,6 +402,22 @@ class FindTimeSlots extends Component {
                             <input className="form-control" type="text" ref="end_week" placeholder="e.g.7" required />
                             <label>Assign a teaching staff name </label>
                             <input className="form-control" type="text" ref="name" placeholder="e.g.CLH" required />
+                            <input className="form-control" type="submit" value="Assign a teaching staff" />
+                        </form>
+                    </div>
+                    <div>
+                        <h1>Handover Assignment</h1>
+                        <form className="form-group" id="handover" onSubmit={this.handleHandover}>
+                            <label>Enter a course group </label>
+                            <select ref="newgroup" required>
+                                {grp_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
+                            </select>
+                            <label>Handover the teaching weeks <br/> From </label>
+                            <input className="form-control" type="text" ref="newstart_week" placeholder="e.g.1" required />
+                            <label>To</label>
+                            <input className="form-control" type="text" ref="newend_week" placeholder="e.g.7" required />
+                            <label>Assign a new teaching staff name </label>
+                            <input className="form-control" type="text" ref="newname" placeholder="e.g.CLH" required />
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
