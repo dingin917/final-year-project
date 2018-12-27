@@ -27,7 +27,7 @@ var readCSV = function CSVToArray(req, res, next){
       // var used to upload courses to database
       const acad_yr = fileRows[1][0];
       const sem = fileRows[1][1];
-      const category = req.body.category; // TODO: read from input..
+      const category = req.body.category;
       console.log("cate:" + category);
 
       var last_row = fileRows[1];

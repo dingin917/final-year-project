@@ -176,6 +176,19 @@ class FindTimeSlots extends Component {
 
             // update the [course] and [prof] db schema with affected profile  
             var affected_prof = Array.from(new Set(affected_assign.map(e => e.assignee)));
+            affected_prof.push(this.refs.newname.value);
+
+            var find_schedule = schedule.scheduled_weeks.find(e => e.assignee === this.refs.newname.value);
+            var updated_week = [];
+            if(find_schedule!=undefined){
+                var existing_week = find_schedule.week;
+                updated_week = updating_week.concat(existing_week);
+            } else {
+                updated_week = updating_week;
+            }
+
+            affected_assign.push({'assignee': this.refs.newname.value, 'week': updated_week});
+
             affected_prof.forEach(prof => {
                 var requestBody = {};
                 var scheduled_weeks = affected_assign.find(e => e.assignee === prof);
@@ -207,56 +220,15 @@ class FindTimeSlots extends Component {
                     return data.json();
                 }).then(json => {
                     if(json!=null){
-                        console.log("Updated Course \n" + JSON.stringify(json));
+                        this.setState({
+                            course: json
+                        });
+                        console.log("Updated Course - Final \n" + JSON.stringify(json));
                     } else {
                         alert('Error occurred when updating database, please try again.');
                         return false;
                     }
                 });
-            });
-
-            // update the [course] and [prof] db schema with handover profile 
-            var find_schedule = schedule.scheduled_weeks.find(e => e.assignee === this.refs.newname.value);
-            var updated_week = [];
-            if(find_schedule!=undefined){
-                var existing_week = find_schedule.week;
-                updated_week = updating_week.concat(existing_week);
-            } else {
-                updated_week = updating_week;
-            }
-            var requestBody = {};
-            requestBody.name = this.refs.newname.value;
-            requestBody.acad_yr = this.state.course.acad_yr;
-            requestBody.sem = this.state.course.sem;
-            requestBody.code = this.state.course.code;
-            requestBody.type = this.state.course.type;
-            requestBody.category = this.refs.category.value;
-            requestBody.group = this.refs.newgroup.value;
-            requestBody.week = updated_week;
-
-            fetch('/api/courses/handover', {
-                method: 'PUT',
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8",
-                },
-                redirect: "follow",
-                referrer: "no-referrer",
-                body: JSON.stringify(requestBody)
-            }).then(function (data) {
-                return data.json();
-            }).then(json => {
-                if(json!=null){
-                    this.setState({
-                        course: json
-                    });
-                    console.log("Updated Course - Final \n" + JSON.stringify(json));
-                } else {
-                    alert('Error occurred when updating database, please try again.');
-                    return false;
-                }
             });
         } else {
             alert('The weeks you seleted are not all available to handover, please try again.');

@@ -12,3 +12,11 @@
 label {
     display: block;
 }
+
+#assign {
+    float: left;
+}
+
+#handover {
+    margin-left: 450px;
+}
