@@ -33,10 +33,10 @@ var Handover = function(req, res, next){
     ).then(function(course){
         if(course != null){
             res.json(course);
-            console.log("Updated course profile:\n" + JSON.stringify(course));
+            console.log("Updated course profile ($SET):\n" + JSON.stringify(course));
             update_prof_profile(req, course, next);
         } else {
-            Course.findByIdAndUpdate({'acad_yr': req.body.acad_yr, 'sem': req.body.sem, 'category': req.body.category, 'code': req.body.code, 'type': req.body.type},
+            Course.findOneAndUpdate({'acad_yr': req.body.acad_yr, 'sem': req.body.sem, 'category': req.body.category, 'code': req.body.code, 'type': req.body.type, 'schedule': {$elemMatch: {group: req.body.group}}},
             {
                 $push: {
                     "schedule.$[i].scheduled_weeks": {
@@ -50,7 +50,7 @@ var Handover = function(req, res, next){
                 new: true
             }).then(function(newcourse){
                 res.json(newcourse);
-                console.log("Updated course profile:\n" + JSON.stringify(newcourse));
+                console.log("Updated course profile ($PUSH):\n" + JSON.stringify(newcourse));
                 update_prof_profile(req, newcourse, next);
             }).catch(next);
         }
@@ -73,7 +73,7 @@ function update_prof_profile(req, course, next){
         new: true
     })
     .then(function(prof){
-        console.log("updated prof profile: \n" + JSON.stringify(prof));
+        console.log("updated prof profile ($SET): \n" + JSON.stringify(prof));
         if(prof == null) {
             Prof.findOneAndUpdate({'initial': req.body.name, 'schedule': {$elemMatch: {acad_yr: req.body.acad_yr, sem: req.body.sem}}}, 
             {
@@ -96,7 +96,7 @@ function update_prof_profile(req, course, next){
                 new: true   
             })
             .then(function(profile){
-                console.log("updated prof profile with a new course: \n" + JSON.stringify(profile));
+                console.log("updated prof profile with a new course ($PUSH TO COURSE): \n" + JSON.stringify(profile));
                 if(profile == null) {
                     Prof.findOneAndUpdate({'initial': req.body.name},
                     {
@@ -120,7 +120,7 @@ function update_prof_profile(req, course, next){
                     },
                     {   new: true })
                     .then(function(newschedule){
-                        console.log("updated prof profile with a new schedule for the semester: \n" + JSON.stringify(newschedule));
+                        console.log("updated prof profile with a new schedule for the semester ($PUSH TO SCHEDULE): \n" + JSON.stringify(newschedule));
                     }).catch(next);
                 }
             }).catch(next);
