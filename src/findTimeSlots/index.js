@@ -346,13 +346,20 @@ class FindTimeSlots extends Component {
                         <label>Enter academic year</label>
                         <input className="form-control" type="text" ref="myacad_yr" placeholder="e.g.2018" required />
                         <label>Enter semester</label>
-                        <input className="form-control" type="text" ref="mysem" placeholder="e.g.1" required />
+                        <select ref="mysem" required>
+                            <option value="1">semester 1</option>
+                            <option value="2">semester 2</option>
+                        </select>
                         <label>Enter a course code </label>
                         <input className="form-control" type="text" ref="mycode" placeholder="e.g.EE4483" required />
                         <label>Enter a class type </label>
-                        <input className="form-control" type="text" ref="mytype" placeholder="e.g.LEC" required />
+                        <select ref="mytype" required>
+                            <option value="LEC">Lecture</option>
+                            <option value="TUT">Tutorial</option>
+                            <option value="LAB">Laboratory</option>
+                        </select>
                         <label>Enter the category: </label>
-                        <select ref="category">
+                        <select ref="category" required>
                             <option value="fulltime">Full Time</option>
                             <option value="parttime">Part Time</option>
                         </select>
