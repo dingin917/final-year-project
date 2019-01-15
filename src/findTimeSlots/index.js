@@ -339,7 +339,7 @@ class FindTimeSlots extends Component {
         });
 
         return (
-            <div>
+            <div className='board'>
                 <div>
                     <h1> Find Timeslots</h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>
@@ -368,9 +368,9 @@ class FindTimeSlots extends Component {
                 </div>
                 <div style={myupdate ? null : { display: 'none' }}>
                     {/* <div className="col-md-3"> */}
-                    <div>
+                    <div id="assign">
                         <h1>Update Teaching Assignment</h1>
-                        <form className="form-group" id="assign" onSubmit={this.handleUpdate}>
+                        <form className="form-group" onSubmit={this.handleUpdate}>
                             <label>Enter a course group </label>
                             <select ref="group" required>
                                 {grp_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
@@ -384,9 +384,9 @@ class FindTimeSlots extends Component {
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
-                    <div>
+                    <div id="handover">
                         <h1>Handover Assignment</h1>
-                        <form className="form-group" id="handover" onSubmit={this.handleHandover}>
+                        <form className="form-group" onSubmit={this.handleHandover}>
                             <label>Enter a course group </label>
                             <select ref="newgroup" required>
                                 {grp_list.map((value, index) => <option key={index} value={value}>{value}</option>)}

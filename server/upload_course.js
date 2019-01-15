@@ -7,7 +7,7 @@ const Mongo = require('../mongo');
 const Course = Mongo.Course;
 
 
-var readCSV = function CSVToArray(req, res, next){
+let readCSV = function CSVToArray(req, res, next){
   const fileRows = [];
   // open uploaded file
   csv.fromPath(req.file.path)
@@ -22,35 +22,43 @@ var readCSV = function CSVToArray(req, res, next){
         process "fileRows" and respond
       */
 
-      // res.json(fileRows);
-
-      // var used to upload courses to database
+      // variables used to upload courses to database
       const acad_yr = fileRows[1][0];
       const sem = fileRows[1][1];
       const category = req.body.category;
       console.log("cate:" + category);
 
-      var last_row = fileRows[1];
+      // eliminate the header row, sort csv file before uploading to db 
+      fileRows.splice(0,1);
+      fileRows.sort();
+      console.log(JSON.stringify(fileRows));
+      var last_row = fileRows[0];
       var index = 0;
-
-      for (var i=2; i<fileRows.length; i++) {
-        var aRow = fileRows[i];
+      for (let i=1; i<fileRows.length; i++) {
+        let aRow = fileRows[i];
         if(aRow[0].trim()!=''){
-          if(aRow[2] == last_row[2] && aRow[3] == last_row[3] && aRow[4] == last_row[4]){
+          // get the original group name of the last row to compare with the current one 
+          let last_grpname = last_row[4];
+          if(last_grpname.indexOf('-')>0){
+            last_grpname = last_grpname.slice(0, last_row[4].indexOf('-'));
+          }
+          if(aRow[2] === last_row[2] && aRow[3] === last_row[3] && aRow[4] === last_grpname){
             // special case: same course code, type & group name 
-            if (index == 0){
+            if (index === 0){
               // no previous record for the same course code, type & group name combination
               last_row[4] =  last_row[4] + '-' + String.fromCharCode(65);
             }
             updateCourseToDB(last_row);
             index++;
-            last_row = aRow;
+            last_row = aRow.slice(0);
             last_row[4] = aRow[4] + '-' + String.fromCharCode(65 + index);
+            console.log('\n index: ' + index + '\n name: ' + last_row[4] + '\n aRow: ' + aRow);
           } else {
             // general case: same course code & type but diff group || diff course code & type
             updateCourseToDB(last_row);
-            last_row = aRow;
             index = 0;
+            last_row = aRow.slice(0);
+            console.log('\n index: ' + index + '\n name: ' + last_row[4] + '\n aRow: ' + aRow);
           }
         }
       }
@@ -58,24 +66,24 @@ var readCSV = function CSVToArray(req, res, next){
       // upload the last course to database 
       updateCourseToDB(last_row);
 
-      function updateCourseToDB(aRow){
-        var teaching_weeks = [];
-        console.log(aRow);
-        for (var j=9; j<22; j++){
-          if(aRow[j]!='N'){
+      function updateCourseToDB(arow){
+        let teaching_weeks = [];
+        console.log(arow);
+        for (let j=9; j<22; j++){
+          if(arow[j]!='N'){
             teaching_weeks.push(j-8);
           }
         }
-        Course.findOneAndUpdate({'acad_yr':acad_yr, 'sem':sem, 'category':category, 'code':aRow[2], 'type':aRow[3]}, 
+        Course.findOneAndUpdate({'acad_yr':acad_yr, 'sem':sem, 'category':category, 'code':arow[2], 'type':arow[3]}, 
         {
           $push: {
             'schedule': {
-              'group': aRow[4],
+              'group': arow[4],
               'teaching_weeks':  teaching_weeks,
-              'day': aRow[5],
-              'start_time': aRow[6],
-              'end_time': aRow[7],
-              'venue': aRow[8],
+              'day': arow[5],
+              'start_time': arow[6],
+              'end_time': arow[7],
+              'venue': arow[8],
               'unscheduled_weeks': teaching_weeks
             }
           }
@@ -86,7 +94,7 @@ var readCSV = function CSVToArray(req, res, next){
         .catch(next);
       }
 
-      var html = '';
+      let html = '';
       html += '<p> The course csv file has been successfully uploaded </p>';
       html += '<a href="/"> Back to homepage .. </a><br>';
       html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </a> </p>';

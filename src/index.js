@@ -9,29 +9,29 @@ class App extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
-            show: true
+            login: false
         }
-        this.handleChange = this.handleChange.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
-    handleChange() {
-        this.setState({ show: !this.state.show })
+    handleLogin() {
+        // if document.querySelector('#id').value===process.env.passwd
+        this.setState({ login: true })
     }
     render() {
+        if (this.state.login) return (
+            <div>
+                hi
+                <button onClick={this.handleLogin}>login</button>
+            </div>
+        );
         return (
             <div>
-                <div style={{ display: this.state.show ? "block" : "none" }}>
+                <div style={{"margin-bottom": "5rem"}}>
                     <HeadSection />
                 </div>
-                <div className="checkbox">
-                    <label>
-                        <input type="checkbox" data-toggle="toggle" value={this.state} onChange={this.handleChange} />
-                        Hide original Page
-                    </label>
-                </div>
-                <div className="board" id="service">
-                    <Routes />
-                </div>
-                <div style={{ display: this.state.show ? "auto" : "none" }}>
+
+                <Routes />
+                <div>
                     <Footer className={this.state.show} />
                 </div>
             </div>

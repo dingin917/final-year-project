@@ -245,7 +245,7 @@ class ViewCalendar extends Component {
         });
 
         return (
-            <div>
+            <div className='board'>
                 <div>
                     <h1> View Calendar </h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>

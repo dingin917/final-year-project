@@ -129,7 +129,7 @@ class ViewSummary extends Component {
         }
 
         return (
-            <div id="prof-course-container">
+            <div id="prof-course-container" className='board'>
                 <h1> View Summary of Contact Hours </h1>
                 <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff name </label>

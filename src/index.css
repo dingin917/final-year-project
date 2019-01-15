@@ -14,18 +14,20 @@ code {
 }
 
 .board {
-    display: flex;
-    flex-flow: column;
-    padding-top: 115px;
-    padding-left: 40px;
-    padding-right: 40px;
+  display: flex;
+  flex-flow: column;
+  padding-top: 115px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .data {
-    padding-top: 60px;
-    display: flex;
-    flex-flow: row;
-    justify-content: space-evenly !important;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 60px;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly !important;
 }
 h1 {
   font-size: 1.5rem;
