@@ -32,39 +32,66 @@ let readCSV = function CSVToArray(req, res, next){
       fileRows.splice(0,1);
       fileRows.sort();
       console.log(JSON.stringify(fileRows));
+
+      // record the first row to compare with the following one 
       var last_row = fileRows[0];
       var index = 0;
-      for (let i=1; i<fileRows.length; i++) {
-        let aRow = fileRows[i];
-        if(aRow[0].trim()!=''){
-          // get the original group name of the last row to compare with the current one 
-          let last_grpname = last_row[4];
-          if(last_grpname.indexOf('-')>0){
-            last_grpname = last_grpname.slice(0, last_row[4].indexOf('-'));
-          }
-          if(aRow[2] === last_row[2] && aRow[3] === last_row[3] && aRow[4] === last_grpname){
-            // special case: same course code, type & group name 
-            if (index === 0){
-              // no previous record for the same course code, type & group name combination
-              last_row[4] =  last_row[4] + '-' + String.fromCharCode(65);
-            }
-            updateCourseToDB(last_row);
-            index++;
-            last_row = aRow.slice(0);
-            last_row[4] = aRow[4] + '-' + String.fromCharCode(65 + index);
-            console.log('\n index: ' + index + '\n name: ' + last_row[4] + '\n aRow: ' + aRow);
-          } else {
-            // general case: same course code & type but diff group || diff course code & type
-            updateCourseToDB(last_row);
-            index = 0;
-            last_row = aRow.slice(0);
-            console.log('\n index: ' + index + '\n name: ' + last_row[4] + '\n aRow: ' + aRow);
-          }
-        }
-      }
 
-      // upload the last course to database 
-      updateCourseToDB(last_row);
+      // check for repeated uploading 
+      Course.findOne({'acad_yr':acad_yr, 'sem':sem, 'category':category})
+      .then(function(output){
+        console.log("output -> " + output);
+        if(output != null){
+          console.log("repeated uploading");
+          let html = '';
+          html += '<p> Sorry that the course csv file cannot be uploaded, since there is existing record for this semester and academic year. </p>';
+          html += '<p> Due to potential risk of losing existing assignment data, the upload operation cannot be executed. </p>';
+          html += '<a href="/"> Back to homepage .. </a><br>';
+          html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </a> </p>';
+          res.send(html);
+        }
+        else {
+
+          for (let i=1; i<fileRows.length; i++) {
+            let aRow = fileRows[i];
+            if(aRow[0].trim()!=''){
+              // get the original group name of the last row to compare with the current one 
+              let last_grpname = last_row[4];
+              if(last_grpname.indexOf('-')>0){
+                last_grpname = last_grpname.slice(0, last_row[4].indexOf('-'));
+              }
+              if(aRow[2] === last_row[2] && aRow[3] === last_row[3] && aRow[4] === last_grpname){
+                // special case: same course code, type & group name 
+                if (index === 0){
+                  // no previous record for the same course code, type & group name combination
+                  last_row[4] =  last_row[4] + '-' + String.fromCharCode(65);
+                }
+                updateCourseToDB(last_row);
+                index++;
+                last_row = aRow.slice(0);
+                last_row[4] = aRow[4] + '-' + String.fromCharCode(65 + index);
+                console.log('\n index: ' + index + '\n name: ' + last_row[4] + '\n aRow: ' + aRow);
+              } else {
+                // general case: same course code & type but diff group || diff course code & type
+                updateCourseToDB(last_row);
+                index = 0;
+                last_row = aRow.slice(0);
+                console.log('\n index: ' + index + '\n name: ' + last_row[4] + '\n aRow: ' + aRow);
+              }
+            }
+          }
+    
+          // upload the last course to database 
+          updateCourseToDB(last_row);
+
+          let html = '';
+          html += '<p> The course csv file has been successfully uploaded </p>';
+          html += '<a href="/"> Back to homepage .. </a><br>';
+          html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </a> </p>';
+          res.send(html);
+        }
+
+      }).catch(next);
 
       function updateCourseToDB(arow){
         let teaching_weeks = [];
@@ -93,12 +120,6 @@ let readCSV = function CSVToArray(req, res, next){
         })
         .catch(next);
       }
-
-      let html = '';
-      html += '<p> The course csv file has been successfully uploaded </p>';
-      html += '<a href="/"> Back to homepage .. </a><br>';
-      html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </a> </p>';
-      res.send(html);
 
     });
 }

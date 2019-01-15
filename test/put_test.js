@@ -10,7 +10,7 @@ describe('PUT request testing', function () {
 
     beforeEach(function (done) {
         var course = new Course({
-            "acad_yr": 2018,
+            "acad_yr": 2000,
             "sem": 1,
             "category": "fulltime",
             "code": "EE4483",
@@ -45,7 +45,7 @@ describe('PUT request testing', function () {
     // Create tests
     it('Update a course and prof record from database', function (done) {
         var requestBody = {
-            acad_yr: 2018,
+            acad_yr: 2000,
             sem: 1,
             category: 'fulltime',
             code: "EE4483",
