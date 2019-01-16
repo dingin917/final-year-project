@@ -29,7 +29,6 @@ class App extends Component {
                 <div style={{"margin-bottom": "5rem"}}>
                     <HeadSection />
                 </div>
-
                 <Routes />
                 <div>
                     <Footer className={this.state.show} />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Autosuggest_Course from '../Autosuggest_Course';
 
 const options = {
     exportCSVText: 'Export to csv',
@@ -44,18 +45,64 @@ class FindTimeSlots extends Component {
         this.state = {
             course: { schedule: [] },
             update: false,
-            dates: []
+            dates: [],
+            year: 2019,
+            sem: 1,
+            course_list_for_search: [],
+            course_code_selected: String
         }
+        this.handleYearChange = this.handleYearChange.bind(this);
+        this.handleSemSelected = this.handleSemSelected.bind(this);
+        this.handleSuggestSelected = this.handleSuggestSelected.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleHandover = this.handleHandover.bind(this);
     }
+    handleYearChange(event) {
+        event.preventDefault();
+        this.setState({
+            year: this.refs.myacad_yr.value
+        });
+        fetch('/api/search_course?acad_yr=' + this.refs.myacad_yr.value + '&sem=' + this.state.sem)
+        .then(function(courseList){
+            return courseList.json();
+        })
+        .then(json => {
+            this.setState({
+                course_list_for_search: json
+            })
+        });
+    }
+    handleSemSelected(event) {
+        event.preventDefault();
+        this.setState({
+            sem: this.refs.mysem.value
+        });
+        fetch('/api/search_course?acad_yr=' + this.state.year + '&sem=' + this.refs.mysem.value)
+        .then(function(courseList){
+            return courseList.json();
+        })
+        .then(json => {
+            this.setState({
+                course_list_for_search: json
+            })
+        });
+    }
+    handleSuggestSelected(event, {suggestionValue}){
+        event.preventDefault();
+        this.setState({
+            course_code_selected: suggestionValue
+        });
+    }
     handleSubmit(event) {
         event.preventDefault();
+        console.log("\nyear for search: " + this.state.year);
+        console.log("\nsem for search: " + this.state.sem);
         var acad_yr = this.refs.myacad_yr.value;
         var sem = this.refs.mysem.value;
         var category = this.refs.category.value;
-        var code = this.refs.mycode.value;
+        var code = this.state.course_code_selected;
+        console.log("\nCODE FROM AUTOSUGGEST: "+code);
         var type = this.refs.mytype.value;
 
         fetch('/api/courses?code=' + code + '&type=' + type + '&acad_yr=' + acad_yr + '&sem=' + sem + '&category=' + category)
@@ -344,14 +391,14 @@ class FindTimeSlots extends Component {
                     <h1> Find Timeslots</h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                         <label>Enter academic year</label>
-                        <input className="form-control" type="text" ref="myacad_yr" placeholder="e.g.2018" required />
+                        <input className="form-control" type="text" ref="myacad_yr" placeholder="e.g.2018" onChange={this.handleYearChange} required />
                         <label>Enter semester</label>
-                        <select ref="mysem" required>
+                        <select ref="mysem" onChange={this.handleSemSelected} required>
                             <option value="1">semester 1</option>
                             <option value="2">semester 2</option>
                         </select>
                         <label>Enter a course code </label>
-                        <input className="form-control" type="text" ref="mycode" placeholder="e.g.EE4483" required />
+                        <Autosuggest_Course courses={this.state.course_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
                         <label>Enter a class type </label>
                         <select ref="mytype" required>
                             <option value="LEC">Lecture</option>

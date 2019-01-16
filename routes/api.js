@@ -41,6 +41,23 @@ router.put('/courses/handover', function(req, res, next){
     Handover.Handover(req, res, next);
 });
 
+// retrieve course list for search 
+router.get('/search_course', function(req, res, next){
+    Course.find({'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
+    .then(function(result){
+        let courseSet = [...new Set(result.map(item => item.code))];
+        let courseList = [];
+        courseSet.forEach(ele => {
+	        courseList.push({code:ele});
+        })
+        res.json(courseList);
+        console.log("GET Request for course list used to search");
+        console.log("URL Request Params: " + JSON.stringify(req.query));
+        console.log("Response: " + courseList);
+    })
+    .catch(next);
+});
+
 // retrieve academic calendar from db
 router.get('/dates', function(req, res, next){
     WeekToDate.findOne({'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
