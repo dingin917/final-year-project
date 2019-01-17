@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Autosuggest_Prof from '../Autosuggest_Prof';
 
 const ics = require('ics');
 
@@ -24,6 +25,8 @@ class ViewCalendar extends Component {
     constructor(prop) {
         super(prop);
         this.state = {
+            prof_list_for_search: [],
+            prof_initial_selected: String,
             prof : { schedule:[{acad_yr:Number, sem:Number, courses:[]}] },
             update: false,
             dates: [],
@@ -31,11 +34,20 @@ class ViewCalendar extends Component {
             sem: Number, 
             courses: []
         }
+        this.handleSuggestSelected = this.handleSuggestSelected.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    handleSuggestSelected(event, {suggestionValue}){
+        event.preventDefault();
+        this.setState({
+            prof_initial_selected: suggestionValue
+        });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
-        var initial = this.refs.initial.value;
+        var initial = this.state.prof_initial_selected;
         var acad_yr = this.refs.acad_yr.value;
         var sem = this.refs.sem.value;
 
@@ -153,6 +165,17 @@ class ViewCalendar extends Component {
     }
 
     render() {
+
+        fetch('/api/search_prof')
+        .then(function(prof_List){
+            return prof_List.json();
+        })
+        .then(json => {
+            this.setState({
+                prof_list_for_search: json
+            })
+        });
+        
         var myprof = this.state.prof;
         var mycourse = this.state.courses;
         var myupdate = this.state.update;
@@ -250,7 +273,7 @@ class ViewCalendar extends Component {
                     <h1> View Calendar </h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                         <label>Enter a teaching staff name </label>
-                        <input className="form-control" type="text" ref="initial" placeholder="e.g.SP" required />
+                        <Autosuggest_Prof profs={this.state.prof_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
                         <label>Enter academic year</label>
                         <input className="form-control" type="text" ref="acad_yr" placeholder="e.g.2018" required />
                         <label>Enter semester</label>

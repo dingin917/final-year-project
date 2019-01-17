@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 import './style.css';
+import Autosuggest_Prof from '../Autosuggest_Prof';
 
 class ViewSummary extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            prof_list_for_search: [],
+            prof_initial_selected: String,
             prof: { schedule: [{ courses:[ {code: String, type: String}]}] },
             acad_yr: Number,
             view: false
         };
+        this.handleSuggestSelected = this.handleSuggestSelected.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.calculate = this.calculate.bind(this);
     }
 
+    handleSuggestSelected(event, {suggestionValue}){
+        event.preventDefault();
+        this.setState({
+            prof_initial_selected: suggestionValue
+        });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
-        var initial = this.refs.initial.value;
+        var initial = this.state.prof_initial_selected;
         var acad_yr = this.refs.acad_yr.value;
 
         fetch('/api/teachers/profile?initial=' + initial, {
@@ -32,13 +43,18 @@ class ViewSummary extends Component {
         }).then(function (data) {
             return data.json();
         }).then(json => {
-            var schedule_of_year = json.schedule.filter(ele => ele.acad_yr == acad_yr);
-            this.setState({
-                prof: json,
-                schedule: schedule_of_year,
-                acad_yr: acad_yr,
-                view: true,
-            });
+            if (json != null) {
+                var schedule_of_year = json.schedule.filter(ele => ele.acad_yr == acad_yr);
+                this.setState({
+                    prof: json,
+                    schedule: schedule_of_year,
+                    acad_yr: acad_yr,
+                    view: true,
+                });
+            } else {
+                alert("No record found in database, please try another one.");
+                return false;
+            }
         });
     }
 
@@ -102,6 +118,17 @@ class ViewSummary extends Component {
     }
 
     render() {
+
+        fetch('/api/search_prof')
+        .then(function(prof_List){
+            return prof_List.json();
+        })
+        .then(json => {
+            this.setState({
+                prof_list_for_search: json
+            })
+        });
+
         var prof = this.state.prof;
         var view = this.state.view;
         var sem_1_ft = [];
@@ -133,7 +160,7 @@ class ViewSummary extends Component {
                 <h1> View Summary of Contact Hours </h1>
                 <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff name </label>
-                    <input className="form-control" type="text" ref="initial" placeholder="e.g.AA" required />
+                    <Autosuggest_Prof profs={this.state.prof_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
                     <label>Enter the academic year </label>
                     <input className="form-control" type="text" ref="acad_yr" placeholder="e.g.2018" required />
                     <input className="form-control" type="submit" value="View Summary" />

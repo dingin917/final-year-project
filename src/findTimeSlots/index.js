@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Autosuggest_Course from '../Autosuggest_Course';
+import Autosuggest_Prof from '../Autosuggest_Prof';
 
 const options = {
     exportCSVText: 'Export to csv',
@@ -49,11 +50,16 @@ class FindTimeSlots extends Component {
             year: 2019,
             sem: 1,
             course_list_for_search: [],
-            course_code_selected: String
+            course_code_selected: String,
+            prof_list_for_search: [],
+            prof_initial_selected_for_update: String,
+            prof_initial_selected_for_handover: String
         }
         this.handleYearChange = this.handleYearChange.bind(this);
         this.handleSemSelected = this.handleSemSelected.bind(this);
         this.handleSuggestSelected = this.handleSuggestSelected.bind(this);
+        this.handleSuggestSelected_update = this.handleSuggestSelected_update.bind(this);
+        this.handleSuggestSelected_handover = this.handleSuggestSelected_handover.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleHandover = this.handleHandover.bind(this);
@@ -92,6 +98,18 @@ class FindTimeSlots extends Component {
         event.preventDefault();
         this.setState({
             course_code_selected: suggestionValue
+        });
+    }
+    handleSuggestSelected_update(event, {suggestionValue}){
+        event.preventDefault();
+        this.setState({
+            prof_initial_selected_for_update: suggestionValue
+        });
+    }
+    handleSuggestSelected_handover(event, {suggestionValue}){
+        event.preventDefault();
+        this.setState({
+            prof_initial_selected_for_handover: suggestionValue
         });
     }
     handleSubmit(event) {
@@ -143,7 +161,7 @@ class FindTimeSlots extends Component {
 
         if (schedule.unscheduled_weeks != null && updating_week.every(ele => schedule.unscheduled_weeks.indexOf(ele) > -1)) {
             var week = schedule.unscheduled_weeks.filter(ele => updating_week.indexOf(ele)<0);
-            var scheduled_weeks = schedule.scheduled_weeks.find(e => e.assignee == this.refs.name.value);
+            var scheduled_weeks = schedule.scheduled_weeks.find(e => e.assignee == this.state.prof_initial_selected_for_update);
             if (scheduled_weeks != null) {
                 updating_week = updating_week.concat(scheduled_weeks.week);
             }
@@ -155,7 +173,7 @@ class FindTimeSlots extends Component {
             requestBody.type = this.state.course.type;
             requestBody.group = this.refs.group.value;
             requestBody.week = updating_week;
-            requestBody.name = this.refs.name.value;
+            requestBody.name = this.state.prof_initial_selected_for_update;
 
             // reference -> https://stackoverflow.com/questions/31087237/mongodb-pull-unset-with-multiple-conditions
             requestBody.weeks = week;
@@ -223,9 +241,9 @@ class FindTimeSlots extends Component {
 
             // update the [course] and [prof] db schema with affected profile  
             var affected_prof = Array.from(new Set(affected_assign.map(e => e.assignee)));
-            affected_prof.push(this.refs.newname.value);
+            affected_prof.push(this.state.prof_initial_selected_for_handover);
 
-            var find_schedule = schedule.scheduled_weeks.find(e => e.assignee === this.refs.newname.value);
+            var find_schedule = schedule.scheduled_weeks.find(e => e.assignee === this.state.prof_initial_selected_for_handover);
             var updated_week = [];
             if(find_schedule!=undefined){
                 var existing_week = find_schedule.week;
@@ -234,7 +252,7 @@ class FindTimeSlots extends Component {
                 updated_week = updating_week;
             }
 
-            affected_assign.push({'assignee': this.refs.newname.value, 'week': updated_week});
+            affected_assign.push({'assignee': this.state.prof_initial_selected_for_handover, 'week': updated_week});
 
             affected_prof.forEach(prof => {
                 var requestBody = {};
@@ -284,6 +302,17 @@ class FindTimeSlots extends Component {
     }
 
     render() {
+        
+        fetch('/api/search_prof')
+        .then(function(prof_List){
+            return prof_List.json();
+        })
+        .then(json => {
+            this.setState({
+                prof_list_for_search: json
+            })
+        });
+
         var mycourse = this.state.course;
         var myupdate = this.state.update;
         var mydate = this.state.dates;
@@ -427,7 +456,7 @@ class FindTimeSlots extends Component {
                             <label>To</label>
                             <input className="form-control" type="text" ref="end_week" placeholder="e.g.7" required />
                             <label>Assign a teaching staff name </label>
-                            <input className="form-control" type="text" ref="name" placeholder="e.g.CLH" required />
+                            <Autosuggest_Prof profs={this.state.prof_list_for_search} handleSuggestSelected={this.handleSuggestSelected_update}/>
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
@@ -443,7 +472,7 @@ class FindTimeSlots extends Component {
                             <label>To</label>
                             <input className="form-control" type="text" ref="newend_week" placeholder="e.g.7" required />
                             <label>Assign a new teaching staff name </label>
-                            <input className="form-control" type="text" ref="newname" placeholder="e.g.CLH" required />
+                            <Autosuggest_Prof profs={this.state.prof_list_for_search} handleSuggestSelected={this.handleSuggestSelected_handover}/>
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>

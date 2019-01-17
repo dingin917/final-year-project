@@ -41,6 +41,18 @@ router.put('/courses/handover', function(req, res, next){
     Handover.Handover(req, res, next);
 });
 
+// retrieve prof list for search 
+router.get('/search_prof', function(req, res, next){
+    Prof.aggregate([{$project: {initial: 1, fullname: 1}}])
+    .then(function(result){
+        res.json(result);
+        console.log("GET Request for course list used to search");
+        console.log("URL Request Params: " + JSON.stringify(req.query));
+        console.log("Response: " + result);
+    })
+    .catch(next);
+});
+
 // retrieve course list for search 
 router.get('/search_course', function(req, res, next){
     Course.find({'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
