@@ -27,6 +27,9 @@ class Autosuggest_Course extends React.Component {
   
     const regex = new RegExp(escapedValue, 'i');
     let courses = this.props.courses;
+    if (courses == null) {
+      return [];
+    }
     return courses.filter(course => regex.test(course.code));
   }
   

@@ -27,6 +27,9 @@ class Autosuggest_Prof extends React.Component {
   
     const regex = new RegExp(escapedValue, 'i');
     let profs = this.props.profs;
+    if (profs == null) {
+      return [];
+    }
     return profs.filter(prof => regex.test(prof.initial) || regex.test(prof.fullname));;
   }
   

@@ -398,8 +398,9 @@ class FindTimeSlots extends Component {
 
         Object.keys(weekday).forEach(day => {
             if (weekday[day].length>0){
+                var length_for_calc = weekday[day].length;
                 thc.push(
-                    <TableHeaderColumn row='0' csvHeader={day} colSpan={weekday[day].length} headerAlign='center' dataAlign='center'>{day}</TableHeaderColumn>
+                    <TableHeaderColumn row='0' csvHeader={day} colSpan={weekday[day].length} headerAlign='center' dataAlign='center' width='110px'>{day}</TableHeaderColumn>
                 )
                 weekday[day].forEach(slot => {
                     var id = slot.id;
@@ -408,7 +409,7 @@ class FindTimeSlots extends Component {
                     var venue = slot.venue;
                     var header = time + ' ' + grp + ' ' + venue;
                     thc.push (
-                        <TableHeaderColumn row='1' csvHeader={header} dataField={id} headerAlign='center' dataAlign='center'>{time}<br />{grp}<br />{venue}</TableHeaderColumn>
+                        <TableHeaderColumn row='1' csvHeader={header} dataField={id} headerAlign='center' dataAlign='center' width='110px'>{time}<br />{grp}<br />{venue}</TableHeaderColumn>
                     );
                 });
             }
@@ -481,9 +482,11 @@ class FindTimeSlots extends Component {
                         <h1>{mycourse.code}</h1>
                         <h1>Academic Year {mycourse.acad_yr} &nbsp; &nbsp; Semester {mycourse.sem}</h1>
                         <h1>Teaching Assignment Form - {mycourse.type}</h1>
-                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEditProp} keyField='id' exportCSV>
-                        {thc}
-                        </BootstrapTable>
+                        <div id='table-container'>
+                            <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEditProp} keyField='id' exportCSV>
+                            {thc}
+                            </BootstrapTable>
+                        </div>
                     </div>
                 </div>
             </div>
