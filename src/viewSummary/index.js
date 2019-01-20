@@ -163,7 +163,7 @@ class ViewSummary extends Component {
                     The total teaching hours and payload will be automatically calculated.</p>
                 </div>
                 <div className="col-4" id="container">
-                <h1> View Summary of Contact Hours </h1>
+                <h1 className="inside-form"> View Summary of Contact Hours </h1>
                 <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff name </label>
                     <Autosuggest_Prof profs={this.state.prof_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
@@ -173,7 +173,7 @@ class ViewSummary extends Component {
                 </form>
                 </div>
                 <div style={view ? null : { display: 'none' }} id="block-container">
-                    <h1>Summary of Contact Hours for Lecturer - {prof.initial}</h1>
+                    <h1 className="inside-form">Summary of Contact Hours for Lecturer - {prof.initial}</h1>
                     <div id="summary-container">
                     <div className="sem1">
                         <h5>Semester 1</h5>

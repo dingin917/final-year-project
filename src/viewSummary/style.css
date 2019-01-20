@@ -45,3 +45,7 @@ table {
 #block-container {
     margin-top: 50px;
 }
+
+.inside-form {
+    background-color: beige;
+}

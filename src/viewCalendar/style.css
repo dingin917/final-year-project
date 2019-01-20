@@ -80,3 +80,22 @@ button {
     white-space: nowrap;
     width: 110px;
 }
+
+.inside-form {
+    background-color: beige;
+}
+
+.react-bs-table-csv-btn {
+    background-color: slategrey;
+    border: slategray;
+}
+
+.react-bs-table-csv-btn:hover {
+    background-color: darkgray;
+    border: darkgray;
+}
+
+#title {
+    font-weight: 550;
+    color: slategrey;
+}

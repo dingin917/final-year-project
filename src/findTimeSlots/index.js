@@ -425,7 +425,7 @@ class FindTimeSlots extends Component {
                         You may also handover one staff's duty to another through <i>Handover Assignment</i> portal. </p>
                 </div>
                 <div className="col-6" id="container">
-                    <h1> Find Timeslots</h1>
+                    <h1 className="inside-form"> Find Timeslots</h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                         <label>Enter academic year</label>
                         <input className="form-control" type="text" ref="myacad_yr" placeholder="e.g.2018" onChange={this.handleYearChange} required />
@@ -453,7 +453,7 @@ class FindTimeSlots extends Component {
                 <div style={myupdate ? null : { display: 'none' }} id="update">
                     <div id="update-container">
                     <div id="assign" className="col-4">
-                        <h1>Update Teaching Assignment</h1>
+                        <h1 className="inside-form">Update Teaching Assignment</h1>
                         <form className="form-group" onSubmit={this.handleUpdate}>
                             <label>Enter a course group </label>
                             <select ref="group" required>
@@ -469,7 +469,7 @@ class FindTimeSlots extends Component {
                         </form>
                     </div>
                     <div id="handover" className="col-4">
-                        <h1>Handover Assignment</h1>
+                        <h1 className="inside-form">Handover Assignment</h1>
                         <form className="form-group" onSubmit={this.handleHandover}>
                             <label>Enter a course group </label>
                             <select ref="newgroup" required>
@@ -486,9 +486,11 @@ class FindTimeSlots extends Component {
                     </div>
                     </div>
                     <div id="table">
-                        <h1>{mycourse.code}</h1>
-                        <h1>Academic Year {mycourse.acad_yr} &nbsp; &nbsp; Semester {mycourse.sem}</h1>
-                        <h1>Teaching Assignment Form - {mycourse.type}</h1>
+                        <div id="title">
+                            <h1>{mycourse.code}</h1>
+                            <h1>Academic Year {mycourse.acad_yr} - Semester {mycourse.sem}</h1>
+                            <h1>Teaching Assignment Form - {mycourse.type}</h1>
+                        </div>
                         <div id='table-container'>
                             <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} keyField='id' exportCSV>
                             {thc}

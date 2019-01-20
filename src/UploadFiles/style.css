@@ -15,5 +15,23 @@
 }
 
 .data h1 {
-    padding-bottom: 25px;
+    margin-bottom: 25px;
+    background-color: beige;
+}
+
+#form1 {
+    background: url(1.jpg) no-repeat center center;
+    background-size: cover;
+    margin-right: 10px;
+}
+
+#form2 {
+    background: url(2.jpg) no-repeat center center;
+    background-size: cover;
+    margin-right: 10px;
+}
+
+#form3 {
+    background: url(3.jpg) no-repeat center center;
+    background-size: cover;
 }

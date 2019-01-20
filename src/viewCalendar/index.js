@@ -277,7 +277,7 @@ class ViewCalendar extends Component {
                     The .ics file can be then imported by major calendars including ios calendar and google calendar.</p>
                 </div>
                 <div className="col-6" id="container">
-                    <h1> View Calendar </h1>
+                    <h1 className="inside-form"> View Calendar </h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                         <label>Enter a teaching staff name </label>
                         <Autosuggest_Prof profs={this.state.prof_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
@@ -290,7 +290,7 @@ class ViewCalendar extends Component {
                 </div>
                 <div id="course-container" style={myupdate ? null : { display: 'none' }}>
                     <div className="col-md-9" id="table">
-                        <h1>{myprof.teachingarea} - {myacad_yr} Semester {mysem} Teaching Assignment - {myprof.initial}</h1>
+                        <h1 id="title">{myprof.teachingarea} - {myacad_yr} Semester {mysem} Teaching Assignment - {myprof.initial}</h1>
                         <button onClick={this.downloadCalendar}>
                             Download as .ics file 
                         </button>

@@ -12,14 +12,14 @@ class UploadFiles extends Component {
                     The total teaching hours and payload will be automatically calculated.</p>
                 </div>
                 <div className="data">
-                <div>
+                <div className="col-4" id="form1">
                     <h1> Upload Faculty Profiles </h1>
                     <form action="/api/teachers/upload" method="POST" encType="multipart/form-data">
                         <input type="file" name="file" accept="*.csv" /><br/><br/>
                         <input type="submit" value="Upload Faculty Profiles" />
                     </form>
                 </div>
-                <div>
+                <div className="col-4" id="form2">
                     <h1> Upload Courses </h1>
                     <form action="/api/courses/upload" method="POST" encType="multipart/form-data">
                         <label>Select File: </label>
@@ -32,7 +32,7 @@ class UploadFiles extends Component {
                         <input type="submit" value="Upload Courses" />
                     </form>
                 </div>
-                <div>
+                <div className="col-4" id="form3">
                     <h1> Update Academic Calendar </h1>
                     <form action="/api/dates" method="post">
                         <label>Academic Year: </label>

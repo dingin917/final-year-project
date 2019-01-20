@@ -16,11 +16,16 @@ label {
 #assign {
     float: left;
     margin-left: 50px;
+    background: url(1.jpg) no-repeat center center;
+    background-size: cover;
+    margin-right: 10px;
 }
 
 #handover {
     margin-left: 650px;
     margin-right: 50px;
+    background: url(2.jpg) no-repeat center center;
+    background-size: cover;
 }
 
 #table-container {
@@ -94,4 +99,27 @@ label {
 
 #container {
     margin:auto;
+}
+
+.inside-form {
+    background-color: beige;
+}
+
+#title {
+    text-align: center;
+} 
+
+#title h1 {
+    font-weight: 550;
+    color: slategrey;
+}
+
+.react-bs-table-csv-btn {
+    background-color: slategrey;
+    border: slategray;
+}
+
+.react-bs-table-csv-btn:hover {
+    background-color: darkgray;
+    border: darkgray;
 }
