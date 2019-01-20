@@ -15,10 +15,12 @@ label {
 
 #assign {
     float: left;
+    margin-left: 50px;
 }
 
 #handover {
-    margin-left: 450px;
+    margin-left: 650px;
+    margin-right: 50px;
 }
 
 #table-container {
@@ -81,3 +83,15 @@ label {
     margin: 50px 50px;
 }
 
+#update {
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+#update-container {
+    margin-bottom: 50px;
+}
+
+#container {
+    margin:auto;
+}

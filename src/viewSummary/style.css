@@ -30,3 +30,18 @@ table {
 #info p {
     margin: 50px 50px;
 }
+
+#container {
+    margin: auto;
+}
+
+#summary-container {
+    margin: auto;
+    padding-left: 80px;
+    padding-right: 80px;
+    margin-top: 30px;
+}
+
+#block-container {
+    margin-top: 50px;
+}

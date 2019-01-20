@@ -308,9 +308,11 @@ class FindTimeSlots extends Component {
             return prof_List.json();
         })
         .then(json => {
-            this.setState({
-                prof_list_for_search: json
-            })
+            if(json!=null){
+                this.setState({
+                    prof_list_for_search: json
+                });
+            }
         });
 
         var mycourse = this.state.course;
@@ -422,7 +424,7 @@ class FindTimeSlots extends Component {
                     <p>You can find the time slots for a certain course, and assign a teaching staff to the available slots via <i>Update Teaching Assignment</i> portal. <br />
                         You may also handover one staff's duty to another through <i>Handover Assignment</i> portal. </p>
                 </div>
-                <div>
+                <div className="col-6" id="container">
                     <h1> Find Timeslots</h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                         <label>Enter academic year</label>
@@ -448,9 +450,9 @@ class FindTimeSlots extends Component {
                         <input className="form-control" type="submit" value="Find Timeslots" />
                     </form>
                 </div>
-                <div style={myupdate ? null : { display: 'none' }}>
-                    {/* <div className="col-md-3"> */}
-                    <div id="assign">
+                <div style={myupdate ? null : { display: 'none' }} id="update">
+                    <div id="update-container">
+                    <div id="assign" className="col-4">
                         <h1>Update Teaching Assignment</h1>
                         <form className="form-group" onSubmit={this.handleUpdate}>
                             <label>Enter a course group </label>
@@ -466,7 +468,7 @@ class FindTimeSlots extends Component {
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
-                    <div id="handover">
+                    <div id="handover" className="col-4">
                         <h1>Handover Assignment</h1>
                         <form className="form-group" onSubmit={this.handleHandover}>
                             <label>Enter a course group </label>
@@ -482,7 +484,7 @@ class FindTimeSlots extends Component {
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
-                    {/* <div className="col-md-9" id="table"> */}
+                    </div>
                     <div id="table">
                         <h1>{mycourse.code}</h1>
                         <h1>Academic Year {mycourse.acad_yr} &nbsp; &nbsp; Semester {mycourse.sem}</h1>

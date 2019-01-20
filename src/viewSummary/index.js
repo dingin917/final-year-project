@@ -162,6 +162,7 @@ class ViewSummary extends Component {
                     <p>You can find the teaching assignment summary for a certain teaching staff via <i>View</i> portal. <br />
                     The total teaching hours and payload will be automatically calculated.</p>
                 </div>
+                <div className="col-4" id="container">
                 <h1> View Summary of Contact Hours </h1>
                 <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff name </label>
@@ -170,8 +171,10 @@ class ViewSummary extends Component {
                     <input className="form-control" type="text" ref="acad_yr" placeholder="e.g.2018" required />
                     <input className="form-control" type="submit" value="View Summary" />
                 </form>
-                <div style={view ? null : { display: 'none' }}>
+                </div>
+                <div style={view ? null : { display: 'none' }} id="block-container">
                     <h1>Summary of Contact Hours for Lecturer - {prof.initial}</h1>
+                    <div id="summary-container">
                     <div className="sem1">
                         <h5>Semester 1</h5>
                         <table>
@@ -216,11 +219,12 @@ class ViewSummary extends Component {
                             }
                         </table>
                     </div>
-                    <dib className="sum">
+                    <div className="sum">
                         <h5>Work Load: {work_load} hrs</h5>
                         <h5>Paid Load: {paid_load} hrs</h5>
                         <h5>Grand Total: {grand_total} hrs</h5>
-                    </dib>
+                    </div>
+                    </div>
                 </div>
             </div>
         );

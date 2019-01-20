@@ -6,7 +6,7 @@
 }
 
 #table {
-    font-size: 0.1em;
+    font-size: 1em;
 }
 
 label {
@@ -31,4 +31,52 @@ button {
 
 #info p {
     margin: 50px 50px;
+}
+
+#container {
+    margin:auto;
+}
+
+#table-container {
+    overflow-x: scroll;
+}
+
+.react-bs-table table td {
+    white-space: nowrap;
+    /* width: 60%; */
+}
+
+.react-bs-table table td:hover {
+    overflow: visible;
+}
+
+/* TODO: change to dynamically follow the number of slots per 110px */
+.react-bs-table table th {
+    white-space: nowrap;
+    overflow: visible;
+    /* width: 60%; */
+}
+
+.react-bs-table table th:nth-child(3) {
+    white-space: nowrap;
+    overflow: visible;
+    width: 130px;
+
+}
+
+.react-bs-table table td:nth-child(3) {
+    white-space: nowrap;
+    width: 130px;
+}
+
+
+.react-bs-table table th:nth-child(2) {
+    white-space: nowrap;
+    overflow: visible;
+    width: 110px;
+}
+
+.react-bs-table table td:nth-child(2) {
+    white-space: nowrap;
+    width: 110px;
 }

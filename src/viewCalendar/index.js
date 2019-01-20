@@ -254,7 +254,7 @@ class ViewCalendar extends Component {
         Object.keys(weekday).forEach(day => {
             if (weekday[day].length>0){
                 thc.push(
-                    <TableHeaderColumn row='0' csvHeader={day} colSpan={weekday[day].length} headerAlign='center' dataAlign='center'>{day}</TableHeaderColumn>
+                    <TableHeaderColumn row='0' csvHeader={day} colSpan={weekday[day].length} headerAlign='center' dataAlign='center' width='110px'>{day}</TableHeaderColumn>
                 );
                 weekday[day].forEach(slot => {
                     var id = slot.id;
@@ -263,7 +263,7 @@ class ViewCalendar extends Component {
                     var venue = slot.venue;
                     var header = time + ' ' + grp + ' ' + venue;
                     thc.push (
-                        <TableHeaderColumn row='1' csvHeader={header} dataField={id} headerAlign='center' dataAlign='center'>{time}<br />{grp}<br />{venue}</TableHeaderColumn>
+                        <TableHeaderColumn row='1' csvHeader={header} dataField={id} headerAlign='center' dataAlign='center' width='110px'>{time}<br />{grp}<br />{venue}</TableHeaderColumn>
                     );
                 });
             }
@@ -276,7 +276,7 @@ class ViewCalendar extends Component {
                     <p>You can find the teaching assignment schedule for a certain teaching staff, and download the calendar via <i>Download</i> portal. <br />
                     The .ics file can be then imported by major calendars including ios calendar and google calendar.</p>
                 </div>
-                <div>
+                <div className="col-6" id="container">
                     <h1> View Calendar </h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                         <label>Enter a teaching staff name </label>
@@ -294,9 +294,11 @@ class ViewCalendar extends Component {
                         <button onClick={this.downloadCalendar}>
                             Download as .ics file 
                         </button>
+                        <div id='table-container'>
                         <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id' exportCSV>
                         {thc}
                         </BootstrapTable>
+                        </div>
                     </div>
                 </div>
             </div>
