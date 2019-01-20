@@ -490,7 +490,7 @@ class FindTimeSlots extends Component {
                         <h1>Academic Year {mycourse.acad_yr} &nbsp; &nbsp; Semester {mycourse.sem}</h1>
                         <h1>Teaching Assignment Form - {mycourse.type}</h1>
                         <div id='table-container'>
-                            <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEditProp} keyField='id' exportCSV>
+                            <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} keyField='id' exportCSV>
                             {thc}
                             </BootstrapTable>
                         </div>

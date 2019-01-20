@@ -295,7 +295,7 @@ class ViewCalendar extends Component {
                             Download as .ics file 
                         </button>
                         <div id='table-container'>
-                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} cellEdit={cellEdit} keyField='id' exportCSV>
+                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} keyField='id' exportCSV>
                         {thc}
                         </BootstrapTable>
                         </div>
