@@ -171,9 +171,11 @@ class ViewCalendar extends Component {
             return prof_List.json();
         })
         .then(json => {
-            this.setState({
-                prof_list_for_search: json
-            })
+            if (json!=null){
+                this.setState({
+                    prof_list_for_search: json
+                });
+            }
         });
         
         var myprof = this.state.prof;
@@ -269,6 +271,11 @@ class ViewCalendar extends Component {
 
         return (
             <div className='board'>
+                <div id="info">
+                    <h1 className="display-4">View Calendar</h1>
+                    <p>You can find the teaching assignment schedule for a certain teaching staff, and download the calendar via <i>Download</i> portal. <br />
+                    The .ics file can be then imported by major calendars including ios calendar and google calendar.</p>
+                </div>
                 <div>
                     <h1> View Calendar </h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>

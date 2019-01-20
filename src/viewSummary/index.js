@@ -157,6 +157,11 @@ class ViewSummary extends Component {
 
         return (
             <div id="prof-course-container" className='board'>
+                <div id="info">
+                    <h1 className="display-4">View Summary</h1>
+                    <p>You can find the teaching assignment summary for a certain teaching staff via <i>View</i> portal. <br />
+                    The total teaching hours and payload will be automatically calculated.</p>
+                </div>
                 <h1> View Summary of Contact Hours </h1>
                 <form id="search" className="form-group" onSubmit={this.handleSubmit}>
                     <label>Enter a teaching staff name </label>

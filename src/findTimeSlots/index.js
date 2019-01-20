@@ -417,6 +417,11 @@ class FindTimeSlots extends Component {
 
         return (
             <div className='board'>
+                <div id="info">
+                    <h1 className="display-4">Find Timeslots</h1>
+                    <p>You can find the time slots for a certain course, and assign a teaching staff to the available slots via <i>Update Teaching Assignment</i> portal. <br />
+                        You may also handover one staff's duty to another through <i>Handover Assignment</i> portal. </p>
+                </div>
                 <div>
                     <h1> Find Timeslots</h1>
                     <form id="search" className="form-group" onSubmit={this.handleSubmit}>

@@ -6,6 +6,25 @@ html, body {
   font-family: 'Poppins', sans-serif;
 }
 
+.btn-primary {
+  color: #fff;
+  background-color: #d5c6c0;
+  border-color: #d5c6c0;
+}
+
+.btn-primary:hover {
+  background-color: #989290;
+  border-color: #989290;
+}
+
+.my-4 {
+  margin-top: 0rem!important;
+}
+
+.jumbotron {
+  margin-bottom: 0;
+}
+
 .navbar-brand {
   width: 30%;
   height: 30%;
@@ -66,10 +85,6 @@ html, body {
 [class*="col-"] {
     padding: 1rem;
 }
-
-
-
-
 
 /*
 Extra small (xs) devices (portrait phones, less than 576px)
