@@ -35,7 +35,6 @@ var courseSchema = new Schema({
     }],
 });
 
-
 var courseScheduleSchema = new Schema({
     code: String,
     type: String,
@@ -67,10 +66,26 @@ var dateSchema = new Schema({
     weektodate: [{week: Number, start_date: Date, end_date: Date}]
 });
 
+var userSchema = new Schema({
+    email: {
+        type: String,
+        unique: true,
+        trim: true
+    },
+
+    password: {
+        type: String,
+    },
+
+    passwordConf: {
+        type: String,
+    }
+});
 
 // Export Model
 module.exports = {  
                     Course: mongoose.model('courses', courseSchema), 
                     Prof: mongoose.model('profs', profSchema),
                     WeekToDate: mongoose.model('weektodate', dateSchema),
+                    User: mongoose.model('user', userSchema),
                 };

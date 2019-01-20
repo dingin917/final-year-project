@@ -12,16 +12,16 @@ class HomePage extends Component {
                     </ul>
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img alt="img" src="./img/ntu.png" />
+                            <img alt="img" src="./img/hive.jpg" />
                             <div className="carousel-caption">
-                                <h1 className="display-2">Welcome To Timeslots Planner for School of EEE</h1>
-                                <h3>Help to Customize your Timetable in a second</h3>
+                                <h1 className="display-2">Welcome To Teaching Assignment Planner for School of EEE</h1>
+                                <h3>Help to Assign a Course and Generate Specific Calendar</h3>
                                 <button type="button" className="btn btn-outline-light btn-lg">View Demo</button>
                                 <button type="button" className="btn btn-primary btn-lg">Get Started</button>
                             </div>
                         </div>
                         <div className="carousel-item">
-                            <img alt="img" src="./img/hive.jpg" />
+                            <img alt="img" src="./img/ntu.png" />
                         </div>
                         <div className="carousel-item">
                             <img alt="img" src="./img/hive-inside.jpg" />

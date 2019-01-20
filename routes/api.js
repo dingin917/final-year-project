@@ -8,6 +8,7 @@ const Mongo = require('../mongo');
 const Course = Mongo.Course;
 const Prof = Mongo.Prof;
 const WeekToDate = Mongo.WeekToDate;
+const User = Mongo.User;
 
 // import from server folder
 const LoadProfile = require('../server/load_profile');
@@ -136,6 +137,29 @@ router.delete('/courses/:id', function(req, res, next){
         res.json({type: 'DELETE'});
         console.log("DELETE Request");
         console.log("Request Body: " + req.params);
+    }).catch(next);
+});
+
+// add a user to db
+router.post('/user/register', function(req, res, next){
+    User.create(req.body)
+    .then(function(user){
+        res.json(user);
+        console.log("POST Request for adding a user");
+        console.log("Request Body: " + JSON.stringify(req.body));
+        console.log("Response: " + user);
+
+    }).catch(next);
+});
+
+// authenticate a user 
+router.get('/user/authenticate', function(req, res, next){
+    User.find({email: req.query.email, password: req.query.password})
+    .then(function(user){
+        res.json(user);
+        console.log("GET Request for authenticating a user");
+        console.log("Request Body: " + JSON.stringify(req.body));
+        console.log("Response: " + user);
     }).catch(next);
 });
 

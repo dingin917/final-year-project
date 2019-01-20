@@ -29,6 +29,63 @@ code {
   flex-flow: row;
   justify-content: space-evenly !important;
 }
+
 h1 {
   font-size: 1.5rem;
+}
+
+#login-page{
+  background: url(keyboard.jpg) no-repeat center center fixed;
+  background-size: cover;
+}
+
+.user-img {
+  margin-top: -50px;
+}
+
+.user-img img{
+  height: 100px;
+  width: 100px;
+}
+
+.main-section {
+  margin: 0 auto;
+  margin-top: 50px;
+  padding: 150px 0;
+}
+
+.modal-content {
+  background-color: #34495e;
+  opacity: .95;
+}
+
+.user-name {
+  /* margin: 10px 0; */
+}
+
+.user-name h1 {
+  font-size: 30px;
+  color: #ccd6d7;
+}
+
+.form-input button {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.btn-success {
+  background-color: #2ecc71;
+  border: 1px solid #2ecc71;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+  border: 1px solid #27ae60;
+}
+
+.link-part {
+  background-color: #ecf0f1;
+  padding: 15px;
+  border-radius: 0 0 5px 5px;
+  border-top: 1px solid #c2c2c2;
 }
