@@ -4,15 +4,10 @@ import HeadSection from './HeadSection';
 import Footer from './Footer';
 import Routes from './Routes';
 import './index.css';
-import { ok } from 'assert';
-import { stringify } from 'querystring';
 
 class App extends Component {
     constructor(prop) {
         super(prop);
-        this.state = {
-            login: false
-        }
         this.handleLogin = this.handleLogin.bind(this);
     }
     handleLogin(event) {
@@ -35,10 +30,10 @@ class App extends Component {
         }).then(json => {
             console.log("\nFROM DB -> " + JSON.stringify(json));
             if (json!= null && Object.keys(json).length>0){
-                localStorage.setItem('login', 'true');
+                localStorage.setItem('email', this.refs.myemail.value);
                 window.location.reload();
             } else {
-                localStorage.setItem('login', 'false');
+                localStorage.setItem('email', 'false');
                 alert("Unsuccessful Login Attempted, Please Try Again..");
                 return false;
             }
@@ -46,7 +41,7 @@ class App extends Component {
         });
     }
     render() {
-        if (localStorage.getItem('login') === null || localStorage.getItem('login') ==='false') return (
+        if (localStorage.getItem('email') === null || localStorage.getItem('email') ==='false') return (
             <div id="login-page">
                 <div className="modal-dialog text-center">
                     <div className="col-sm-8 main-section">

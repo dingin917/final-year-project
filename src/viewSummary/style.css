@@ -9,10 +9,12 @@
 table { 
     border: solid 5px gainsboro;
     text-align: center;
+    margin: 20px;
 }
 
 .sum { 
     float: right;
+    margin:50px;
 }
 
 #info {
@@ -39,13 +41,15 @@ table {
     margin: auto;
     padding-left: 80px;
     padding-right: 80px;
-    margin-top: 30px;
 }
 
 #block-container {
     margin-top: 50px;
+    padding-top: 80px;
+    margin: auto;
 }
 
 .inside-form {
     background-color: beige;
+    margin-bottom: 25px;
 }

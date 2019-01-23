@@ -172,7 +172,7 @@ class ViewSummary extends Component {
                     <input className="form-control" type="submit" value="View Summary" />
                 </form>
                 </div>
-                <div style={view ? null : { display: 'none' }} id="block-container">
+                <div className="col-md-9" style={view ? null : { display: 'none' }} id="block-container">
                     <h1 className="inside-form">Summary of Contact Hours for Lecturer - {prof.initial}</h1>
                     <div id="summary-container">
                     <div className="sem1">

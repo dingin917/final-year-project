@@ -28,23 +28,24 @@ var sendEmail = function SendOutlookEmail(req, res, next){
         let mailOption = {
             from: req.body.sender,
             to: req.body.receiver, // list of receivers
-            subject: "Nodemailer Testing",
-            text: "Hello World",
-            html: "<b>HTML TEST</b>", // overwrites whatever in text and send as email body to receiver 
-            attachments: [
-                {
-                    path: "./tmp/ics/ClassSchedule.ics"
-                }
-            ]
+            subject: req.body.subject,
+            text: req.body.text,
+            // html: req.body.html, // overwrites whatever in text and send as email body to receiver 
+            attachments: req.body.attachments,
+            // [
+            //     {
+            //         path: "./tmp/ics/ClassSchedule.ics"
+            //     }
+            // ]
         };
     
         transporter.sendMail(mailOption, function(err, info){
             if(err){
                 console.log("Error: " + JSON.stringify(err));
-                res.send("Error Occurred When Sending Email To " + mailOption.to + "\n" + err);
+                res.json({message: "Error Occurred When Sending Email To " + mailOption.to + "\n" + err});
             } else {
                 console.log("Email Send: " + JSON.stringify(info));
-                res.send("Email Sent Successfully");
+                res.json({message: "Email Sent Successfully"});
             }
         });
 

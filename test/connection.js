@@ -19,7 +19,6 @@ before(function(done){
 });
 
 // Drop the collections before each test 
-
 beforeEach(function(done){
     // Drop the collection
     mongoose.connection.collections.profs.drop(function(){
