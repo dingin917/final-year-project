@@ -77,7 +77,7 @@ var userSchema = new Schema({
         type: String,
     },
 
-    passwordConf: {
+    username: {
         type: String,
     }
 });

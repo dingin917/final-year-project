@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const upload = multer({ dest: 'tmp/csv/' });
+const crypto = require('crypto');
 
 // import from mongo.js 
 const Mongo = require('../mongo');
@@ -16,6 +17,7 @@ const UploadCourse = require('../server/upload_course');
 const ConvertWeekToDates = require('../server/convert_weektodate');
 const UpdateAssignee = require('../server/update_assignee');
 const Handover = require('../server/handover');
+const SendEmail = require('../server/send_email');
 
 // upload teaching profiles to db in csv format
 router.post('/teachers/upload', upload.single('file'), function (req, res, next) {
@@ -40,6 +42,11 @@ router.put('/courses/assign', function(req, res, next){
 // handover a course to another prof 
 router.put('/courses/handover', function(req, res, next){
     Handover.Handover(req, res, next);
+});
+
+// send email to prof 
+router.post('/email', function(req, res, next){
+    SendEmail.SendEmail(req, res, next);
 });
 
 // retrieve prof list for search 
@@ -142,7 +149,26 @@ router.delete('/courses/:id', function(req, res, next){
 
 // add a user to db
 router.post('/user/register', function(req, res, next){
-    User.create(req.body)
+    // Encrypt password before saving to database
+    let key = crypto.createCipher('aes-128-ecb', 'ntu-eee');
+    let encrypted = key.update(req.body.password, 'utf8', 'hex') + key.final('hex');
+
+    // Decrypt password 
+    let cipher = crypto.createDecipher('aes-128-ecb', 'ntu-eee');
+    let decrpted = cipher.update(encrypted,'hex', 'utf8') + cipher.final('utf8');
+    console.log("Decrpted password: " + decrpted);
+
+    User.findOneAndUpdate({email: req.body.email},
+    { 
+        $set: {
+            'password': encrypted,
+            'username': req.body.username
+        }
+    }, 
+    {
+        new: true,
+        upsert: true
+    })
     .then(function(user){
         res.json(user);
         console.log("POST Request for adding a user");

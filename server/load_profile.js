@@ -68,7 +68,7 @@ var readCSV = function CSVToArray(req, res, next){
       res.send(html);
 
     });
-  }
+}
 
 module.exports = {  
   readCSV: readCSV
