@@ -11,7 +11,7 @@ class Footer extends Component {
                         <div className="row text-center">
                             <div className="col-12">
                                 <hr />
-                                <h5>&copy; 2018 by Teaching Assignment Planner. Proudly created with NTU School of EEE.</h5>
+                                <h5>&copy; 2019 by Teaching Assignment Planner. Proudly created with NTU School of EEE.</h5>
                             </div>
                         </div>
                     </div>
