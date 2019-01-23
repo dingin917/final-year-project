@@ -10,11 +10,11 @@ describe('GET request testing', function () {
     beforeEach(function (done) {
 
         var prof = new Prof({
-            "initial": "Iron Man",
-            "fullname": "Tony Stark",
-            "title": "Boss",
-            "teachingarea": "Electronic Engineering",
-            "email": "tony.stark@marvel.universe"
+            "initial": "DJ",
+            "fullname": "Ding Jin",
+            "title": "Student",
+            "teachingarea": "Info-Communication",
+            "email": "jin.ding@outlook.com"
         });
 
         prof.save().then(function () {
@@ -25,7 +25,7 @@ describe('GET request testing', function () {
     // Create tests
     it('Find a prof record from database', function (done) {
 
-        fetch('http://localhost:3001/api/teachers/profile?initial=' + "Iron Man", {
+        fetch('http://localhost:3001/api/teachers/profile?initial=' + "DJ", {
             method: 'GET',
             mode: "cors",
             cache: "no-cache",
@@ -38,7 +38,7 @@ describe('GET request testing', function () {
         }).then(function (data) {
             return data.json();
         }).then(json => {
-            assert(json.fullname === "Tony Stark");
+            assert(json.fullname === "Ding Jin");
             done();
         });
 

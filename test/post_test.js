@@ -11,11 +11,11 @@ describe('POST request testing', function () {
     it('Saves to a prof record to the database', function (done) {
 
         var prof = new Prof({
-            "initial": "Iron Man",
-            "fullname": "Tony Stark",
-            "title": "Boss",
-            "teachingarea": "Electronic Engineering",
-            "email": "tony.stark@marvel.universe"
+            "initial": "DJ",
+            "fullname": "Ding Jin",
+            "title": "Student",
+            "teachingarea": "Info-Communication",
+            "email": "jin.ding@outlook.com"
         });
 
         fetch('http://localhost:3001/api/teachers', {
@@ -30,8 +30,8 @@ describe('POST request testing', function () {
             referrer: "no-referrer",
             body: JSON.stringify(prof)
         }).then(function () {
-            Prof.findOne({ initial: "Iron Man" }).then(function (data) {
-                assert(data.fullname === "Tony Stark");
+            Prof.findOne({ initial: "DJ" }).then(function (data) {
+                assert(data.fullname === "Ding Jin");
                 done();
             });
         });

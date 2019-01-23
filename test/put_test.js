@@ -10,10 +10,10 @@ describe('PUT request testing', function () {
 
     beforeEach(function (done) {
         var course = new Course({
-            "acad_yr": 2000,
+            "acad_yr": 2018,
             "sem": 1,
             "category": "fulltime",
-            "code": "EE4483",
+            "code": "EExxxx",
             "type": "LEC",
             "schedule": [
                 {
@@ -29,11 +29,11 @@ describe('PUT request testing', function () {
 
         course.save().then(function () {
             var prof = new Prof({
-                "initial": "Iron Man",
-                "fullname": "Tony Stark",
-                "title": "Boss",
-                "teachingarea": "Electronic Engineering",
-                "email": "tony.stark@marvel.universe"
+                "initial": "DJ",
+                "fullname": "Ding Jin",
+                "title": "Student",
+                "teachingarea": "Info-Communication",
+                "email": "jin.ding@outlook.com"
             });
 
             prof.save().then(function () {
@@ -45,18 +45,14 @@ describe('PUT request testing', function () {
     // Create tests
     it('Update a course and prof record from database', function (done) {
         var requestBody = {
-            acad_yr: 2000,
+            acad_yr: 2018,
             sem: 1,
             category: 'fulltime',
-            code: "EE4483",
+            code: "EExxxx",
             type: "LEC",
             week:[1,2,3,4,5,6,7],
-            name: "Iron Man",
+            name: "DJ",
             group: "LE",
-            day: "F",
-            start_time: "10:30",
-            end_time: "11:30",
-            venue: "LT29",
             weeks: [8,9,10,11,12,13]
         };
 
@@ -75,7 +71,7 @@ describe('PUT request testing', function () {
             return data.json();
         }).then(json => {
             console.log("Update Course: "+JSON.stringify(json));
-            assert(json.schedule[0].scheduled_weeks[0].assignee === 'Iron Man');
+            assert(json.schedule[0].scheduled_weeks[0].assignee === 'DJ');
             done();
         });
     });

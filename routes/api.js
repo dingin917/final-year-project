@@ -180,7 +180,11 @@ router.post('/user/register', function(req, res, next){
 
 // authenticate a user 
 router.get('/user/authenticate', function(req, res, next){
-    User.find({email: req.query.email, password: req.query.password})
+    // Encrypt password before authenticating
+    let key = crypto.createCipher('aes-128-ecb', 'ntu-eee');
+    let encrypted = key.update(req.query.password, 'utf8', 'hex') + key.final('hex');
+
+    User.find({email: req.query.email, password: encrypted})
     .then(function(user){
         res.json(user);
         console.log("GET Request for authenticating a user");
