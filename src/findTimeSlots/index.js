@@ -15,31 +15,6 @@ const selectRow = {
     bgColor: 'rgb(238, 193, 213)'
 };
 
-const cellEditProp = {
-    mode: 'click',
-    blurToSave: true,
-    beforeSaveCell: onBeforeSaveCell, // a hook for before saving cell
-    afterSaveCell: onAfterSaveCell  // a hook for after saving cell
-};
-
-function onAfterSaveCell(row, cellName, cellValue) {
-    alert(`Save cell ${cellName} with value ${cellValue}`);
-
-    let rowStr = '';
-    for (const prop in row) {
-        rowStr += prop + ': ' + row[prop] + '\n';
-    }
-
-    alert('Thw whole row :\n' + rowStr);
-}
-
-function onBeforeSaveCell(row, cellName, cellValue) {
-    // You can do any validation on here for editing value,
-    // return false for reject the editing
-    return true;
-}
-
-
 class FindTimeSlots extends Component {
     constructor(prop) {
         super(prop);
@@ -327,10 +302,19 @@ class FindTimeSlots extends Component {
             input.push({id:i, date:""});
         }
 
+        // convert 2018-08-13 to Aug-13
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
         mydate.forEach(ele => {
             console.log(JSON.stringify(ele));
-            input[ele.week-1].date = ele.start_date.slice(5,10) + ' to ' + ele.end_date.slice(5,10);
-        })
+            // calc starting month name
+            let start_mon = parseInt(ele.start_date.slice(5,7));
+            start_mon = months[start_mon-1];       
+            // calc ending month name     
+            let end_mon = parseInt(ele.end_date.slice(5,7));
+            end_mon = months[end_mon-1];
+            input[ele.week-1].date = start_mon + ele.start_date.slice(7,10) + ' to ' + end_mon + ele.end_date.slice(7,10);
+        });
 
         var thc =[];
         thc.push(

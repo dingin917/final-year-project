@@ -191,10 +191,19 @@ class ViewCalendar extends Component {
             input.push({id:i, date:""});
         }
 
+        // convert 2018-08-13 to Aug-13
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
         mydate.forEach(ele => {
             console.log(JSON.stringify(ele));
-            input[ele.week-1].date = ele.start_date.slice(5,10) + ' to ' + ele.end_date.slice(5,10);
-        });
+            // calc starting month name
+            let start_mon = parseInt(ele.start_date.slice(5,7));
+            start_mon = months[start_mon-1];       
+            // calc ending month name     
+            let end_mon = parseInt(ele.end_date.slice(5,7));
+            end_mon = months[end_mon-1];
+            input[ele.week-1].date = start_mon + ele.start_date.slice(7,10) + ' to ' + end_mon + ele.end_date.slice(7,10);
+       });
 
         var thc =[];
         thc.push(
