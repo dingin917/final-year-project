@@ -30,7 +30,7 @@ var sendEmail = function SendOutlookEmail(req, res, next){
             to: req.body.receiver, // list of receivers
             subject: req.body.subject,
             text: req.body.text,
-            // html: req.body.html, // overwrites whatever in text and send as email body to receiver 
+            html: req.body.html, // overwrites whatever in text and send as email body to receiver 
             attachments: req.body.attachments,
             // [
             //     {

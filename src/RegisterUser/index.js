@@ -67,7 +67,8 @@ class RegisterUser extends Component {
                 <div id="info">
                     <h1 className="display-4">Register User Account</h1>
                     <p>You can register a new user account via <i>Register</i> portal. <br />
-                    Please note that you need to provide <i>cipher</i> for authorization authentication. </p>
+                    Please note that you need to provide <i>cipher</i> for authorization authentication. <br />
+                    You may also update your password through registering with the same <i>email <address></address></i>.</p>
                 </div>
                 <div className="col-6" id="register-form">
                     <h1> Register a new user account </h1>

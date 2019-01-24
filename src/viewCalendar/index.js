@@ -93,6 +93,86 @@ class ViewCalendar extends Component {
 
     handleSendEmail(event){
         event.preventDefault();
+
+        // generate summary via calculation
+        let sem_1_ft = [];
+        let sem_1_pt = [];
+        let sem_2_ft = [];
+        let sem_2_pt = [];
+
+        let work_load = 0;
+        let paid_load = 0;
+        let grand_total = 0;
+
+        this.calculate(1, sem_1_ft, sem_1_pt);
+        this.calculate(2, sem_2_ft, sem_2_pt);
+        
+        let temp1 = sem_1_ft.find(ele => ele.course == 'Sub-Total');
+        let temp2 = sem_2_ft.find(ele => ele.course == 'Sub-Total');
+        work_load = temp1.hour + temp2.hour;
+
+        temp1 = sem_1_pt.find(ele => ele.course == 'Sub-Total');
+        temp2 = sem_2_pt.find(ele => ele.course == 'Sub-Total');
+        paid_load = temp1.hour + temp2.hour;
+
+        grand_total = work_load + paid_load;
+
+        /* email body 
+            greeting */
+        let html = '<p>Dear ' + this.state.prof.title + ' ' + this.state.prof.fullname + ',<br /><br />';
+        html += 'The assigned courses are enclosed in the .ics file, please kindly refer to attachment. Moreover, the workload summary is provided as follows. <br /><br />';
+
+        /* email body 
+            summary */
+        html += 'Summary of Contact Hours: <br /><br />';
+        // sem 1 - workload
+        html += '<table style="width:70%; margin: auto; text-align:center; border: 1px solid"><tbody>';
+        html += '   <caption style="text-align:left"><b>Semester 1 - Work Load</caption>'
+        html += '   <tr><th>SUBJECT</th><th>HOURS</th></tr>';
+        sem_1_ft.map(ele => {
+            html += '<tr><td>'+ele.course+'</td><td>'+ele.hour+'</td></tr>';
+        });
+        html += '</tbody></table><br /><br />';
+
+        // sem 1 - paidload
+        html += '<table style="width:70%; margin: auto; text-align:center; border: 1px solid"><tbody>';
+        html += '   <caption style="text-align:left"><b>Semester 1 - Paid Load</caption>'
+        html += '   <tr><th>SUBJECT</th><th>HOURS</th></tr>';
+        sem_1_pt.map(ele => {
+            html += '<tr><td>'+ele.course+'</td><td>'+ele.hour+'</td></tr>';
+        });
+        html += '</tbody></table><br /><br />';
+
+        // sem 2 - workload
+        html += '<table style="width:70%; margin: auto; text-align:center; border: 1px solid"><tbody>';
+        html += '   <caption style="text-align:left"><b>Semester 2 - Work Load</caption>'
+        html += '   <tr><th>SUBJECT</th><th>HOURS</th></tr>';
+        sem_2_ft.map(ele => {
+            html += '<tr><td>'+ele.course+'</td><td>'+ele.hour+'</td></tr>';
+        });
+        html += '</tbody></table><br /><br />';
+
+        // sem 2 - paidload
+        html += '<table style="width:70%; margin: auto; text-align:center; border: 1px solid"><tbody>';
+        html += '   <caption style="text-align:left"><b>Semester 2 - Paid Load</caption>'
+        html += '   <tr><th>SUBJECT</th><th>HOURS</th></tr>';
+        sem_2_pt.map(ele => {
+            html += '<tr><td>'+ele.course+'</td><td>'+ele.hour+'</td></tr>';
+        });
+        html += '</tbody></table><br /><br />';
+
+        // sum up 
+        html += 'In summary, <br />';
+        html += '<ul><li>Work Load: '+work_load+' hrs</li>';
+        html += '   <li>Paid Load: '+paid_load+' hr</li>';
+        html += '   <li>Grand Total: '+grand_total+' hrs.</li></ul>';
+
+        /* email body 
+            signature */
+        html += 'Thanks a lot! <br /><br />'
+        html += 'Warmest Regard, <br />';
+        html += 'EEE Undergraduate Programme Office <br /></p>';
+
         let requestBody = {
             sender: localStorage.getItem('email'),
             receiver: this.state.prof.email,
@@ -101,6 +181,7 @@ class ViewCalendar extends Component {
                     "The assigned courses are enclosed in the .ics file, so as the workload summary. Please kindly refer to attachment. \n\n" +
                     "Warmest Regards,\n" +
                     "Undergraduate Programme Office\n",
+            html: html,
             attachments: [{
                 filename: 'ClassSchedule.ics',
                 content: this.generateICS()
@@ -433,7 +514,8 @@ class ViewCalendar extends Component {
                 <div className="col-md-9"  id="summary" style={myupdate ? null : { display: 'none' }}>
                     <h1 className="inside-form">Summary of Contact Hours for Lecturer - {this.state.prof_initial_selected}</h1>
                     <div id="summary-container">
-                    <div className="sem1">
+                    <div className="d-flex flex-row" id="sem1">
+                        <div className="p-2 col-4">
                         <h5>Semester 1</h5>
                         <table>
                             <tbody>
@@ -444,7 +526,9 @@ class ViewCalendar extends Component {
                                 )
                             }
                             </tbody>
-                        </table><br /><br />
+                        </table>
+                        </div><br /><br />
+                        <div className="p-2 col-4">
                         <h5>Paid Load Sem 1</h5>
                         <table>
                             <tbody>
@@ -456,8 +540,10 @@ class ViewCalendar extends Component {
                             }
                             </tbody>
                         </table>
+                        </div>
                     </div>
-                    <div className="sem2">
+                    <div className="d-flex flex-row" id="sem2">
+                        <div className="p-2 col-4">
                         <h5>Semester 2</h5>
                         <table>
                             <tr><th>SUBJECT</th><th>HOURS</th></tr>
@@ -466,7 +552,9 @@ class ViewCalendar extends Component {
                                     <tr><td>{ele.course}</td><td>{ele.hour}</td></tr>
                                 )
                             }
-                        </table><br /><br />
+                        </table>
+                        </div><br /><br />
+                        <div className="p-2 col-4">
                         <h5>Paid Load Sem 2</h5>
                         <table>
                             <tr><th>SUBJECT</th><th>HOURS</th></tr>
@@ -476,6 +564,7 @@ class ViewCalendar extends Component {
                                 )
                             }
                         </table>
+                        </div>
                     </div>
                     <div className="sum">
                         <h5>Work Load: {work_load} hrs</h5>

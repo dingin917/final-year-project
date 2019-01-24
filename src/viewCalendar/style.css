@@ -105,19 +105,20 @@ button {
     margin: auto;
 }
 
-.sem1 {
-    float: left;
-}
-
-.sem2 {
-    margin-left: 400px;
-}
-
 table { 
     border: solid 5px gainsboro;
     text-align: center;
+    margin: 20px;
 }
 
 .sum { 
     float: right;
+}
+
+.sem1 {
+    justify-content: space-evenly !important;
+}
+
+.sem2 {
+    justify-content: space-evenly !important;
 }

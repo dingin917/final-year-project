@@ -435,15 +435,15 @@ class FindTimeSlots extends Component {
                     </form>
                 </div>
                 <div style={myupdate ? null : { display: 'none' }} id="update">
-                    <div id="update-container">
-                    <div id="assign" className="col-4">
+                    <div id="update-container" className="d-flex flex-row justify-content-center">
+                    <div id="assign" className="p-2 col-4">
                         <h1 className="inside-form">Update Teaching Assignment</h1>
                         <form className="form-group" onSubmit={this.handleUpdate}>
                             <label>Enter a course group </label>
                             <select ref="group" required>
                                 {grp_list.map((value, index) => <option key={index} value={value}>{value}</option>)}
                             </select>
-                            <label>Assign the teaching weeks From </label>
+                            <label>Assign the teaching weeks <br/> From </label>
                             <input className="form-control" type="text" ref="start_week" placeholder="e.g.1" required />
                             <label>To</label>
                             <input className="form-control" type="text" ref="end_week" placeholder="e.g.7" required />
@@ -452,7 +452,7 @@ class FindTimeSlots extends Component {
                             <input className="form-control" type="submit" value="Assign a teaching staff" />
                         </form>
                     </div>
-                    <div id="handover" className="col-4">
+                    <div id="handover" className="p-2 col-4">
                         <h1 className="inside-form">Handover Assignment</h1>
                         <form className="form-group" onSubmit={this.handleHandover}>
                             <label>Enter a course group </label>

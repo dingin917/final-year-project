@@ -14,16 +14,12 @@ label {
 }
 
 #assign {
-    float: left;
-    margin-left: 50px;
     background: url(1.jpg) no-repeat center center;
     background-size: cover;
-    margin-right: 10px;
+    /* margin-right: 80px; */
 }
 
 #handover {
-    margin-left: 650px;
-    margin-right: 50px;
     background: url(2.jpg) no-repeat center center;
     background-size: cover;
 }
@@ -95,6 +91,7 @@ label {
 
 #update-container {
     margin-bottom: 50px;
+    justify-content: space-evenly !important;
 }
 
 #container {
