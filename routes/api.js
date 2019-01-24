@@ -149,33 +149,40 @@ router.delete('/courses/:id', function(req, res, next){
 
 // add a user to db
 router.post('/user/register', function(req, res, next){
-    // Encrypt password before saving to database
-    let key = crypto.createCipher('aes-128-ecb', 'ntu-eee');
-    let encrypted = key.update(req.body.password, 'utf8', 'hex') + key.final('hex');
+    // authenticate registration authorization
+    if(req.body.cipher === 'ntu-eee') {
+        // Encrypt password before saving to database
+        let key = crypto.createCipher('aes-128-ecb', 'ntu-eee');
+        let encrypted = key.update(req.body.password, 'utf8', 'hex') + key.final('hex');
 
-    // Decrypt password 
-    let cipher = crypto.createDecipher('aes-128-ecb', 'ntu-eee');
-    let decrpted = cipher.update(encrypted,'hex', 'utf8') + cipher.final('utf8');
-    console.log("Decrpted password: " + decrpted);
+        // Decrypt password 
+        let cipher = crypto.createDecipher('aes-128-ecb', 'ntu-eee');
+        let decrpted = cipher.update(encrypted,'hex', 'utf8') + cipher.final('utf8');
+        console.log("Decrpted password: " + decrpted);
 
-    User.findOneAndUpdate({email: req.body.email},
-    { 
-        $set: {
-            'password': encrypted,
-            'username': req.body.username
-        }
-    }, 
-    {
-        new: true,
-        upsert: true
-    })
-    .then(function(user){
-        res.json(user);
-        console.log("POST Request for adding a user");
-        console.log("Request Body: " + JSON.stringify(req.body));
-        console.log("Response: " + user);
+        User.findOneAndUpdate({email: req.body.email},
+        { 
+            $set: {
+                'password': encrypted,
+                'username': req.body.username
+            }
+        }, 
+        {
+            new: true,
+            upsert: true
+        })
+        .then(function(user){
+            res.json(user);
+            console.log("POST Request for adding a user");
+            console.log("Request Body: " + JSON.stringify(req.body));
+            console.log("Response: " + user);
 
-    }).catch(next);
+        }).catch(next);
+
+    } else {
+        res.json(null);
+        console.log("Wrong Cipher, Authentication of Authorization Failed..");
+    }
 });
 
 // authenticate a user 

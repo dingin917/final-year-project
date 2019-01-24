@@ -1,0 +1,35 @@
+#info {
+    background: url(img.jpeg) no-repeat center center;
+    background-size: cover;
+    height: max-content;
+    text-align: center;
+    font-size: large;
+    padding-top: 100px;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 60px;
+}
+
+#info p {
+    margin: 50px 50px;
+}
+
+#registration-container {
+    margin: auto;
+}
+
+#register-form {
+    margin: auto;
+}
+
+#register-form h1 {
+    background-color: beige;
+}
+
+#logoff {
+    margin:auto;
+}
+
+#logoff p{
+    background-color: gainsboro;
+}
