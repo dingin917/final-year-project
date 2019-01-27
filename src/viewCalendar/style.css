@@ -60,13 +60,13 @@ button {
 .react-bs-table table th:nth-child(3) {
     white-space: nowrap;
     overflow: visible;
-    width: 130px;
+    width: 160px;
 
 }
 
 .react-bs-table table td:nth-child(3) {
     white-space: nowrap;
-    width: 130px;
+    width: 160px;
 }
 
 
