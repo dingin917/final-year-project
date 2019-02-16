@@ -58,7 +58,7 @@ var updateAssignee = function(req, res, next){
     }).catch(next);
 }
 
-function update_prof_profile(req, res, updated_course,next){
+function update_prof_profile(req, res, updated_course, next){
     res.json(updated_course);
     console.log("Updated Course: \n" + JSON.stringify(updated_course));
     var schedule = updated_course['schedule'].find(ele => ele.group == req.body.group);

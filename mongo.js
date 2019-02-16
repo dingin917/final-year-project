@@ -60,6 +60,21 @@ var profSchema = new Schema({
     }]
 });
 
+// implemented for clash check before assignment 
+var profAssignmentTimeSchema = new Schema({
+    initial: String,
+    schedule_time: [{
+        acad_yr: Number,
+        sem: Number,
+        time_assigned: [{
+            week: Number,
+            day: String,
+            start_time: String,
+            end_time: String
+        }]
+    }]
+});
+
 var dateSchema = new Schema({
     acad_yr: Number,
     sem: Number,
@@ -88,4 +103,5 @@ module.exports = {
                     Prof: mongoose.model('profs', profSchema),
                     WeekToDate: mongoose.model('weektodate', dateSchema),
                     User: mongoose.model('user', userSchema),
+                    ProfAssignmentTime: mongoose.model('profassignmenttime', profAssignmentTimeSchema)
                 };

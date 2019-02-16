@@ -10,11 +10,6 @@ const options = {
     closeText: 'close'
 };
 
-const selectRow = {
-    mode: 'checkbox',
-    bgColor: 'rgb(238, 193, 213)'
-};
-
 class FindTimeSlots extends Component {
     constructor(prop) {
         super(prop);
@@ -151,9 +146,20 @@ class FindTimeSlots extends Component {
             requestBody.name = this.state.prof_initial_selected_for_update;
 
             // reference -> https://stackoverflow.com/questions/31087237/mongodb-pull-unset-with-multiple-conditions
-            requestBody.weeks = week;
-            
-            fetch('/api/courses/assign', {
+            requestBody.weeks = week; // weeks left to be assigned
+
+            // for prof assignment clash check 
+            let clashReqBody = {};
+            clashReqBody.name = this.state.prof_initial_selected_for_update;
+            clashReqBody.acad_yr = this.state.course.acad_yr;
+            clashReqBody.sem = this.state.course.sem;
+            clashReqBody.start_week = this.refs.start_week.value;
+            clashReqBody.end_week = this.refs.end_week.value;
+            clashReqBody.start_time = schedule.start_time;
+            clashReqBody.end_time = schedule.end_time;
+            clashReqBody.day = schedule.day;
+
+            fetch('api/prof/clash-check', {
                 method: 'PUT',
                 mode: "cors",
                 cache: "no-cache",
@@ -163,20 +169,42 @@ class FindTimeSlots extends Component {
                 },
                 redirect: "follow",
                 referrer: "no-referrer",
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(clashReqBody)
             }).then(function (data) {
                 return data.json();
             }).then(json => {
                 if(json!=null){
-                    this.setState({
-                        course: json
-                    });
-                    console.log("Updated Course: \n" + this.state.course);
-                } else {
-                    alert('No record found in database, please try again.');
+                    alert('Clash detected for the assignment, please try with another timeslot. Clash details are shown below: \n' + json.msg);
                     return false;
+                } else {
+                    console.log("No clash detected.\n");
+                    // no clash detected, update assignment 
+                    fetch('/api/courses/assign', {
+                        method: 'PUT',
+                        mode: "cors",
+                        cache: "no-cache",
+                        credentials: "same-origin",
+                        headers: {
+                            "Content-Type": "application/json; charset=utf-8",
+                        },
+                        redirect: "follow",
+                        referrer: "no-referrer",
+                        body: JSON.stringify(requestBody)
+                    }).then(function (data) {
+                        return data.json();
+                    }).then(json => {
+                        if(json!=null){
+                            this.setState({
+                                course: json
+                            });
+                            console.log("Updated Course: \n" + this.state.course);
+                        } else {
+                            alert('No record found in database, please try again.');
+                            return false;
+                        }
+                    });
                 }
-            });
+            })
         } 
         else {
             alert('The weeks you seleted are not all available to update, please try again.');
@@ -476,7 +504,7 @@ class FindTimeSlots extends Component {
                             <h1>Teaching Assignment Form - {mycourse.type}</h1>
                         </div>
                         <div id='table-container'>
-                            <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} keyField='id' exportCSV>
+                            <BootstrapTable ref='tab' data={input} options={options} keyField='id' exportCSV>
                             {thc}
                             </BootstrapTable>
                         </div>

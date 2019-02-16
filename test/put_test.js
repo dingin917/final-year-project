@@ -27,6 +27,33 @@ describe('PUT request testing', function () {
                 }]
         });
 
+        var tutorial_ft = new Course({
+            "acad_yr": 2018,
+            "sem": 1,
+            "category": "fulltime",
+            "code": "EExxxx",
+            "type": "TUT",
+            "schedule": [
+                {
+                    "group": "TA01",                      
+                    "teaching_weeks": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                    "day": "F",
+                    "start_time": "1030",
+                    "end_time": "1130",
+                    "venue": "TR+88",
+                    "unscheduled_weeks": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                },
+                {
+                    "group": "TA02",                      
+                    "teaching_weeks": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                    "day": "F",
+                    "start_time": "1030",
+                    "end_time": "1130",
+                    "venue": "TR+89",
+                    "unscheduled_weeks": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+                }]
+        });
+
         var course_pt = new Course({
             "acad_yr": 2018,
             "sem": 1,
@@ -47,18 +74,19 @@ describe('PUT request testing', function () {
 
         course_ft.save().then(function () {
             course_pt.save().then(function() {
-                var prof = new Prof({
-                    "initial": "DJ",
-                    "fullname": "Ding Jin",
-                    "title": "Student",
-                    "teachingarea": "Info-Communication",
-                    "email": "jin.ding@outlook.com"
+                tutorial_ft.save().then(function(){
+                    var prof = new Prof({
+                        "initial": "DJ",
+                        "fullname": "Ding Jin",
+                        "title": "Student",
+                        "teachingarea": "Info-Communication",
+                        "email": "jin.ding@outlook.com"
+                    });
+        
+                    prof.save().then(function () {
+                        done();
+                    });
                 });
-    
-                prof.save().then(function () {
-                    done();
-                });
-
             });
         });
     });

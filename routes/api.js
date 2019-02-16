@@ -18,6 +18,7 @@ const ConvertWeekToDates = require('../server/convert_weektodate');
 const UpdateAssignee = require('../server/update_assignee');
 const Handover = require('../server/handover');
 const SendEmail = require('../server/send_email');
+const ClashCheckProf = require('../server/clash_check_prof');
 
 // upload teaching profiles to db in csv format
 router.post('/teachers/upload', upload.single('file'), function (req, res, next) {
@@ -44,6 +45,11 @@ router.put('/courses/handover', function(req, res, next){
     Handover.Handover(req, res, next);
 });
 
+// clash check for prof assignment
+router.put('/prof/clash-check', function(req, res, next){
+    ClashCheckProf.clashCheckProf(req, res, next);
+})
+
 // send email to prof 
 router.post('/email', function(req, res, next){
     SendEmail.SendEmail(req, res, next);
@@ -54,9 +60,9 @@ router.get('/search_prof', function(req, res, next){
     Prof.aggregate([{$project: {initial: 1, fullname: 1}}])
     .then(function(result){
         res.json(result);
-        console.log("GET Request for course list used to search");
-        console.log("URL Request Params: " + JSON.stringify(req.query));
-        console.log("Response: " + result);
+        // console.log("GET Request for course list used to search");
+        // console.log("URL Request Params: " + JSON.stringify(req.query));
+        // console.log("Response: " + result);
     })
     .catch(next);
 });
@@ -71,9 +77,9 @@ router.get('/search_course', function(req, res, next){
 	        courseList.push({code:ele});
         })
         res.json(courseList);
-        console.log("GET Request for course list used to search");
-        console.log("URL Request Params: " + JSON.stringify(req.query));
-        console.log("Response: " + courseList);
+        // console.log("GET Request for course list used to search");
+        // console.log("URL Request Params: " + JSON.stringify(req.query));
+        // console.log("Response: " + courseList);
     })
     .catch(next);
 });
