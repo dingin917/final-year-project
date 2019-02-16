@@ -198,6 +198,7 @@ class FindTimeSlots extends Component {
                                 course: json
                             });
                             console.log("Updated Course: \n" + this.state.course);
+                            alert('You have successfully updated the assignment.');
                         } else {
                             alert('No record found in database, please try again.');
                             return false;
@@ -344,6 +345,8 @@ class FindTimeSlots extends Component {
                             }
                         });
                     });
+
+                    alert('You have successfully handovered the assignment.');
                     
                 }
             });
