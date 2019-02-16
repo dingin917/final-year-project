@@ -41,24 +41,6 @@ var clashCheckProf = function(req, res, next){
                 } else {
                     flag.push(i); 
                 }
-                /*
-                time_filtered.forEach(ele => {
-                    if (ele.start_time < start_time) {
-                        if(ele.end_time <= start_time) {
-                            // ok
-                            return;
-                        } else {
-                            // clash detected
-                        }
-                    } else {
-                        if (ele.start_time >= end_time) {
-                            // ok
-                        } else {
-                            // clash detected
-                        }
-                    }
-                });
-                */
             }
 
             if(flag.length>0) {
@@ -68,7 +50,7 @@ var clashCheckProf = function(req, res, next){
                 update_prof_assignment_time(req, res, next, time_assigned_update_arr);
             }
         }
-    }).catch();
+    }).catch(next);
 }
 
 function update_prof_assignment_time(req, res, next, time_assigned_update){
@@ -102,11 +84,11 @@ function update_prof_assignment_time(req, res, next, time_assigned_update){
                 }
             ).then(function(new_timeassigned) {
                 console.log("Created prof assignment time:\n" + JSON.stringify(new_timeassigned));
-            }).catch();
+            }).catch(next);
         } else {
             console.log("Updated prof assignment time:\n" + JSON.stringify(new_profassignmenttime));
         }
-    }).catch();
+    }).catch(next);
 }
 
 module.exports = {  

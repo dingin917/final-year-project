@@ -75,7 +75,7 @@ describe('PUT request testing', function () {
         course_ft.save().then(function () {
             course_pt.save().then(function() {
                 tutorial_ft.save().then(function(){
-                    var prof = new Prof({
+                    let prof1 = new Prof({
                         "initial": "DJ",
                         "fullname": "Ding Jin",
                         "title": "Student",
@@ -83,8 +83,17 @@ describe('PUT request testing', function () {
                         "email": "jin.ding@outlook.com"
                     });
         
-                    prof.save().then(function () {
-                        done();
+                    prof1.save().then(function () {
+                        var prof2 = new Prof({
+                            "initial": "JS",
+                            "fullname": "Jon Snow",
+                            "title": "Student",
+                            "teachingarea": "Info-Communication",
+                            "email": "jon.snow@outlook.com"
+                        });
+                        prof2.save().then(function () {
+                            done();
+                        });
                     });
                 });
             });

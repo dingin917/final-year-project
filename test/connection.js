@@ -23,8 +23,10 @@ beforeEach(function(done){
     // Drop the collection
     mongoose.connection.collections.profs.drop(function(){
         mongoose.connection.collections.courses.drop(function(){
-            done();
-        })
+            mongoose.connection.collections.profassignmenttimes.drop(function(){
+                done();
+            });
+        });
     });
 });
 
@@ -49,7 +51,6 @@ var courseSchema = new Schema({
         unscheduled_weeks: [Number]
     }],
 });
-
 
 var courseScheduleSchema = new Schema({
     code: String,
@@ -76,10 +77,41 @@ var profSchema = new Schema({
     }]
 });
 
+// implemented for clash check before assignment 
+var profAssignmentTimeSchema = new Schema({
+    initial: String,
+    schedule_time: [{
+        acad_yr: Number,
+        sem: Number,
+        time_assigned: [{
+            week: Number,
+            day: String,
+            start_time: String,
+            end_time: String
+        }]
+    }]
+});
+
 var dateSchema = new Schema({
     acad_yr: Number,
     sem: Number,
     weektodate: [{week: Number, start_date: Date, end_date: Date}]
+});
+
+var userSchema = new Schema({
+    email: {
+        type: String,
+        unique: true,
+        trim: true
+    },
+
+    password: {
+        type: String,
+    },
+
+    username: {
+        type: String,
+    }
 });
 
 // Export Model
@@ -87,4 +119,6 @@ module.exports = {
                     Course: mongoose.model('courses', courseSchema), 
                     Prof: mongoose.model('profs', profSchema),
                     WeekToDate: mongoose.model('weektodate', dateSchema),
+                    User: mongoose.model('user', userSchema),
+                    ProfAssignmentTime: mongoose.model('profassignmenttime', profAssignmentTimeSchema)
                 };

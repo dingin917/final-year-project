@@ -122,20 +122,20 @@ class FindTimeSlots extends Component {
         event.preventDefault();
         
         // validate before request for update
-        var updating_week = [];
-        for (var i=parseInt(this.refs.start_week.value); i<=parseInt(this.refs.end_week.value); i++){
+        let updating_week = [];
+        for (let i=parseInt(this.refs.start_week.value); i<=parseInt(this.refs.end_week.value); i++){
             updating_week.push(i);
         }
 
-        var schedule = this.state.course.schedule.find(ele => ele.group == this.refs.group.value);
+        let schedule = this.state.course.schedule.find(ele => ele.group == this.refs.group.value);
 
         if (schedule.unscheduled_weeks != null && updating_week.every(ele => schedule.unscheduled_weeks.indexOf(ele) > -1)) {
-            var week = schedule.unscheduled_weeks.filter(ele => updating_week.indexOf(ele)<0);
-            var scheduled_weeks = schedule.scheduled_weeks.find(e => e.assignee == this.state.prof_initial_selected_for_update);
+            let week = schedule.unscheduled_weeks.filter(ele => updating_week.indexOf(ele)<0);
+            let scheduled_weeks = schedule.scheduled_weeks.find(e => e.assignee == this.state.prof_initial_selected_for_update);
             if (scheduled_weeks != null) {
                 updating_week = updating_week.concat(scheduled_weeks.week);
             }
-            var requestBody = {};
+            let requestBody = {};
             requestBody.acad_yr = this.state.course.acad_yr;
             requestBody.sem = this.state.course.sem;
             requestBody.category = this.refs.category.value;
@@ -148,7 +148,7 @@ class FindTimeSlots extends Component {
             // reference -> https://stackoverflow.com/questions/31087237/mongodb-pull-unset-with-multiple-conditions
             requestBody.weeks = week; // weeks left to be assigned
 
-            // for prof assignment clash check 
+            // for prof assignment clash check before update
             let clashReqBody = {};
             clashReqBody.name = this.state.prof_initial_selected_for_update;
             clashReqBody.acad_yr = this.state.course.acad_yr;
@@ -214,89 +214,138 @@ class FindTimeSlots extends Component {
     handleHandover(event){
         event.preventDefault();
         // validate before request for update
-        var updating_week = [];
-        for (var i=parseInt(this.refs.newstart_week.value); i<=parseInt(this.refs.newend_week.value); i++){
+        let updating_week = [];
+        for (let i=parseInt(this.refs.newstart_week.value); i<=parseInt(this.refs.newend_week.value); i++){
             updating_week.push(i);
         }
 
-        var schedule = this.state.course.schedule.find(ele => ele.group === this.refs.newgroup.value);
+        let schedule = this.state.course.schedule.find(ele => ele.group === this.refs.newgroup.value);
 
         if (schedule.unscheduled_weeks == null || updating_week.every(ele => schedule.unscheduled_weeks.indexOf(ele)<0)) {
-            var affected_assign = schedule.scheduled_weeks.filter(ele => ele.week.some(e => updating_week.indexOf(e)>-1));            
-            affected_assign.forEach(assign => {
-                var w = assign.week;
-                for (var i=0; i<w.length; i++){
-                    if(updating_week.indexOf(w[i])>-1){
-                        // set to 0 temporarily and delete later
-                        w[i] = 0;
-                    }
-                }
+            // for prof assignment clash check before handover
+            let clashReqBody = {};
+            clashReqBody.name = this.state.prof_initial_selected_for_handover;
+            clashReqBody.acad_yr = this.state.course.acad_yr;
+            clashReqBody.sem = this.state.course.sem;
+            clashReqBody.start_week = this.refs.newstart_week.value;
+            clashReqBody.end_week = this.refs.newend_week.value;
+            clashReqBody.start_time = schedule.start_time;
+            clashReqBody.end_time = schedule.end_time;
+            clashReqBody.day = schedule.day;
 
-                // delete elements with value = 0 from week array 
-                for(var i=w.length-1; i>=0; i--) {
-                    if(w[i] === 0) {
-                       w.splice(i, 1);
-                    }
-                }
-                console.log("updated weeks \n" + JSON.stringify(w));
-            });
-            console.log("affected_assign \n" + JSON.stringify(affected_assign));
+            fetch('api/prof/clash-check', {
+                method: 'PUT',
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                redirect: "follow",
+                referrer: "no-referrer",
+                body: JSON.stringify(clashReqBody)
+            }).then(function (data) {
+                return data.json();
+            }).then(json => {
+                if(json!=null) {
+                    alert('Clash detected for the handover assignment, please try with another timeslot. Clash details are shown below: \n' + json.msg);
+                    return false;
+                } else {
+                    console.log("No clash detected.\n");
+                    // no clash detected, handover assignment 
+                    let affected_assign = schedule.scheduled_weeks.filter(ele => ele.week.some(e => updating_week.indexOf(e)>-1));            
+                    affected_assign.forEach(assign => {
+                        assign.original_weeks = [];
+                        let w = assign.week;
+                        for (let i=0; i<w.length; i++){
+                            assign.original_weeks.push(w[i]);
+                            if(updating_week.indexOf(w[i])>-1){
+                                // set to 0 temporarily and delete later
+                                w[i] = 0;
+                            }
+                        }
 
-            // update the [course] and [prof] db schema with affected profile  
-            var affected_prof = Array.from(new Set(affected_assign.map(e => e.assignee)));
-            affected_prof.push(this.state.prof_initial_selected_for_handover);
-
-            var find_schedule = schedule.scheduled_weeks.find(e => e.assignee === this.state.prof_initial_selected_for_handover);
-            var updated_week = [];
-            if(find_schedule!=undefined){
-                var existing_week = find_schedule.week;
-                updated_week = updating_week.concat(existing_week);
-            } else {
-                updated_week = updating_week;
-            }
-
-            affected_assign.push({'assignee': this.state.prof_initial_selected_for_handover, 'week': updated_week});
-
-            affected_prof.forEach(prof => {
-                var requestBody = {};
-                var scheduled_weeks = affected_assign.find(e => e.assignee === prof);
-                console.log(scheduled_weeks);
-                if (!scheduled_weeks.hasOwnProperty('week')){
-                    scheduled_weeks.week = [];
-                }
-            
-                requestBody.name = prof;
-                requestBody.acad_yr = this.state.course.acad_yr;
-                requestBody.sem = this.state.course.sem;
-                requestBody.code = this.state.course.code;
-                requestBody.type = this.state.course.type;
-                requestBody.category = this.refs.category.value;
-                requestBody.group = this.refs.newgroup.value;
-                requestBody.week = scheduled_weeks.week; // updated 
-                fetch('/api/courses/handover', {
-                    method: 'PUT',
-                    mode: "cors",
-                    cache: "no-cache",
-                    credentials: "same-origin",
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                    },
-                    redirect: "follow",
-                    referrer: "no-referrer",
-                    body: JSON.stringify(requestBody)
-                }).then(function (data) {
-                    return data.json();
-                }).then(json => {
-                    if(json!=null){
-                        this.setState({
-                            course: json
-                        });
-                        console.log("Updated Course - Final \n" + JSON.stringify(json));
+                        // delete elements with value = 0 from week array 
+                        for(let i=w.length-1; i>=0; i--) {
+                            if(w[i] === 0) {
+                                w.splice(i, 1);
+                            }
+                        }
+                        console.log("updated weeks \n" + JSON.stringify(w));
+                    });
+                    console.log("affected_assign \n" + JSON.stringify(affected_assign));
+        
+                    // update the [course] and [prof] db schema with affected profile  
+                    let affected_prof = Array.from(new Set(affected_assign.map(e => e.assignee)));
+                    affected_prof.push(this.state.prof_initial_selected_for_handover);
+        
+                    let find_schedule = schedule.scheduled_weeks.find(e => e.assignee === this.state.prof_initial_selected_for_handover);
+                    let updated_week = [];
+                    if(find_schedule!=undefined){
+                        let existing_week = find_schedule.week;
+                        updated_week = updating_week.concat(existing_week);
                     } else {
-                        alert('Error occurred when updating database, please try again.');
-                        return false;
+                        updated_week = updating_week;
                     }
-                });
+        
+                    affected_assign.push({'assignee': this.state.prof_initial_selected_for_handover, 'week': updated_week});
+        
+                    affected_prof.forEach(prof => {
+                        let requestBody = {};
+                        let scheduled_weeks = affected_assign.find(e => e.assignee === prof);
+                        console.log(scheduled_weeks);
+                        if (!scheduled_weeks.hasOwnProperty('week')){
+                            scheduled_weeks.week = [];
+                        }
+                        if (!scheduled_weeks.hasOwnProperty('original_weeks')){
+                            scheduled_weeks.original_weeks = [];
+                        }
+
+                        if(prof === this.state.prof_initial_selected_for_handover) {
+                            requestBody.flag = true; // flag if for the handover-to prof
+                        } else {
+                            requestBody.flag = false;
+                        }
+                    
+                        requestBody.name = prof;
+                        requestBody.acad_yr = this.state.course.acad_yr;
+                        requestBody.sem = this.state.course.sem;
+                        requestBody.code = this.state.course.code;
+                        requestBody.type = this.state.course.type;
+                        requestBody.category = this.refs.category.value;
+                        requestBody.group = this.refs.newgroup.value;
+                        requestBody.week = scheduled_weeks.week; // updated assigned weeks
+                        requestBody.original_weeks = scheduled_weeks.original_weeks; // original assigned weeks
+                        requestBody.start_time = schedule.start_time;
+                        requestBody.end_time = schedule.end_time;
+                        requestBody.day = schedule.day;
+                        fetch('/api/courses/handover', {
+                            method: 'PUT',
+                            mode: "cors",
+                            cache: "no-cache",
+                            credentials: "same-origin",
+                            headers: {
+                                "Content-Type": "application/json; charset=utf-8",
+                            },
+                            redirect: "follow",
+                            referrer: "no-referrer",
+                            body: JSON.stringify(requestBody)
+                        }).then(function (data) {
+                            return data.json();
+                        }).then(json => {
+                            if(json!=null){
+                                this.setState({
+                                    course: json
+                                });
+                                console.log("Updated Course - Final \n" + JSON.stringify(json));
+                            } else {
+                                alert('Error occurred when updating database, please try again.');
+                                return false;
+                            }
+                        });
+                    });
+                    
+                }
             });
         } else {
             alert('The weeks you seleted are not all available to handover, please try again.');
