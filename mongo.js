@@ -75,6 +75,25 @@ var profAssignmentTimeSchema = new Schema({
     }]
 });
 
+// implemented for Room Utilisation Calendar
+// https://stackoverflow.com/questions/33846939/mongoose-schema-error-cast-to-string-failed-for-value-when-pushing-object-to
+// https://mongoosejs.com/docs/guide.html#typeKey
+var venueUtilSchema = new Schema({
+    venue: String,
+    acad_yr: Number,
+    sem: Number,
+    scheduled_time: [{
+        course: String,
+        courseType: String,
+        group: String,
+        day: String,
+        start_time: String,
+        end_time: String,
+        week: [Number]
+    }]
+}); 
+
+
 var dateSchema = new Schema({
     acad_yr: Number,
     sem: Number,
@@ -103,5 +122,6 @@ module.exports = {
                     Prof: mongoose.model('profs', profSchema),
                     WeekToDate: mongoose.model('weektodate', dateSchema),
                     User: mongoose.model('user', userSchema),
-                    ProfAssignmentTime: mongoose.model('profassignmenttime', profAssignmentTimeSchema)
+                    ProfAssignmentTime: mongoose.model('profassignmenttime', profAssignmentTimeSchema),
+                    VenueUtil: mongoose.model('venueutil', venueUtilSchema)
                 };

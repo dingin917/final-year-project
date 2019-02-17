@@ -24,7 +24,9 @@ beforeEach(function(done){
     mongoose.connection.collections.profs.drop(function(){
         mongoose.connection.collections.courses.drop(function(){
             mongoose.connection.collections.profassignmenttimes.drop(function(){
-                done();
+                mongoose.connection.collections.venueutils.drop(function(){
+                    done();
+                });
             });
         });
     });
@@ -92,6 +94,22 @@ var profAssignmentTimeSchema = new Schema({
     }]
 });
 
+// implemented for Room Utilisation Calendar
+var venueUtilSchema = new Schema({
+    venue: String,
+    acad_yr: Number,
+    sem: Number,
+    scheduled_time: [{
+        course: String,
+        courseType: String,
+        group: String,
+        day: String,
+        start_time: String,
+        end_time: String,
+        week: [Number]
+    }]
+}); 
+
 var dateSchema = new Schema({
     acad_yr: Number,
     sem: Number,
@@ -120,5 +138,6 @@ module.exports = {
                     Prof: mongoose.model('profs', profSchema),
                     WeekToDate: mongoose.model('weektodate', dateSchema),
                     User: mongoose.model('user', userSchema),
-                    ProfAssignmentTime: mongoose.model('profassignmenttime', profAssignmentTimeSchema)
+                    ProfAssignmentTime: mongoose.model('profassignmenttime', profAssignmentTimeSchema),
+                    VenueUtil: mongoose.model('venueutil', venueUtilSchema)
                 };

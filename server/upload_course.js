@@ -5,6 +5,7 @@ const fs = require('fs');
 // import from mongo.js 
 const Mongo = require('../mongo');
 const Course = Mongo.Course;
+const VenueUtil = Mongo.VenueUtil;
 
 
 let readCSV = function CSVToArray(req, res, next){
@@ -117,10 +118,53 @@ let readCSV = function CSVToArray(req, res, next){
         }, { new: true, upsert: true })
         .then(function(result){
           console.log(JSON.stringify(result));
-        })
-        .catch(next);
+          // update venue utilization db 
+          VenueUtil.findOneAndUpdate({'venue': arow[8], 'acad_yr': acad_yr, 'sem': sem}, 
+            {
+              $push: {
+                'scheduled_time': {
+                  'course': arow[2],
+                  'courseType': arow[3],
+                  'group': arow[4],
+                  'day': arow[5],
+                  'start_time': arow[6],
+                  'end_time': arow[7],
+                  'week': teaching_weeks,
+                }
+              }
+            },
+            {
+              new: true, upsert: true
+            }
+          ).then(function(updated_venue){
+            if(updated_venue == null){
+              VenueUtil.findOneAndUpdate({'venue': arow[8]}, 
+              {
+                $push: {
+                  'acad_yr': acad_yr,
+                  'sem': sem,
+                  'scheduled_time': {
+                    'course': arow[2],
+                    'courseType': arow[3],
+                    'group': arow[4],
+                    'day': arow[5],
+                    'start_time': arow[6],
+                    'end_time': arow[7],
+                    'week': teaching_weeks,
+                  }
+                }
+              }, 
+              {
+                new: true, upsert: true
+              }).then(function(new_venue){
+                console.log("Created new scheduled_time for venue\n" + JSON.stringify(new_venue));
+              }).catch(next);
+            } else {
+              console.log("Updated venue\n" + JSON.stringify(updated_venue));
+            }
+          }).catch(next);
+        }).catch(next);
       }
-
     });
 }
 
