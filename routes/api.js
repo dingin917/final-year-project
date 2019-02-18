@@ -68,6 +68,23 @@ router.get('/search_prof', function(req, res, next){
     .catch(next);
 });
 
+// retrieve venue list for search 
+router.get('/search_venue', function(req, res, next){
+    VenueUtil.find({'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
+    .then(function(result){
+        let venueSet = [...new Set(result.map(item => item.venue))];
+        let venueList = [];
+        venueSet.forEach(ele => {
+            venueList.push({venue: ele});
+        });
+        res.json(venueList);
+        console.log("GET Request for venue list used to search");
+        console.log("URL Request Params: " + JSON.stringify(req.query));
+        console.log("Response: " + JSON.stringify(venueList));
+    })
+    .catch(next);
+});
+
 // retrieve course list for search 
 router.get('/search_course', function(req, res, next){
     Course.find({'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
@@ -76,7 +93,7 @@ router.get('/search_course', function(req, res, next){
         let courseList = [];
         courseSet.forEach(ele => {
 	        courseList.push({code:ele});
-        })
+        });
         res.json(courseList);
         // console.log("GET Request for course list used to search");
         // console.log("URL Request Params: " + JSON.stringify(req.query));

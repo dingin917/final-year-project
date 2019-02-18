@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './style.css';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Autosuggest_Venue from '../Autosuggest_Venue';
 
 const options = {
     exportCSVText: 'export to csv',
@@ -15,15 +16,82 @@ class RoomUtil extends Component {
         this.state = {
             generate: false,
             venueUtil: [{'acad_yr': Number, 'sem': Number, 'venue': String, 'scheduled_time': []}],
-            dates: []
+            dates: [],
+            acad_yr: Number,
+            sem: Number,
+            venue_list_for_search: [],
+            venue_selected: String
         };
+        this.handleYearChange = this.handleYearChange.bind(this);
+        this.handleSemChange = this.handleSemChange.bind(this);
+        this.handleSuggestSelected = this.handleSuggestSelected.bind(this);
         this.handleGenerateCalendar = this.handleGenerateCalendar.bind(this);
+    }
+
+    handleYearChange(event){
+        event.preventDefault();
+        this.setState({
+            acad_yr: this.refs.acad_yr.value
+        });
+        if(this.state.sem){
+            fetch('/api/search_venue?acad_yr=' + this.refs.acad_yr.value + '&sem=' + this.state.sem, {
+                method: 'GET',
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                redirect: "follow",
+                referrer: "no-referrer"
+            }).then(function(data) {
+                return data.json();
+            }).then(json => {
+                this.setState({
+                    venue_list_for_search: json
+                });
+            })
+        }
+    }
+
+
+    handleSemChange(event){
+        event.preventDefault();
+        this.setState({
+            sem: this.refs.sem.value
+        });
+        if(this.state.acad_yr){
+            fetch('/api/search_venue?acad_yr=' + this.state.acad_yr + '&sem=' + this.refs.sem.value, {
+                method: 'GET',
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                redirect: "follow",
+                referrer: "no-referrer"
+            }).then(function(data) {
+                return data.json();
+            }).then(json => {
+                this.setState({
+                    venue_list_for_search: json
+                });
+            })
+        }
+    }
+
+    handleSuggestSelected(event, {suggestionValue}){
+        event.preventDefault();
+        this.setState({
+            venue_selected: suggestionValue
+        });
     }
 
     handleGenerateCalendar(event) {
         event.preventDefault();
 
-        fetch('/api/venue/util?venue=' + this.refs.venue.value + '&acad_yr=' + this.refs.acad_yr.value +'&sem=' + this.refs.sem.value, {
+        fetch('/api/venue/util?venue=' + this.state.venue_selected + '&acad_yr=' + this.state.acad_yr +'&sem=' + this.state.sem, {
             method: 'GET',
             mode: "cors",
             cache: "no-cache",
@@ -43,7 +111,7 @@ class RoomUtil extends Component {
                     venueUtil: json
                 });
 
-                fetch('/api/dates?acad_yr=' + this.refs.acad_yr.value +'&sem=' + this.refs.sem.value)
+                fetch('/api/dates?acad_yr=' + this.state.acad_yr +'&sem=' + this.state.sem)
                 .then(function(result){
                     return result.json();
                 })
@@ -171,12 +239,12 @@ class RoomUtil extends Component {
                 <div className="col-6" id="container">
                     <h1 className="inside-form"> View Room Utilization </h1>
                     <form id="search" className="form-group" onSubmit={this.handleGenerateCalendar}>
-                        <label>Enter a venue </label>
-                        <input className="form-control" type="text" ref="venue" defaultValue="S2-B5C-07" required></input>
                         <label>Enter academic year</label>
-                        <input className="form-control" type="text" ref="acad_yr" placeholder="e.g.2018" required />
+                        <input className="form-control" type="text" ref="acad_yr" placeholder="e.g.2018" onChange={this.handleYearChange} required />
                         <label>Enter semester</label>
-                        <input className="form-control" type="text" ref="sem" placeholder="e.g.2" required />
+                        <input className="form-control" type="text" ref="sem" placeholder="e.g.2" onChange={this.handleSemChange} required />
+                        <label>Enter a venue </label>
+                        <Autosuggest_Venue venues={this.state.venue_list_for_search} handleSuggestSelected={this.handleSuggestSelected} />
                         <input className="form-control" type="submit" value="Find Schedule" />
                     </form>
                 </div>
