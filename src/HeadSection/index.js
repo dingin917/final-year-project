@@ -26,6 +26,9 @@ class HeadSection extends Component {
                                     <a className="nav-link" href="/summary">Summary</a>
                                 </li>
                                 <li className="nav-item active">
+                                    <a className="nav-link" href="/room">Room</a>
+                                </li>
+                                <li className="nav-item active">
                                     <a className="nav-link" href="/register">Register</a>
                                 </li>
                                 <li className="nav-item active">

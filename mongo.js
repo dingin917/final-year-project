@@ -83,12 +83,14 @@ var venueUtilSchema = new Schema({
     acad_yr: Number,
     sem: Number,
     scheduled_time: [{
+        // x-axis
         course: String,
-        courseType: String,
+        courseType: String,     // cannot use type: String here 
         group: String,
         day: String,
         start_time: String,
         end_time: String,
+        // y-axis
         week: [Number]
     }]
 }); 

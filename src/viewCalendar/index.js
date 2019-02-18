@@ -11,11 +11,6 @@ const options = {
     closeText: 'close'
 };
 
-const selectRow = {
-    mode: 'checkbox',
-    bgColor: 'rgb(238, 193, 213)'
-};
-
 class ViewCalendar extends Component {
     constructor(prop) {
         super(prop);
@@ -505,7 +500,7 @@ class ViewCalendar extends Component {
                             Download as .ics file 
                         </button>
                         <div id='table-container'>
-                        <BootstrapTable ref='tab' data={input} options={options} selectRow={selectRow} keyField='id' exportCSV>
+                        <BootstrapTable ref='tab' data={input} options={options} keyField='id' exportCSV>
                         {thc}
                         </BootstrapTable>
                         </div>

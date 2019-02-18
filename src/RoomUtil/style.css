@@ -1,0 +1,120 @@
+#course-container {
+    padding-top: 60px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly !important;
+}
+
+#table {
+    font-size: 1em;
+    margin: auto;
+}
+
+label {
+    display: block;
+}
+
+button {
+    font-size: 15px;
+}
+
+#info {
+    background: url(img.jpeg) no-repeat center center;
+    background-size: cover;
+    height: max-content;
+    text-align: center;
+    font-size: large;
+    padding-top: 100px;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 60px;
+}
+
+#info p {
+    margin: 50px 50px;
+}
+
+#container {
+    margin:auto;
+}
+
+#table-container {
+    overflow-x: scroll;
+}
+
+.react-bs-table table td {
+    white-space: nowrap;
+    /* width: 60%; */
+}
+
+.react-bs-table table td:hover {
+    overflow: visible;
+}
+
+/* TODO: change to dynamically follow the number of slots per 110px */
+.react-bs-table table th {
+    white-space: nowrap;
+    overflow: visible;
+    /* width: 60%; */
+}
+
+.react-bs-table table th:nth-child(3) {
+    white-space: nowrap;
+    overflow: visible;
+    width: 160px;
+
+}
+
+.react-bs-table table td:nth-child(3) {
+    white-space: nowrap;
+    width: 160px;
+}
+
+
+.react-bs-table table th:nth-child(2) {
+    white-space: nowrap;
+    overflow: visible;
+    width: 160px;
+}
+
+.react-bs-table table td:nth-child(2) {
+    white-space: nowrap;
+    width: 160px;
+}
+
+.react-bs-table table th:nth-child(1) {
+    white-space: nowrap;
+    overflow: visible;
+    width: 100px;
+}
+
+.react-bs-table table td:nth-child(1) {
+    white-space: nowrap;
+    width: 100px;
+}
+
+.react-bs-table-csv-btn {
+    background-color: slategrey;
+    border: slategray;
+}
+
+.react-bs-table-csv-btn:hover {
+    background-color: darkgray;
+    border: darkgray;
+}
+
+#title {
+    font-weight: 550;
+    color: slategrey;
+}
+
+#summary {
+    padding-top: 150px;
+    margin: auto;
+}
+
+table { 
+    border: solid 5px gainsboro;
+    text-align: center;
+    margin: 20px;
+}

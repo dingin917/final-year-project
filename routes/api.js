@@ -10,6 +10,7 @@ const Course = Mongo.Course;
 const Prof = Mongo.Prof;
 const WeekToDate = Mongo.WeekToDate;
 const User = Mongo.User;
+const VenueUtil = Mongo.VenueUtil;
 
 // import from server folder
 const LoadProfile = require('../server/load_profile');
@@ -103,7 +104,7 @@ router.get('/courses', function(req, res, next){
         res.json(course);
         console.log("GET Request for viewing a course detail");
         console.log("URL Request Params: " + JSON.stringify(req.query));
-        console.log("Response: " + course);
+        console.log("Response: " + JSON.stringify(course));
     })
     .catch(next);
 });
@@ -150,6 +151,17 @@ router.delete('/courses/:id', function(req, res, next){
         res.json({type: 'DELETE'});
         console.log("DELETE Request");
         console.log("Request Body: " + req.params);
+    }).catch(next);
+});
+
+// retrieve venue utilization info 
+router.get('/venue/util', function(req, res, next){
+    VenueUtil.findOne({'venue': req.query.venue, 'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
+    .then(function(venueUtil){
+        res.json(venueUtil);
+        console.log("GET Request for venue utilization");
+        console.log("URL Request Params: " + JSON.stringify(req.query));
+        console.log("Response: " + JSON.stringify(venueUtil));
     }).catch(next);
 });
 
