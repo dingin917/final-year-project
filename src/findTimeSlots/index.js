@@ -159,7 +159,7 @@ class FindTimeSlots extends Component {
             clashReqBody.end_time = schedule.end_time;
             clashReqBody.day = schedule.day;
 
-            fetch('api/prof/clash-check', {
+            fetch('/api/prof/clash-check', {
                 method: 'PUT',
                 mode: "cors",
                 cache: "no-cache",

@@ -20,6 +20,7 @@ const UpdateAssignee = require('../server/update_assignee');
 const Handover = require('../server/handover');
 const SendEmail = require('../server/send_email');
 const ClashCheckProf = require('../server/clash_check_prof');
+const ClashCheckVenue = require('../server/clash_check_venue');
 
 // upload teaching profiles to db in csv format
 router.post('/teachers/upload', upload.single('file'), function (req, res, next) {
@@ -49,7 +50,12 @@ router.put('/courses/handover', function(req, res, next){
 // clash check for prof assignment
 router.put('/prof/clash-check', function(req, res, next){
     ClashCheckProf.clashCheckProf(req, res, next);
-})
+});
+
+// clash check for venue 
+router.put('/venue/clash-check', function(req, res, next){
+    ClashCheckVenue.clashCheckVenue(req, res, next);
+});
 
 // send email to prof 
 router.post('/email', function(req, res, next){

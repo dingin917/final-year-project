@@ -20,7 +20,8 @@ class RoomUtil extends Component {
             acad_yr: Number,
             sem: Number,
             venue_list_for_search: [],
-            venue_selected: String
+            venue_selected: String,
+            clash_msg: []
         };
         this.handleYearChange = this.handleYearChange.bind(this);
         this.handleSemChange = this.handleSemChange.bind(this);
@@ -118,7 +119,38 @@ class RoomUtil extends Component {
                 .then(json => {
                     this.setState({
                         dates: json.weektodate
-                    })
+                    });
+
+                    // clash check report 
+                    let clashReqBody = {};
+                    clashReqBody.venue = this.state.venue_selected;
+                    clashReqBody.acad_yr = this.state.acad_yr;
+                    clashReqBody.sem = this.state.sem;
+
+                    fetch('/api/venue/clash-check', {
+                        method: 'PUT',
+                        mode: "cors",
+                        cache: "no-cache",
+                        credentials: "same-origin",
+                        headers: {
+                            "Content-Type": "application/json; charset=utf-8",
+                        },
+                        redirect: "follow",
+                        referrer: "no-referrer",
+                        body: JSON.stringify(clashReqBody)
+                    }).then(function(data){
+                        return data.json();
+                    }).then(json => {
+                        if(json!=null){
+                            this.setState({
+                                clash_msg: json.msg
+                            });
+                        } else {
+                            this.setState({
+                                clash_msg: ["No clash detected.\n"]
+                            })
+                        }
+                    });
                 });
 
             } else {
@@ -133,6 +165,7 @@ class RoomUtil extends Component {
         let generate = this.state.generate;
         let venueUtil = this.state.venueUtil;
         let dates = this.state.dates;
+        let msg = this.state.clash_msg;
 
         // format input as id=(week-1) for each column 
         let input = [];
@@ -255,6 +288,12 @@ class RoomUtil extends Component {
                             <BootstrapTable ref='tab' data={input} options={options} keyField='id' exportCSV>
                                 {thc}
                             </BootstrapTable>
+                        </div>
+                    </div>
+                    <div className="col-md-11" id="report">
+                        <h1 id="title"> Clash Report</h1>
+                        <div id="report-container">
+                            <p>{msg.map(ele => ele)}</p>
                         </div>
                     </div>
                 </div>
