@@ -201,12 +201,12 @@ class RoomUtil extends Component {
                 });
             });
 
-            // sort array based on course time 
-            weekday.MON.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
-            weekday.TUE.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
-            weekday.WED.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
-            weekday.THU.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
-            weekday.FRI.sort((a,b) => (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0));
+            // sort array based on course time & group name
+            weekday.MON.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+            weekday.TUE.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+            weekday.WED.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+            weekday.THU.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+            weekday.FRI.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
 
             Object.keys(weekday).forEach(day => {
                 if (weekday[day].length>0){

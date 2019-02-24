@@ -95,6 +95,11 @@ let readCSV = function CSVToArray(req, res, next){
       }).catch(next);
 
       function updateCourseToDB(arow){
+        // re-format venue, merge XX-XX-XX. with XX-XX-XX 
+        let venue = arow[8];
+        if(venue.slice(-1) === '.') {
+          venue = venue.slice(0, venue.length-1);
+        }
         let teaching_weeks = [];
         console.log(arow);
         for (let j=9; j<22; j++){
@@ -111,7 +116,7 @@ let readCSV = function CSVToArray(req, res, next){
               'day': arow[5],
               'start_time': arow[6],
               'end_time': arow[7],
-              'venue': arow[8],
+              'venue': venue,
               'unscheduled_weeks': teaching_weeks
             }
           }
@@ -119,7 +124,7 @@ let readCSV = function CSVToArray(req, res, next){
         .then(function(result){
           console.log(JSON.stringify(result));
           // update venue utilization db 
-          VenueUtil.findOneAndUpdate({'venue': arow[8], 'acad_yr': acad_yr, 'sem': sem}, 
+          VenueUtil.findOneAndUpdate({'venue': venue, 'acad_yr': acad_yr, 'sem': sem}, 
             {
               $push: {
                 'scheduled_time': {
@@ -138,7 +143,7 @@ let readCSV = function CSVToArray(req, res, next){
             }
           ).then(function(updated_venue){
             if(updated_venue == null){
-              VenueUtil.findOneAndUpdate({'venue': arow[8]}, 
+              VenueUtil.findOneAndUpdate({'venue': venue}, 
               {
                 $push: {
                   'acad_yr': acad_yr,
