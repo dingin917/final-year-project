@@ -97,9 +97,17 @@ let readCSV = function CSVToArray(req, res, next){
       function updateCourseToDB(arow){
         // re-format venue, merge XX-XX-XX. with XX-XX-XX 
         let venue = arow[8];
-        if(venue.slice(-1) === '.') {
+        if(venue.slice(-1) === '.'){
           venue = venue.slice(0, venue.length-1);
         }
+
+        // check for LAB-A/B/C
+        let group = arow[4];
+        if(arow[3] === "LAB" && arow.length > 22){
+          if(arow[22].trim()!='')
+            group = arow[22];
+        }
+
         let teaching_weeks = [];
         console.log(arow);
         for (let j=9; j<22; j++){
@@ -111,7 +119,7 @@ let readCSV = function CSVToArray(req, res, next){
         {
           $push: {
             'schedule': {
-              'group': arow[4],
+              'group': group,
               'teaching_weeks':  teaching_weeks,
               'day': arow[5],
               'start_time': arow[6],
@@ -130,7 +138,7 @@ let readCSV = function CSVToArray(req, res, next){
                 'scheduled_time': {
                   'course': arow[2],
                   'courseType': arow[3],
-                  'group': arow[4],
+                  'group': group,
                   'day': arow[5],
                   'start_time': arow[6],
                   'end_time': arow[7],
@@ -151,7 +159,7 @@ let readCSV = function CSVToArray(req, res, next){
                   'scheduled_time': {
                     'course': arow[2],
                     'courseType': arow[3],
-                    'group': arow[4],
+                    'group': group,
                     'day': arow[5],
                     'start_time': arow[6],
                     'end_time': arow[7],
