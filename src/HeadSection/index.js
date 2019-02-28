@@ -22,9 +22,9 @@ class HeadSection extends Component {
                                 <li className="nav-item active">
                                     <a className="nav-link" href="/prof">Profile</a>
                                 </li>
-                                <li className="nav-item active">
+                                {/* <li className="nav-item active">
                                     <a className="nav-link" href="/summary">Summary</a>
-                                </li>
+                                </li> */}
                                 <li className="nav-item active">
                                     <a className="nav-link" href="/room">Room</a>
                                 </li>
