@@ -93,7 +93,7 @@ router.get('/search_venue', function(req, res, next){
 
 // retrieve course list for search 
 router.get('/search_course', function(req, res, next){
-    Course.find({'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
+    Course.find({'acad_yr': req.query.acad_yr, 'sem': req.query.sem, 'category': req.query.cate})
     .then(function(result){
         let courseSet = [...new Set(result.map(item => item.code))];
         let courseList = [];

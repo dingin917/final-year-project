@@ -17,8 +17,9 @@ class FindTimeSlots extends Component {
             course: { schedule: [] },
             update: false,
             dates: [],
-            year: 2019,
-            sem: 1,
+            year: 2018,
+            sem: 2,
+            category: "fulltime",
             course_list_for_search: [],
             course_code_selected: String,
             prof_list_for_search: [],
@@ -27,6 +28,7 @@ class FindTimeSlots extends Component {
         }
         this.handleYearChange = this.handleYearChange.bind(this);
         this.handleSemSelected = this.handleSemSelected.bind(this);
+        this.handleCategorySelected = this.handleCategorySelected.bind(this);
         this.handleSuggestSelected = this.handleSuggestSelected.bind(this);
         this.handleSuggestSelected_update = this.handleSuggestSelected_update.bind(this);
         this.handleSuggestSelected_handover = this.handleSuggestSelected_handover.bind(this);
@@ -39,14 +41,14 @@ class FindTimeSlots extends Component {
         this.setState({
             year: this.refs.myacad_yr.value
         });
-        fetch('/api/search_course?acad_yr=' + this.refs.myacad_yr.value + '&sem=' + this.state.sem)
+        fetch('/api/search_course?acad_yr=' + this.refs.myacad_yr.value + '&sem=' + this.state.sem + '&cate=' + this.state.category) 
         .then(function(courseList){
             return courseList.json();
         })
         .then(json => {
             this.setState({
                 course_list_for_search: json
-            })
+            });
         });
     }
     handleSemSelected(event) {
@@ -54,15 +56,30 @@ class FindTimeSlots extends Component {
         this.setState({
             sem: this.refs.mysem.value
         });
-        fetch('/api/search_course?acad_yr=' + this.state.year + '&sem=' + this.refs.mysem.value)
+        fetch('/api/search_course?acad_yr=' + this.state.year + '&sem=' + this.refs.mysem.value + '&cate=' + this.state.category)
         .then(function(courseList){
             return courseList.json();
         })
         .then(json => {
             this.setState({
                 course_list_for_search: json
-            })
+            });
         });
+    }
+    handleCategorySelected(event) {
+        event.preventDefault();
+        this.setState({
+            category: this.refs.category.vaule
+        });
+        fetch('/api/search_course?acad_yr=' + this.state.year + '&sem=' + this.state.sem + '&cate=' + this.refs.category.value)
+        .then(function(courseList){
+            return courseList.json();
+        })
+        .then(json => {
+            this.setState({
+                course_list_for_search: json
+            });
+        })
     }
     handleSuggestSelected(event, {suggestionValue}){
         event.preventDefault();
@@ -507,7 +524,7 @@ class FindTimeSlots extends Component {
                             <option value="LAB">Laboratory</option>
                         </select>
                         <label>Enter the category: </label>
-                        <select ref="category" required>
+                        <select ref="category" onChange={this.handleCategorySelected} required>
                             <option value="fulltime">Full Time</option>
                             <option value="parttime">Part Time</option>
                         </select>
