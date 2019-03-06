@@ -3,12 +3,12 @@ import {BrowserRouter, Route, Switch } from "react-router-dom";
 import asyncComponent from './AsyncComponent';
 
 const AsyncHomePage = asyncComponent(() => import('./HomePage'));
-const AsyncFindTimeSlots = asyncComponent(() => import('./FindTimeSlots'));
-const AsyncViewCalendar = asyncComponent(() => import('./ViewCalendar'));
-const AsyncViewSummary = asyncComponent(() => import('./ViewSummary'));
-const AsyncRoomUtil = asyncComponent(() => import('./RoomUtil'));
-const AsyncUploadFiles = asyncComponent(() => import('./UploadFiles'));
-const AsyncRegisterUser = asyncComponent(() => import('./RegisterUser'));
+const AsyncFindTimeSlots = asyncComponent(() => import('./Find_TimeSlots'));
+const AsyncViewCalendar = asyncComponent(() => import('./View_Calendar'));
+const AsyncViewSummary = asyncComponent(() => import('./View_Summary'));
+const AsyncRoomUtil = asyncComponent(() => import('./Room_Util'));
+const AsyncUploadFiles = asyncComponent(() => import('./Upload_Files'));
+const AsyncRegisterUser = asyncComponent(() => import('./Register_User'));
 
 
 export default () => 
