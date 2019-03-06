@@ -18,7 +18,7 @@ class FindTimeSlots extends Component {
             update: false,
             dates: [],
             year: 2018,
-            sem: 2,
+            sem: 1,
             category: "fulltime",
             course_list_for_search: [],
             course_code_selected: String,
