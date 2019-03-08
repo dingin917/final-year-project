@@ -5,8 +5,12 @@ var Schema = mongoose.Schema;
 // Connect to the db before tests run 
 before(function(done){
     // Set up default mongoose connection
+    // mongoose.connect(
+    //     "mongodb://dingin:GDragon0818@ds119503.mlab.com:19503/test-db",
+    //     { useNewUrlParser: true }
+    // );
     mongoose.connect(
-        "mongodb://dingin:GDragon0818@ds119503.mlab.com:19503/test-db",
+        "mongodb+srv://admin:ntu-eee-2019@fypcluster-4qx6v.mongodb.net/test?retryWrites=true",
         { useNewUrlParser: true }
     );
 
