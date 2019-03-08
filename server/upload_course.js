@@ -88,7 +88,7 @@ let readCSV = function CSVToArray(req, res, next){
           let html = '';
           html += '<p> The course csv file has been successfully uploaded </p>';
           html += '<a href="/"> Back to homepage .. </a><br>';
-          html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </a> </p>';
+          html += '<p> You can view the online database <a href="https://cloud.mongodb.com/"> here </a> </p>';
           res.send(html);
         }
 
