@@ -427,7 +427,8 @@ class FindTimeSlots extends Component {
             TUE:[],
             WED:[],
             THU:[],
-            FRI:[]
+            FRI:[],
+            SAT:[]
         };
         
         mycourse.schedule.forEach(slot => {
@@ -453,7 +454,9 @@ class FindTimeSlots extends Component {
                     break;
                 case 'F':
                     weekday.FRI.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
-                    console.log('id - ' + slot._id);
+                    break;
+                case 'S':
+                    weekday.SAT.push({time:slot.start_time+'-'+slot.end_time, group: grp_name, venue:slot.venue, id:slot._id});
                     break;
             }
 
@@ -473,11 +476,12 @@ class FindTimeSlots extends Component {
 
         grp_list.sort();
 
-        weekday.MON.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
-        weekday.TUE.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
-        weekday.WED.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
-        weekday.THU.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
-        weekday.FRI.sort(function(a,b){return (a.group>b.group) ? 1 : ((b.group>a.group) ? -1 : 0);});
+        weekday.MON.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+        weekday.TUE.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+        weekday.WED.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+        weekday.THU.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+        weekday.FRI.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
+        weekday.SAT.sort((a,b) => (a.time > b.time || (a.time === b.time && a.group > b.group)) ? 1 : ((b.time > a.time || (a.time === b.time && b.group > a.group)) ? -1 : 0));
 
         Object.keys(weekday).forEach(day => {
             if (weekday[day].length>0){
@@ -518,11 +522,7 @@ class FindTimeSlots extends Component {
                         <label>Enter a course code </label>
                         <Autosuggest_Course courses={this.state.course_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
                         <label>Enter a class type </label>
-                        <select ref="mytype" required>
-                            <option value="LEC">Lecture</option>
-                            <option value="TUT">Tutorial</option>
-                            <option value="LAB">Laboratory</option>
-                        </select>
+                        <input className="form-control" type="text" ref="mytype" placeholder="e.g. LEC/TUT/LAB/PRJ/SMR" required />
                         <label>Enter the category: </label>
                         <select ref="category" onChange={this.handleCategorySelected} required>
                             <option value="fulltime">Full Time</option>
