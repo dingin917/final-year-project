@@ -10,28 +10,42 @@
     margin-bottom: 60px;
 }
 
+#info h1 {
+    font-weight: bold;
+    line-height: 1.2;
+    text-shadow: 2px 2px #9e1919;
+}
+
 #info p {
     margin: 50px 50px;
+    text-shadow: 1.5px 1.5px #40280b;
+    font-weight: bold;
 }
 
 .data h1 {
     margin-bottom: 25px;
-    background-color: beige;
+    color: white;
+    text-shadow: 1.5px 1.5px #40280b;
+    font-weight: bold;
+}
+
+input {
+    color: 
 }
 
 #form1 {
-    background: url(1.jpg) no-repeat center center;
     background-size: cover;
     margin-right: 10px;
+    background-color: #d2dadc73;
 }
 
 #form2 {
-    background: url(2.jpg) no-repeat center center;
     background-size: cover;
     margin-right: 10px;
+    background-color: #f0e0d1b8;
 }
 
 #form3 {
-    background: url(3.jpg) no-repeat center center;
     background-size: cover;
+    background-color: #7597b78c;
 }

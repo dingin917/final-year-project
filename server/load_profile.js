@@ -52,9 +52,18 @@ var readCSV = function CSVToArray(req, res, next){
       // upload to database 
       for (var i=1; i<fileRows.length; i++){
         var aRow = fileRows[i];
-        if(aRow[0].trim()!=''){
-          Prof.findOneAndUpdate({initial: aRow[initial]}, {initial: aRow[initial], fullname: aRow[name], 
-            title: aRow[title], teachingarea: aRow[area], email: aRow[email]}, 
+        if(aRow[2].trim()!=''){
+          Prof.findOneAndUpdate({initial: aRow[initial]}, 
+            { 
+              $set: 
+              {
+                initial: aRow[initial], 
+                fullname: aRow[name], 
+                title: aRow[title], 
+                teachingarea: aRow[area], 
+                email: aRow[email]
+              }
+            }, 
             {new: true, upsert: true}).then(function (prof){
               console.log(prof);
           }).catch(next);

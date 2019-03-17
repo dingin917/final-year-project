@@ -30,8 +30,16 @@ button {
     margin-bottom: 60px;
 }
 
+#info h1 {
+    font-weight: bold;
+    line-height: 1.2;
+    text-shadow: 2px 2px #9e1919;
+}
+
 #info p {
     margin: 50px 50px;
+    text-shadow: 1.5px 1.5px #40280b;
+    font-weight: bold;
 }
 
 #container {
