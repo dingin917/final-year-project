@@ -14,14 +14,14 @@ label {
 }
 
 #assign {
-    background: url(1.jpg) no-repeat center center;
     background-size: cover;
-    /* margin-right: 80px; */
+    margin-right: 80px;
+    background-color: #d2dadc73;
 }
 
 #handover {
-    background: url(2.jpg) no-repeat center center;
     background-size: cover;
+    background-color: #f0e0d1b8;
 }
 
 #table-container {
@@ -80,7 +80,7 @@ label {
 }
 
 #info {
-    background: url(img.jpeg) no-repeat center center;
+    background: url(../img.jpeg) no-repeat center center;
     background-size: cover;
     height: max-content;
     text-align: center;

@@ -519,15 +519,15 @@ class FindTimeSlots extends Component {
                             <option value="1">semester 1</option>
                             <option value="2">semester 2</option>
                         </select>
-                        <label>Enter a course code </label>
-                        <Autosuggest_Course courses={this.state.course_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
-                        <label>Enter a class type </label>
-                        <input className="form-control" type="text" ref="mytype" placeholder="e.g. LEC/TUT/LAB/PRJ/SMR" required />
                         <label>Enter the category: </label>
                         <select ref="category" onChange={this.handleCategorySelected} required>
                             <option value="fulltime">Full Time</option>
                             <option value="parttime">Part Time</option>
                         </select>
+                        <label>Enter a course code </label>
+                        <Autosuggest_Course courses={this.state.course_list_for_search} handleSuggestSelected={this.handleSuggestSelected}/>
+                        <label>Enter a class type </label>
+                        <input className="form-control" type="text" ref="mytype" placeholder="e.g. LEC/TUT/LAB/PRJ/SMR" required />
                         <input className="form-control" type="submit" value="Find Timeslots" />
                     </form>
                 </div>

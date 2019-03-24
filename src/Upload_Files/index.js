@@ -7,9 +7,10 @@ class UploadFiles extends Component {
         return (
             <div className="board">
                 <div id="info">
-                    <h1 className="display-4">View Summary</h1>
-                    <p>You can find the teaching assignment summary for a certain teaching staff via <i>View</i> portal. <br />
-                    The total teaching hours and payload will be automatically calculated.</p>
+                    <h1 className="display-4">File Uploading</h1>
+                    <p>You can upload teaching staff profile in csv file via <i>Upload</i> portal. <br />
+                    You may also upload the course informatin file in csv format. <br/> 
+                    To update the academic calendar, you need to select the first day of that semester.</p>
                 </div>
                 <div className="data">
                 <div className="col-4" id="form1">

@@ -64,7 +64,7 @@ class App extends Component {
                                 </form>
                             </div>
                             <div className="col-12 link-part">
-                                <a href="#">Forgot Password?</a>
+                                <a href="https://hackmd.io/uc5Dz57AT26OmFCgW5i-pA?view" target="_blank">Forgot Password?</a>
                             </div>
                         </div> 
                     </div>

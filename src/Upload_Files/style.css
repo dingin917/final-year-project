@@ -1,5 +1,5 @@
 #info {
-    background: url(img.jpeg) no-repeat center center;
+    background: url(../img.jpeg) no-repeat center center;
     background-size: cover;
     height: max-content;
     text-align: center;
@@ -27,10 +27,6 @@
     color: white;
     text-shadow: 1.5px 1.5px #40280b;
     font-weight: bold;
-}
-
-input {
-    color: 
 }
 
 #form1 {

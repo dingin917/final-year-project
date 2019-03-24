@@ -73,7 +73,7 @@ var readCSV = function CSVToArray(req, res, next){
       var html = '';
       html += '<p> The teaching profile csv file has been successfully uploaded </p>';
       html += '<a href="/"> Back to homepage .. </a><br>';
-      html += '<p> You can view the online database <a href="https://mlab.com/welcome/"> here </p>';
+      html += '<p> You can view the online database <a href="https://www.mongodb.com/cloud/atlas"> here </p>';
       res.send(html);
 
     });
