@@ -125,9 +125,14 @@ class FindTimeSlots extends Component {
                     return result.json();
                 })
                 .then(json => {
-                    this.setState({
-                        dates: json.weektodate
-                    })
+                    if(json!=null){
+                        this.setState({
+                            dates: json.weektodate
+                        });
+                    } else {
+                        alert('Please update the academic calendar first.');
+                        return false;
+                    }
                 });
             } else {
                 alert('No record found in database, please try again.');

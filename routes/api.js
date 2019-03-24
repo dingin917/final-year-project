@@ -168,15 +168,6 @@ router.post('/teachers', function(req, res, next){
     .catch(next);
 });
 
-// delete a course from the db, currently not implemented 
-router.delete('/courses/:id', function(req, res, next){
-    Course.findByIdAndDelete({_id: req.params.id}).then(function(course){
-        res.json({type: 'DELETE'});
-        console.log("DELETE Request");
-        console.log("Request Body: " + req.params);
-    }).catch(next);
-});
-
 // retrieve venue utilization info 
 router.get('/venue/util', function(req, res, next){
     VenueUtil.findOne({'venue': req.query.venue, 'acad_yr': req.query.acad_yr, 'sem': req.query.sem})

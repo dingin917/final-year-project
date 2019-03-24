@@ -76,8 +76,8 @@ var profAssignmentTimeSchema = new Schema({
         time_assigned: [{
             week: Number,
             day: String,
-            start_time: String,
-            end_time: String
+            start_time: String, // e.g. 13:30
+            end_time: String    // e.g. 15:30
         }]
     }]
 });

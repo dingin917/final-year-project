@@ -10,7 +10,7 @@ var clashCheckProf = function(req, res, next){
     let start_time = req.body.start_time;
     let end_time = req.body.end_time; 
 
-    // format time:{day, start_time, end_time} for update profAssignmentTime
+    // format time:{week, day, start_time, end_time} for update profAssignmentTime
     let time_assigned_update_arr = [];
     for(let i = parseInt(req.body.start_week); i <= parseInt(req.body.end_week); i++){
         time_assigned_update_arr.push({week: i, day: req.body.day, start_time: req.body.start_time, end_time: req.body.end_time})
