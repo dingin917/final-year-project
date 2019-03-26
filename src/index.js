@@ -15,8 +15,11 @@ class App extends Component {
         // this.setState({ login: true });
 
         event.preventDefault();
-        fetch('/api//user/authenticate?email=' + this.refs.myemail.value + '&password=' + this.refs.mypassword.value, {
-            method: 'GET',
+        let requestBody = {};
+        requestBody.email = this.refs.myemail.value;
+        requestBody.password = this.refs.mypassword.value;
+        fetch('/api//user/authenticate', {
+            method: 'POST',
             mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
@@ -24,7 +27,8 @@ class App extends Component {
                 "Content-Type": "application/json; charset=utf-8",
             },
             redirect: "follow",
-            referrer: "no-referrer"
+            referrer: "no-referrer",
+            body: JSON.stringify(requestBody)
         }).then(function (data) {
             return data.json();
         }).then(json => {
@@ -55,10 +59,10 @@ class App extends Component {
                             <div className="col-12 form-input">
                                 <form>
                                     <div className="form-group">
-                                        <input ref="myemail" type="email" className="form-control" placeholder="Enter Email" />
+                                        <input ref="myemail" type="email" className="form-control" placeholder="Enter Email" required />
                                     </div>
                                     <div className="form-group">
-                                        <input ref="mypassword" type="password" className="form-control" placeholder="Password" />
+                                        <input ref="mypassword" type="password" className="form-control" placeholder="Password" required />
                                     </div>
                                     <button onClick={this.handleLogin} type="submit" className="btn btn-success">Login</button>
                                 </form>

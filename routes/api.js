@@ -169,12 +169,12 @@ router.post('/teachers', function(req, res, next){
 });
 
 // retrieve venue utilization info 
-router.get('/venue/util', function(req, res, next){
-    VenueUtil.findOne({'venue': req.query.venue, 'acad_yr': req.query.acad_yr, 'sem': req.query.sem})
+router.post('/venue/util', function(req, res, next){
+    VenueUtil.findOne({'venue': req.body.venue, 'acad_yr': req.body.acad_yr, 'sem': req.body.sem})
     .then(function(venueUtil){
         res.json(venueUtil);
-        console.log("GET Request for venue utilization");
-        console.log("URL Request Params: " + JSON.stringify(req.query));
+        console.log("POST Request for venue utilization");
+        console.log("Request Body: " + JSON.stringify(req.body));
         console.log("Response: " + JSON.stringify(venueUtil));
     }).catch(next);
 });
@@ -218,12 +218,12 @@ router.post('/user/register', function(req, res, next){
 });
 
 // authenticate a user 
-router.get('/user/authenticate', function(req, res, next){
+router.post('/user/authenticate', function(req, res, next){
     // Encrypt password before authenticating
     let key = crypto.createCipher('aes-128-ecb', 'ntu-eee');
-    let encrypted = key.update(req.query.password, 'utf8', 'hex') + key.final('hex');
+    let encrypted = key.update(req.body.password, 'utf8', 'hex') + key.final('hex');
 
-    User.find({email: req.query.email, password: encrypted})
+    User.find({email: req.body.email, password: encrypted})
     .then(function(user){
         res.json(user);
         console.log("GET Request for authenticating a user");

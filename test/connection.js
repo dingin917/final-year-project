@@ -92,27 +92,32 @@ var profAssignmentTimeSchema = new Schema({
         time_assigned: [{
             week: Number,
             day: String,
-            start_time: String,
-            end_time: String
+            start_time: String, // e.g. 13:30
+            end_time: String    // e.g. 15:30
         }]
     }]
 });
 
 // implemented for Room Utilisation Calendar
+// https://stackoverflow.com/questions/33846939/mongoose-schema-error-cast-to-string-failed-for-value-when-pushing-object-to
+// https://mongoosejs.com/docs/guide.html#typeKey
 var venueUtilSchema = new Schema({
     venue: String,
     acad_yr: Number,
     sem: Number,
     scheduled_time: [{
+        // x-axis
         course: String,
-        courseType: String,
+        courseType: String,     // cannot use type: String here 
         group: String,
         day: String,
         start_time: String,
         end_time: String,
+        // y-axis
         week: [Number]
     }]
 }); 
+
 
 var dateSchema = new Schema({
     acad_yr: Number,

@@ -46,6 +46,10 @@ button {
     margin:auto;
 }
 
+#container h1 {
+    background-color: beige;
+}
+
 #table-container {
     overflow-x: scroll;
 }

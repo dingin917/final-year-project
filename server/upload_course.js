@@ -23,6 +23,9 @@ let readCSV = function CSVToArray(req, res, next){
         process "fileRows" and respond
       */
 
+      // make the data to upper case
+      fileRows = fileRows.map(ele => ele.map(e => e.toUpperCase()));
+
       // variables used to upload courses to database
       const acad_yr = fileRows[1][0];
       const sem = fileRows[1][1];

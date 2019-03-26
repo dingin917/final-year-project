@@ -92,8 +92,14 @@ class RoomUtil extends Component {
     handleGenerateCalendar(event) {
         event.preventDefault();
 
-        fetch('/api/venue/util?venue=' + this.state.venue_selected + '&acad_yr=' + this.state.acad_yr +'&sem=' + this.state.sem, {
-            method: 'GET',
+        let requestBody = {};
+        requestBody.acad_yr = this.state.acad_yr;
+        requestBody.sem = this.state.sem;
+        requestBody.venue = this.state.venue_selected;
+
+
+        fetch('/api/venue/util', {
+            method: 'POST',
             mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
@@ -101,7 +107,8 @@ class RoomUtil extends Component {
                 "Content-Type": "application/json; charset=utf-8",
             },
             redirect: "follow",
-            referrer: "no-referrer"
+            referrer: "no-referrer",
+            body: JSON.stringify(requestBody)
         }).then(function (data) {
             return data.json();
         }).then(json => {
@@ -142,13 +149,19 @@ class RoomUtil extends Component {
                         return data.json();
                     }).then(json => {
                         if(json!=null){
-                            this.setState({
-                                clash_msg: json.msg
-                            });
+                            if(json.msg === undefined || json.msg.length ==0){
+                                this.setState({
+                                    clash_msg: ["No clash is detected.\n"]
+                                });
+                            } else {
+                                this.setState({
+                                    clash_msg: json.msg
+                                });
+                            }
                         } else {
                             this.setState({
-                                clash_msg: ["No clash detected.\n"]
-                            })
+                                clash_msg: ["No clash is detected.\n"]
+                            });
                         }
                     });
                 });
@@ -292,8 +305,8 @@ class RoomUtil extends Component {
                     </div>
                     <div className="col-md-11" id="report">
                         <h1 id="title"> Clash Report</h1>
-                        <div id="report-container">
-                            <p>{msg.map(ele => ele)}</p>
+                        <div className="col-md-9" id="report-container">
+                            {msg.map(ele => <p>{ele}</p>)}
                         </div>
                     </div>
                 </div>
