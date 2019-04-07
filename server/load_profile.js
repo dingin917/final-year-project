@@ -23,28 +23,25 @@ var readCSV = function CSVToArray(req, res, next){
 
       //res.json(fileRows);
 
-      // make the data to upper case
-      fileRows = fileRows.map(ele => ele.map(e => e.toUpperCase()));
-
       // get the index for columns
       var header = fileRows[0];
       var initial, name, title, area, email;
       initial = name = title = area = email = 0;
       header.forEach(function (value, index){
         switch(value){
-          case "INITIAL": 
+          case "Initial": 
             initial = index;
             break;
-          case "STAFF NAME":
+          case "Staff Name":
             name = index;
             break;
-          case "TITLE":
+          case "Title":
             title = index;
             break;
-          case "TEACHING AREA":
+          case "Teaching Area":
             area = index;
             break;
-          case "EMAIL":
+          case "Email":
             email = index;
             break;
           default: 
