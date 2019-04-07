@@ -223,12 +223,12 @@ router.post('/user/authenticate', function(req, res, next){
     let key = crypto.createCipher('aes-128-ecb', 'ntu-eee');
     let encrypted = key.update(req.body.password, 'utf8', 'hex') + key.final('hex');
 
-    User.find({email: req.body.email, password: encrypted})
+    User.findOne({email: req.body.email, password: encrypted})
     .then(function(user){
         res.json(user);
-        console.log("GET Request for authenticating a user");
+        console.log("POST Request for authenticating a user");
         console.log("Request Body: " + JSON.stringify(req.body));
-        console.log("Response: " + user);
+        console.log("Response: " + JSON.stringify(user));
     }).catch(next);
 });
 

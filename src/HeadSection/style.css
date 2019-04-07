@@ -9,3 +9,10 @@
 img {
     width: 130px;
 }
+
+button {
+    background: lightslategray;
+    border: 1px solid lightsteelblue;
+    color: white;
+    font: bold;
+}

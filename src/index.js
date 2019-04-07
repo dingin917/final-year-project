@@ -18,7 +18,7 @@ class App extends Component {
         let requestBody = {};
         requestBody.email = this.refs.myemail.value;
         requestBody.password = this.refs.mypassword.value;
-        fetch('/api//user/authenticate', {
+        fetch('/api/user/authenticate', {
             method: 'POST',
             mode: "cors",
             cache: "no-cache",
@@ -34,6 +34,7 @@ class App extends Component {
         }).then(json => {
             console.log("\nFROM DB -> " + JSON.stringify(json));
             if (json!= null && Object.keys(json).length>0){
+                localStorage.setItem('user', json.username);
                 localStorage.setItem('email', this.refs.myemail.value);
                 window.location.reload();
             } else {
