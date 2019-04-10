@@ -9,7 +9,7 @@ const VenueUtil = Mongo.VenueUtil;
 
 
 let readCSV = function CSVToArray(req, res, next){
-  const fileRows = [];
+  let fileRows = [];
   // open uploaded file
   csv.fromPath(req.file.path)
     .on("data", function (data) {
@@ -150,9 +150,9 @@ let readCSV = function CSVToArray(req, res, next){
       }
 
       const updateCourseToDB = async (arow) => {
-        // re-format venue, merge XX-XX-XX. with XX-XX-XX 
+        // re-format venue, merge XX-XX-XX. or XX-XX-XX' with XX-XX-XX 
         let venue = arow[8];
-        if(venue.slice(-1) === '.'){
+        if(venue.slice(-1) === '.' || venue.slice(-1) === '\''){
           venue = venue.slice(0, venue.length-1);
         }
 
