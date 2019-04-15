@@ -10,9 +10,21 @@ var Schema = mongoose.Schema;
 //     { useNewUrlParser: true }
 // );
 
-// migrating to Atlas 
+// // migrating to Atlas 
+// mongoose.connect(
+//     "mongodb+srv://admin:ntu-eee-2019@fypcluster-4qx6v.mongodb.net/test?retryWrites=true",
+//     { useNewUrlParser: true }
+// );
+
+// // demo database 
+// mongoose.connect(
+//     "mongodb+srv://admin:ntu-eee-2019@fypcluster-4qx6v.mongodb.net/demo?retryWrites=true",
+//     { useNewUrlParser: true }
+// );
+
+// admin test database 
 mongoose.connect(
-    "mongodb+srv://admin:ntu-eee-2019@fypcluster-4qx6v.mongodb.net/test?retryWrites=true",
+    "mongodb+srv://admin:ntu-eee-2019@fypcluster-4qx6v.mongodb.net/admintest?retryWrites=true",
     { useNewUrlParser: true }
 );
 
